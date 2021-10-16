@@ -27,7 +27,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Gallery from "./components/Gallery";
 import {Provider} from "mobx-react/src/Provider";
-//import store from "./mobx/store";
+import store from "./mobx/store";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -37,17 +37,19 @@ const App: () => Node = () => {
   };
 
   return (
+      <Provider store={store}>
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Text>***</Text>
-        <Gallery></Gallery>
+        <Gallery/>
 
 
       </ScrollView>
     </SafeAreaView>
+      </Provider>
 
   );
 };
