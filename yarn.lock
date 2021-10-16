@@ -2237,6 +2237,11 @@
   "resolved" "https://registry.npmjs.org/copy-descriptor/-/copy-descriptor-0.1.1.tgz"
   "version" "0.1.1"
 
+"core-decorators@^0.20.0":
+  "integrity" "sha1-YFiWYkBTr4wo775zXCWjAaYcZcU="
+  "resolved" "https://registry.npmjs.org/core-decorators/-/core-decorators-0.20.0.tgz"
+  "version" "0.20.0"
+
 "core-js-compat@^3.16.2":
   "integrity" "sha512-4zP6/y0a2RTHN5bRGT7PTq9lVt3WzvffTNjqnTKsXhkAYNDTkdCLOIfAdOLcQ/7TDdyRj3c+NeHe1NmF1eDScw=="
   "resolved" "https://registry.npmjs.org/core-js-compat/-/core-js-compat-3.18.3.tgz"
