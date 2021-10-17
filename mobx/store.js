@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx';
+import {observable, action, runInAction} from 'mobx';
 import {decorate} from 'core-decorators';
 import axios from "axios";
 
@@ -11,9 +11,11 @@ class Store {
     getGallery() {
 
         axios.get("https://picsum.photos/v2/list?page=2&limit=100")
-            .then(action(response => {
-                this.gallery.replace(response.data)
-            }))
+            .then(response => {
+                runInAction(() =>
+                    this.gallery.replace(response.data)
+                )
+            })
             .catch((error) => {
                 alert(error.message);
             });
