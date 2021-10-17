@@ -4,13 +4,13 @@ import {Text} from "react-native";
 import {decorate} from "core-decorators";
 import {action, observable} from "mobx";
 
-const Gallery = (props) => {
+const Gallery = ({gallery, getGallery}) => {
 
     useEffect(() => {
-        props.getGallery()
+        getGallery()
     }, [])
 
-    return props.gallery.map(el => <Text key={el.id}>{el.author}</Text>)
+    return gallery.map(el => <Text key={el.id}>{el.author}</Text>)
 }
 
 /*
