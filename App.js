@@ -24,11 +24,12 @@ import {Provider} from "mobx-react";
 import Store from "./mobx/store";
 
 const App = () => {
-    const isDarkMode = useColorScheme() === 'dark';
+    const isDarkMode = useColorScheme() === 'dark'
 
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
+    }
+
     return (<Provider {...Store}>
             <SafeAreaView style={backgroundStyle}>
                 <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
@@ -44,7 +45,7 @@ const App = () => {
     );
 };
 
-export default App;
+export default App
 
 /*
 const styles = StyleSheet.create({
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-});
+})
  */
 
 

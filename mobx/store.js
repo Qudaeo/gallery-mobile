@@ -1,11 +1,11 @@
-import {observable, action, runInAction} from 'mobx';
-import {decorate} from 'core-decorators';
-import axios from "axios";
+import {observable, action, runInAction} from 'mobx'
+import {decorate} from 'core-decorators'
+import axios from "axios"
 
 class Store {
     constructor() {
-        this.gallery = observable.array([]);
-        this.getGallery = action(this.getGallery.bind(this));
+        this.gallery = observable.array([])
+        this.getGallery = action(this.getGallery.bind(this))
     }
 
     getGallery() {
@@ -18,13 +18,13 @@ class Store {
             })
             .catch((error) => {
                 alert(error.message);
-            });
+            })
     }
 }
 
 decorate(Store, {
     gallery: observable,
     getGallery: action
-});
+})
 
-export default new Store();
+export default new Store()

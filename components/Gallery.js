@@ -11,7 +11,7 @@ const Gallery = (props) => {
     }, [])
 
     return props.gallery.map(el => <Text key={el.id}>{el.author}</Text>)
-};
+}
 
 /*
 const styles = StyleSheet.create({
