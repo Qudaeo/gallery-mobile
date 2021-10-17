@@ -2,14 +2,15 @@ import React, {useEffect} from "react";
 import {inject} from "mobx-react";
 import {Image, Text, View, StyleSheet} from "react-native";
 import {decorate} from "core-decorators";
-import {observable} from "mobx";
+import {action, observable} from "mobx";
 
 const Gallery = (props) => {
     useEffect(() => {
+        props.getGallery();
 
-    }, [])
+    })
 
-    return <Text>{props.gallery.author}</Text>
+    return <Text>{props.gallery[0].author}</Text>
 };
 
 const styles = StyleSheet.create({
@@ -29,8 +30,9 @@ const styles = StyleSheet.create({
 });
 
 //export default Gallery;
-export default inject("gallery")(Gallery);
+export default inject("gallery", "getGallery")(Gallery);
 
 decorate(Gallery, {
-    gallery: observable
+    gallery: observable,
+    getGallery: action
 })

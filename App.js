@@ -27,7 +27,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Gallery from "./components/Gallery";
 import {Provider} from "mobx-react";
-import store from "./mobx/store";
+import Store from "./mobx/store";
 
 const App = () => {
     const isDarkMode = useColorScheme() === 'dark';
@@ -35,10 +35,7 @@ const App = () => {
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
-
-    return (
-        <Provider {...store}>
-
+    return (<Provider {...Store}>
             <SafeAreaView style={backgroundStyle}>
                 <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
                 <ScrollView
@@ -47,15 +44,13 @@ const App = () => {
                     <Text>***</Text>
                     <Gallery/>
                     <Text>***</Text>
-
-
                 </ScrollView>
             </SafeAreaView>
         </Provider>
-
-
     );
 };
+
+export default App;
 
 /*
 const styles = StyleSheet.create({
@@ -78,4 +73,4 @@ const styles = StyleSheet.create({
 });
  */
 
-export default () => <Provider appState={store}><App/></Provider>;
+
