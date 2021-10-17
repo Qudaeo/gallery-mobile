@@ -15,7 +15,6 @@ class Store {
                 this.gallery.replace(response.data)
             }))
             .catch((error) => {
-                console.log("Api call error");
                 alert(error.message);
             });
     }
