@@ -1,6 +1,6 @@
-import {observable, action} from 'mobx';
+import {observable, action, computed} from 'mobx';
 import {decorate} from 'core-decorators';
-import {observer} from "mobx-react";
+//import {observer} from "mobx-react";
 //import axios from 'axios';
 //import RNFetchBlob from "rn-fetch-blob";
 
@@ -217,9 +217,9 @@ let galleryJson = [
         "download_url": "https://picsum.photos/id/1025/4951/3301"
     }]
 
-let initialState = [{
-    "id": "0",
-    "author": "Alejandro Escamilla",
+let addGallery = [{
+    "id": "10000",
+    "author": "fff",
     "width": 5616,
     "height": 3744,
     "url": 'https://unsplash.com/photos/yC-Yzbqy7PY',
@@ -229,16 +229,15 @@ let initialState = [{
 
 class Store {
     constructor() {
-        this.getGallery = this.getGallery.bind(this)
+        this.gallery = observable(galleryJson);
+        this.getGallery = action(this.getGallery.bind(this));
     }
-
-    gallery = initialState;
 
     getGallery() {
-        this.gallery = galleryJson
+        this.gallery[0].author = 'fack2'
     }
-
 }
+
 
 decorate(Store, {
     gallery: observable,

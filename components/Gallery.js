@@ -1,16 +1,15 @@
 import React, {useEffect} from "react";
-import {inject} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import {Image, Text, View, StyleSheet} from "react-native";
 import {decorate} from "core-decorators";
-import {action, observable} from "mobx";
+import {action, computed, observable} from "mobx";
 
 const Gallery = (props) => {
     useEffect(() => {
         props.getGallery();
+    },[])
 
-    })
-
-    return <Text>{props.gallery[0].author}</Text>
+    return props.gallery.map(el => <Text key={el.id}>{el.author}</Text>)
 };
 
 const styles = StyleSheet.create({
@@ -29,7 +28,6 @@ const styles = StyleSheet.create({
     }
 });
 
-//export default Gallery;
 export default inject("gallery", "getGallery")(Gallery);
 
 decorate(Gallery, {
