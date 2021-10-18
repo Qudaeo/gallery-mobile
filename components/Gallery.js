@@ -8,12 +8,9 @@ const Gallery = ({gallery, getGallery}) => {
         getGallery()
     }, [])
 
-    if (gallery) {
-
-        return (gallery.length === 0)
-            ? <Text>loading...</Text>
-            : gallery.map(el => <Text key={el.id}>{el.author}</Text>)
-    }
+    return (gallery.length === 0)
+        ? <Text>loading...</Text>
+        : gallery.map(el => <Text key={el.id}>{el.author}</Text>)
 }
 
 /*
