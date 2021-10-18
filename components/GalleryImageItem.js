@@ -1,10 +1,17 @@
 import React from "react";
-import { Image,  View} from "react-native";
+import {Image, View} from "react-native";
 
 export const GalleryImageItem = ({imageId}) => {
-    return <View>
+
+
+    return <View style={{
+        marginHorizontal: 15,
+        marginVertical: 5
+    }}>
         <Image
-            style={{width: 411, height: 300}}
+            style={{
+                width: 360, height: 300
+            }}
             source={{
                 uri: 'https://picsum.photos/id/' + imageId + '/888/500.webp'
             }}/>

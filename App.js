@@ -18,7 +18,7 @@ import {
 import {
     Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import {Gallery} from "./components/Gallery";
+import Gallery from "./components/Gallery";
 import {Provider} from "mobx-react";
 import Store from "./mobx/store";
 

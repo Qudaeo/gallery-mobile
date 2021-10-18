@@ -5,8 +5,16 @@ class Store {
 
     constructor() {
         this.gallery = observable.array([])
-//        this.images = observable.array([]);
         this.getGallery = action(this.getGallery.bind(this))
+
+        this.appWindowWidth = observable(null)
+        this.setAppWindowWidth = action(this.setAppWindowWidth.bind(this))
+    }
+
+    setAppWindowWidth(width) {
+        runInAction(() =>
+            this.appWindowWidth = width
+        )
     }
 
     getGallery() {
@@ -14,31 +22,12 @@ class Store {
         axios.get("https://picsum.photos/v2/list?page=2&limit=4")
             .then(response => {
                 runInAction(() => {
-
                     this.gallery.replace(response.data)
-                      //  this.gallery.push(...response.data)
-
-                    /*
-                        for (let image of response.data) {
-                            axios.post(image.download_url, {responseType: "arraybuffer"})
-                                .then(res => {
-                                    this.images.push({
-                                        download_url: image.download_url,
-                                        image: res.data
-                                    })
-
-                                })
-                                .catch((error) => {
-                                    alert(error.message + ': ' + image.url);
-                                })
-                        }
-                     */
-                    }
-                )
+                })
             })
             .catch((error) => {
                 alert(error.message);
-            });
+            })
     }
 
 }
