@@ -2,14 +2,14 @@ import React, {useEffect} from "react";
 import {inject, observer} from "mobx-react";
 import {Text} from "react-native";
 
-const Gallery = (props) => {
+const Gallery = ({gallery, getGallery}) => {
 
     useEffect(() => {
-        props.getGallery()
+        getGallery()
     }, [])
 
-    return props.gallery.map(el => <Text key={el.id}>{el.author}</Text>)
-};
+    return gallery.map(el => <Text key={el.id}>{el.author}</Text>)
+}
 
 /*
 const styles = StyleSheet.create({
