@@ -9,11 +9,20 @@ class Store {
 
         this.appWindowWidth = observable(null)
         this.setAppWindowWidth = action(this.setAppWindowWidth.bind(this))
+
+        this.currentPage = observable(1)
+        this.setNextCurrentPage = action(this.setNextCurrentPage.bind(this))
     }
 
     setAppWindowWidth(width) {
         runInAction(() =>
             this.appWindowWidth = width
+        )
+    }
+
+    setNextCurrentPage() {
+        runInAction(() =>
+            this.currentPage++
         )
     }
 
