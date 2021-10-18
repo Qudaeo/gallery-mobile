@@ -12,7 +12,6 @@ import {
     SafeAreaView,
     ScrollView,
     StatusBar,
-    Text,
     useColorScheme,
 } from 'react-native';
 
@@ -36,9 +35,7 @@ const App = () => {
                 <ScrollView
                     contentInsetAdjustmentBehavior="automatic"
                     style={backgroundStyle}>
-                    <Text>***</Text>
                     <Gallery/>
-                    <Text>***</Text>
                 </ScrollView>
             </SafeAreaView>
         </Provider>

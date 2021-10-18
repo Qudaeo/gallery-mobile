@@ -8,7 +8,12 @@ const Gallery = ({gallery, getGallery}) => {
         getGallery()
     }, [])
 
-    return gallery.map(el => <Text key={el.id}>{el.author}</Text>)
+    if (gallery) {
+
+        return (gallery.length === 0)
+            ? <Text>loading...</Text>
+            : gallery.map(el => <Text key={el.id}>{el.author}</Text>)
+    }
 }
 
 /*
@@ -31,9 +36,3 @@ const styles = StyleSheet.create({
 
 export default inject("gallery", "getGallery")(observer(Gallery))
 
-/*
-decorate(Gallery, {
-    gallery: observable,
-    getGallery: action
-})
-*/

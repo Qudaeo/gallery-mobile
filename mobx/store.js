@@ -1,29 +1,26 @@
-import {runInAction, makeAutoObservable} from 'mobx';
+import {runInAction, observable, action} from 'mobx';
 import axios from "axios";
 
-const Store = makeAutoObservable({
-        gallery: [],
+class Store {
 
-        getGallery() {
-
-            axios.get("https://picsum.photos/v2/list?page=2&limit=100")
-                .then(response => {
-                    runInAction(() =>
-                        this.gallery.replace(response.data)
-                    )
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        }
+    constructor() {
+        this.gallery = observable.array([]);
+        this.getGallery = action(this.getGallery.bind(this));
     }
-)
 
-/*
-decorate(Store, {
-    gallery: observable,
-    getGallery: action
-});
- */
+    getGallery() {
 
-export default Store;
+        axios.get("https://picsum.photos/v2/list?page=2&limit=100")
+            .then(response => {
+                runInAction(() =>
+                    this.gallery.replace(response.data)
+                )
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
+    }
+
+}
+
+export default new Store();
