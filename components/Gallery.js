@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {inject, observer} from "mobx-react";
-import {Image, Text, View} from "react-native";
+import {Dimensions, Text} from "react-native";
+import GalleryImageItem from "./GalleryImageItem";
 
 export const Gallery = inject("gallery", "getGallery")(observer(
     ({gallery, getGallery}) => {
@@ -12,14 +13,9 @@ export const Gallery = inject("gallery", "getGallery")(observer(
         return (gallery.length === 0)
             ? <Text>loading...</Text>
             : <>
-                {gallery && gallery.map(el => <View key={el.id}>
-                        <Text>{el.author}</Text>
-                        <Image
-                            style={{width: 100, height: 100}}
-                            source={{uri:
-                                el.download_url
-                        }}/>
-                    </View>
+                <Text>{Dimensions.get('window').width}</Text>
+                {gallery && gallery.map(el =>
+                    <GalleryImageItem  key={el.id} imageId={el.id}/>
                 )}
             </>
 
