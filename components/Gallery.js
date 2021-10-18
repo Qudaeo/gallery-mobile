@@ -1,8 +1,6 @@
 import React, {useEffect} from "react";
 import {inject, observer} from "mobx-react";
 import {Text} from "react-native";
-import {decorate} from "core-decorators";
-import {action, observable} from "mobx";
 
 const Gallery = (props) => {
 
@@ -33,7 +31,9 @@ const styles = StyleSheet.create({
 
 export default inject("gallery", "getGallery")(observer(Gallery))
 
+/*
 decorate(Gallery, {
     gallery: observable,
     getGallery: action
 })
+*/

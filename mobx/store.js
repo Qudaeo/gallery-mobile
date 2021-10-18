@@ -1,30 +1,29 @@
-import {observable, action, runInAction} from 'mobx';
-import {decorate} from 'core-decorators';
+import {runInAction, makeAutoObservable} from 'mobx';
 import axios from "axios";
 
-class Store {
-    constructor() {
-        this.gallery = observable.array([]);
-        this.getGallery = action(this.getGallery.bind(this));
+const Store = makeAutoObservable({
+        gallery: [],
+
+        getGallery() {
+
+            axios.get("https://picsum.photos/v2/list?page=2&limit=100")
+                .then(response => {
+                    runInAction(() =>
+                        this.gallery.replace(response.data)
+                    )
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        }
     }
+)
 
-    getGallery() {
-
-        axios.get("https://picsum.photos/v2/list?page=2&limit=100")
-            .then(response => {
-                runInAction(() =>
-                    this.gallery.replace(response.data)
-                )
-            })
-            .catch((error) => {
-                alert(error.message);
-            });
-    }
-}
-
+/*
 decorate(Store, {
     gallery: observable,
     getGallery: action
 });
+ */
 
-export default new Store();
+export default Store;
