@@ -16,15 +16,16 @@
     "mobx": "^6.3.5",
     "mobx-react": "^7.2.1",
     "react": "17.0.2",
-    "react-native": "0.66.1"
+    "react-native": "0.66.1",
+    "react-navigation": "^4.4.4"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/runtime": "^7.15.4",
     "@react-native-community/eslint-config": "^3.0.1",
-    "babel-jest": "^27.2.5",
+    "babel-jest": "^27.3.0",
     "eslint": "^8.0.1",
-    "jest": "^27.2.5",
+    "jest": "^27.3.0",
     "metro-react-native-babel-preset": "^0.66.2",
     "react-test-renderer": "17.0.2"
   },
