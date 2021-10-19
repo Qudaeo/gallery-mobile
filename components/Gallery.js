@@ -1,33 +1,42 @@
 import React, {useEffect} from "react";
-import {inject, observer} from "mobx-react";
+
 import {FlatList, Text, useWindowDimensions, View} from "react-native";
 import GalleryImageItem from "./GalleryImageItem";
+import {observer, inject} from "mobx-react";
+import {useStore} from "../mobx/store";
 
-const Gallery = ({gallery, setAppWindowWidth, getNextPage, navigation}) => {
+const Gallery = (props) => {
+
+    const { galleryStore } = useStore()
 
     const windowWidth = useWindowDimensions().width
 
     useEffect(() => {
-        getNextPage()
+        galleryStore.getNextPage()
+        alert(galleryStore.detailId)
     }, [])
 
     useEffect(() => {
-        setAppWindowWidth(windowWidth)
+        galleryStore.setDetailId(10)
+        galleryStore.setAppWindowWidth(windowWidth)
+
     }, [windowWidth])
 
-    return <View style={{flex: 1}}>
-        {(gallery.length === 0)
+    return <>
+        {<Text>{`${props.galleryStore.detailId}`}</Text>}
+    <View style={{flex: 1}}>
+        {(props.galleryStore.gallery.length === 0)
             ? <Text>loading...</Text>
-            : (gallery) && <FlatList
-            data={gallery}
+            : (props.galleryStore.gallery) &&  <FlatList
+            data={props.galleryStore.gallery}
             renderItem={({item}) => <GalleryImageItem key={item.id} image={item} windowWidth={windowWidth}
-                                                      navigation={navigation}/>}
+                                                      navigation={props.navigation}/>}
             onEndReached={() => {
-                getNextPage()
+                galleryStore.getNextPage()
             }}
             onEndReachedThreshold={0.5}
         />}
     </View>
+    </>
 }
-
-export default inject("gallery", "setAppWindowWidth", "getNextPage")(observer(Gallery))
+export default inject("galleryStore")(observer(Gallery))

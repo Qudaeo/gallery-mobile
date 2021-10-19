@@ -8,17 +8,33 @@
 
 import React from 'react';
 import Gallery from "./components/Gallery";
-import {Provider} from "mobx-react";
-import Store from "./mobx/store";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import GalleryDetailedImage from "./components/GalleryDetailedImage";
+import {store} from "./mobx/store";
+import {Provider} from "mobx-react";
 
+/*
+const { initialScreen } = this.props.store.js;
 
-const Stack = createStackNavigator();
+const RouteConfigs = {
+    //
+};
+
+const NavigatorConfigs = {
+    initialRouteName: initialScreen,
+};
+
+const Stack = createStackNavigator(RouteConfigs, NavigatorConfigs);
+*/
+
 
 const App = () => {
-    return <Provider {...Store}>
+
+    const Stack = createStackNavigator();
+
+    return <Provider store={store}
+                     galleryStore={store.galleryStore}>
 
         <NavigationContainer>
             <Stack.Navigator screenOptions={{
