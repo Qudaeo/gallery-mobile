@@ -2,7 +2,7 @@ import React from "react";
 import {Image, TouchableOpacity, View} from "react-native";
 import {marginHorizontalPercent, marginVerticalPercent} from "../common/const";
 
-export const GalleryImageItem = ({image, windowWidth}) => {
+export const GalleryImageItem = ({image, windowWidth, navigation}) => {
 
     const calcImageWidth = Math.floor(windowWidth * (100 - 2 * marginHorizontalPercent) / 100)
     const calcImageHeight = Math.floor(calcImageWidth * image.height / image.width)
@@ -12,7 +12,7 @@ export const GalleryImageItem = ({image, windowWidth}) => {
         marginVertical: marginVerticalPercent + '%'
     }}>
         {/*<Text>{`${image.id} - ${image.width}:${image.height} - ${calcImageWidth}:${calcImageHeight}`}</Text>*/}
-        <TouchableOpacity activeOpacity={.5} onPress={() => alert(image.id)}>
+        <TouchableOpacity activeOpacity={.5} onPress={() => navigation.navigate('GalleryDetailedImage')}>
             <Image
                 style={{
                     width: calcImageWidth,
