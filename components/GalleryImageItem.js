@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, View} from "react-native";
+import {Image, TouchableOpacity, View} from "react-native";
 import {marginHorizontalPercent, marginVerticalPercent} from "../common/const";
 
 export const GalleryImageItem = ({image, windowWidth}) => {
@@ -12,14 +12,16 @@ export const GalleryImageItem = ({image, windowWidth}) => {
         marginVertical: marginVerticalPercent + '%'
     }}>
         {/*<Text>{`${image.id} - ${image.width}:${image.height} - ${calcImageWidth}:${calcImageHeight}`}</Text>*/}
-        <Image
-            style={{
-                width: calcImageWidth,
-                height: calcImageHeight
-            }}
-            source={{
-                uri: `https://picsum.photos/id/${image.id}/${calcImageWidth}/${calcImageHeight}.webp`
-            }}/>
+        <TouchableOpacity activeOpacity={.5} onPress={() => alert(image.id)}>
+            <Image
+                style={{
+                    width: calcImageWidth,
+                    height: calcImageHeight
+                }}
+                source={{
+                    uri: `https://picsum.photos/id/${image.id}/${calcImageWidth}/${calcImageHeight}.webp`
+                }}/>
+        </TouchableOpacity>
     </View>
 }
 

@@ -2,7 +2,6 @@ import {runInAction, observable, action} from 'mobx';
 import axios from "axios";
 
 class Store {
-
     constructor() {
         this.gallery = observable.array([])
         this._getGallery = action(this._getGallery.bind(this))
@@ -12,10 +11,12 @@ class Store {
 
         this.currentPage = observable(0)
         this.getNextPage = action(this.getNextPage.bind(this))
+
+        this.detailPhotoId = observable(null)
+        this.setDetailPhotoId = action(this.setDetailPhotoId.bind(this))
     }
 
     _getGallery() {
-
         axios.get(`https://picsum.photos/v2/list?page=${this.currentPage}&limit=5`)
             .then(response => {
                 runInAction(() => {
@@ -23,8 +24,16 @@ class Store {
                 })
             })
             .catch((error) => {
-                alert(error.message);
-            })
+                    alert(error.message);
+                }
+            )
+    }
+
+    getNextPage() {
+        runInAction(() => {
+            this.currentPage++
+            this._getGallery()
+        })
     }
 
     setAppWindowWidth(width) {
@@ -33,11 +42,9 @@ class Store {
         )
     }
 
-    getNextPage() {
-        runInAction(() => {
-                this.currentPage++
-                this._getGallery()
-            }
+    setDetailPhotoId(id) {
+        runInAction(() =>
+            this.detailPhotoId = id
         )
     }
 
