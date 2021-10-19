@@ -15,16 +15,6 @@ const Gallery = ({gallery, setAppWindowWidth, getNextPage}) => {
         setAppWindowWidth(windowWidth)
     }, [windowWidth])
 
-    /*
-        <FlatList
-      data={items}
-      renderItem={(item) => <View key={item.index} style={styles.item} />}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={0.5}
-    />
-     */
-
-
     return <View style={{flex: 1}}>
         {(gallery.length === 0)
             ? <Text>loading...</Text>
@@ -37,30 +27,6 @@ const Gallery = ({gallery, setAppWindowWidth, getNextPage}) => {
             onEndReachedThreshold={0.5}
         />}
     </View>
-
-    /*<ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Text>{windowWidth}</Text>
-        {(gallery.length === 0)
-            ? <Text>loading...</Text>
-            : (gallery) && gallery.map(el =>
-            <GalleryImageItem key={el.id} image={el} windowWidth={windowWidth}/>)
-        }
-    </ScrollView>*/
 }
-
-
-/*
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#000',
-    },
-    image:
-});
-*/
 
 export default inject("gallery", "setAppWindowWidth", "getNextPage")(observer(Gallery))

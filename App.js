@@ -16,6 +16,6 @@ const App = () => {
     return <Provider {...Store}>
         <Gallery/>
     </Provider>
-};
+}
 
 export default App
