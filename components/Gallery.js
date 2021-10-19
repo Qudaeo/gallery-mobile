@@ -20,7 +20,7 @@ const Gallery = ({gallery, getGallery, setAppWindowWidth, currentPage}) => {
         {(gallery.length === 0)
             ? <Text>loading...</Text>
             : (gallery) && gallery.map(el =>
-            <GalleryImageItem key={el.id} imageId={el.id}/>)
+            <GalleryImageItem key={el.id} image={el} windowWidth={windowWidth}/>)
         }
     </>
 }
