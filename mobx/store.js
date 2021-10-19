@@ -5,13 +5,26 @@ class Store {
 
     constructor() {
         this.gallery = observable.array([])
-        this.getGallery = action(this.getGallery.bind(this))
+        this._getGallery = action(this._getGallery.bind(this))
 
         this.appWindowWidth = observable(null)
         this.setAppWindowWidth = action(this.setAppWindowWidth.bind(this))
 
-        this.currentPage = observable(1)
-        this.setNextCurrentPage = action(this.setNextCurrentPage.bind(this))
+        this.currentPage = observable(0)
+        this.getNextPage = action(this.getNextPage.bind(this))
+    }
+
+    _getGallery() {
+
+        axios.get(`https://picsum.photos/v2/list?page=${this.currentPage}&limit=5`)
+            .then(response => {
+                runInAction(() => {
+                    this.gallery.push(...response.data)
+                })
+            })
+            .catch((error) => {
+                alert(error.message);
+            })
     }
 
     setAppWindowWidth(width) {
@@ -20,23 +33,12 @@ class Store {
         )
     }
 
-    setNextCurrentPage() {
-        runInAction(() =>
-            this.currentPage++
+    getNextPage() {
+        runInAction(() => {
+                this.currentPage++
+                this._getGallery()
+            }
         )
-    }
-
-    getGallery() {
-
-        axios.get("https://picsum.photos/v2/list?page=2&limit=4")
-            .then(response => {
-                runInAction(() => {
-                    this.gallery.replace(response.data)
-                })
-            })
-            .catch((error) => {
-                alert(error.message);
-            })
     }
 
 }

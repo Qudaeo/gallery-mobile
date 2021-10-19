@@ -7,37 +7,22 @@
  */
 
 import React from 'react';
+import {StatusBar} from 'react-native';
 
-import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    useColorScheme,
-} from 'react-native';
 
-import {
-    Colors,
-} from 'react-native/Libraries/NewAppScreen';
 import Gallery from "./components/Gallery";
 import {Provider} from "mobx-react";
 import Store from "./mobx/store";
+import {isDarkMode} from "./common/colorSchemeStyles";
 
 const App = () => {
-    const isDarkMode = useColorScheme() === 'dark'
-
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    }
-
     return (<Provider {...Store}>
-            <SafeAreaView style={backgroundStyle}>
-                <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
-                <ScrollView
-                    contentInsetAdjustmentBehavior="automatic"
-                    style={backgroundStyle}>
-                    <Gallery/>
-                </ScrollView>
-            </SafeAreaView>
+            {/*<SafeAreaView style={backgroundStyle}>*/}
+            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
+
+            <Gallery/>
+
+            {/*</SafeAreaView>*/}
         </Provider>
     );
 };
