@@ -2,13 +2,19 @@ import React from "react";
 import {Image, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {marginHorizontal, marginVertical} from "../common/const";
 import {calcImageDimensions} from "../common/funcions";
+import {inject, observer} from "mobx-react";
+import {useStore} from "../mobx/store";
 
-export const GalleryItem = ({image, setDetailPhoto, navigation}) => {
-    const imageDimensions = calcImageDimensions(useWindowDimensions().width,image.height / image.width)
+
+export const GalleryItem = (props) => {
+
+    const {galleryStore} = useStore()
+
+    const imageDimensions = calcImageDimensions(useWindowDimensions().width,props.image.height / props.image.width)
 
     const openDetailedImage = () => {
-        setDetailPhoto(image.id, imageDimensions.width, imageDimensions.height)
-        navigation.navigate('DetailedImage')
+        galleryStore.setDetailPhoto(props.image.id, imageDimensions.width, imageDimensions.height)
+        props.navigation.navigate('DetailedImage')
     };
 
     return <View style={{
@@ -20,16 +26,26 @@ export const GalleryItem = ({image, setDetailPhoto, navigation}) => {
 
         {/*<Text>{`${image.id} - ${image.width}:${image.height} - ${calcImageWidth}:${calcImageHeight}`}</Text>*/}
         <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
+            {/*
             <Image
                 style={{
                     width: imageDimensions.width,
                     height: imageDimensions.height,
                     position: "relative",
                 }}
+                source={{uri: props.galleryStore.images[props.image.id]}}
+            />
+*/}
+
+            <Text>{props.galleryStore.images[props.image.id]}</Text>
+
+                {/*
                 source={{
                     uri: `https://picsum.photos/id/${image.id}/${imageDimensions.width}/${imageDimensions.height}.webp`
-                }}>
-            </Image>
+                }}
+                */}
+
+
             <Text style={{
                 position: 'absolute',
                 fontSize: 12,
@@ -37,12 +53,12 @@ export const GalleryItem = ({image, setDetailPhoto, navigation}) => {
                 textAlign: "right",
                 bottom: 5,
                 right: 10
-            }}>{`Photo by ${image.author}`}</Text>
+            }}>{`Photo by ${props.image.author}`}</Text>
 
 
         </TouchableOpacity>
     </View>
 }
 
-export default GalleryItem
+export default inject("galleryStore")(observer(GalleryItem))
 

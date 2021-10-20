@@ -1,5 +1,8 @@
 import {runInAction, makeAutoObservable} from 'mobx';
 import axios from "axios";
+import {calcImageDimensions} from "../common/funcions";
+import binaryToBase64 from "react-native";
+import base64 from "react-native-base64";
 
 export default class GalleryStore {
 
@@ -11,6 +14,7 @@ export default class GalleryStore {
         width: null,
         height: null
     }
+    images = {}
 
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true })
@@ -23,11 +27,19 @@ export default class GalleryStore {
 
                 for (let photo of response.data) {
 
-                    alert(this.appImagesWidth)
+                    let imageDimensions =calcImageDimensions(this.appImagesWidth, photo.height / photo.width)
+//                    alert(`https://picsum.photos/id/${photo.id}/${imageDimensions.width}/${imageDimensions.height}.webp`)
 
-
-                    axios.get(`https://picsum.photos/id/${photo.id}/200/300.webp`)
+                    axios.get(`https://picsum.photos/id/${photo.id}/${imageDimensions.width}/${imageDimensions.height}.webp`, { responseType: 'arraybuffer' })
                         .then(resp => {
+                            runInAction(() => {
+                                    //let image = Buffer.from(resp.data, 'binary').toString('base64')
+//`data:${resp.headers['content-type'].toLowerCase()};base64,${base64.encode(resp.data[0])}`
+                                    this.images[photo.id] = typeof resp.data
+                                }
+                            )
+
+         //                   alert(resp.data)
                         })
                         .catch((err) => {
                                 alert(err.message);

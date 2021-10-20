@@ -28,9 +28,7 @@ const Gallery = (props) => {
                 ? <Text>loading...</Text>
                 : (props.galleryStore.gallery) && <FlatList
                 data={props.galleryStore.gallery}
-                renderItem={({item}) => <GalleryItem key={item.id} image={item}
-                                                     setDetailPhoto={galleryStore.setDetailPhoto}
-                                                     navigation={props.navigation}/>}
+                renderItem={({item}) => <GalleryItem key={item.id} image={item} navigation={props.navigation}/>}
                 onEndReached={() => {
                     galleryStore.getNextPage()
                 }}
