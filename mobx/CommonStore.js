@@ -3,15 +3,22 @@ import {runInAction, makeAutoObservable} from 'mobx';
 export default class CommonStore {
 
     appWindowWidth = null
-    detailId = null
-
-    constructor() {
-        makeAutoObservable(this, {}, { autoBind: true })
+    detailPhoto = {
+        id: null,
+        width: null,
+        height: null
     }
 
-    setDetailId(id) {
-        runInAction(() =>
-            this.detailId = id
+    constructor() {
+        makeAutoObservable(this, {}, {autoBind: true})
+    }
+
+    setDetailPhoto(id, width, height) {
+        runInAction(() => {
+                this.detailPhoto.id = id
+                this.detailPhoto.width = width
+                this.detailPhoto.height = height
+            }
         )
     }
 

@@ -1,16 +1,15 @@
 import React from "react";
 import {Image, TouchableOpacity, View} from "react-native";
 import {marginHorizontalPercent, marginVerticalPercent} from "../common/const";
-import GalleryDetailedImage from "./GalleryDetailedImage";
 
-export const GalleryImageItem = ({image, windowWidth, setDetailId, navigation}) => {
+export const GalleryItem = ({image, windowWidth, setDetailPhoto, navigation}) => {
 
     const calcImageWidth = Math.floor(windowWidth * (100 - 2 * marginHorizontalPercent) / 100)
     const calcImageHeight = Math.floor(calcImageWidth * image.height / image.width)
 
     const openDetailedImage = () => {
-        setDetailId(image.id)
-        navigation.navigate('GalleryDetailedImage')
+        setDetailPhoto(image.id, calcImageWidth,calcImageHeight)
+        navigation.navigate('DetailedImage')
     };
 
     return <View style={{
@@ -32,5 +31,5 @@ export const GalleryImageItem = ({image, windowWidth, setDetailId, navigation}) 
     </View>
 }
 
-export default GalleryImageItem
+export default GalleryItem
 

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 
 import {FlatList, Text, useWindowDimensions, View} from "react-native";
-import GalleryImageItem from "./GalleryImageItem";
+import GalleryItem from "./GalleryItem";
 import {observer, inject} from "mobx-react";
 import {useStore} from "../mobx/store";
 
@@ -28,9 +28,9 @@ const Gallery = (props) => {
             ? <Text>loading...</Text>
             : (props.galleryStore.gallery) &&  <FlatList
             data={props.galleryStore.gallery}
-            renderItem={({item}) => <GalleryImageItem key={item.id} image={item} windowWidth={windowWidth}
-                                                      setDetailId ={commonStore.setDetailId}
-                                                      navigation={props.navigation}/>}
+            renderItem={({item}) => <GalleryItem key={item.id} image={item} windowWidth={windowWidth}
+                                                 setDetailPhoto ={commonStore.setDetailPhoto}
+                                                 navigation={props.navigation}/>}
             onEndReached={() => {
                 galleryStore.getNextPage()
             }}
