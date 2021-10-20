@@ -14,9 +14,9 @@ const DetailedImage = (props) => {
 
     return <View style={{
         marginHorizontal: marginHorizontalPercent + '%',
-        marginVertical: marginVerticalPercent + '%'
+        marginVertical: (marginVerticalPercent + 1) + '%'
     }}>
-        <Text>{JSON.stringify(photo)}</Text>
+        {/*<Text>{JSON.stringify(photo)}</Text>*/}
         <TouchableOpacity activeOpacity={.5} onPress={() => openLargeImage()}>
             <Image
                 style={{
