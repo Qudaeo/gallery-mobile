@@ -1,2 +1,2 @@
-export const marginHorizontalPercent = 2
-export const marginVerticalPercent = 1
+export const marginHorizontal = 5
+export const marginVertical = 3

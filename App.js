@@ -14,27 +14,11 @@ import DetailedImage from "./components/DetailedImage";
 import {store} from "./mobx/store";
 import {Provider} from "mobx-react";
 
-/*
-const { initialScreen } = this.props.store.js;
-
-const RouteConfigs = {
-    //
-};
-
-const NavigatorConfigs = {
-    initialRouteName: initialScreen,
-};
-
-const Stack = createStackNavigator(RouteConfigs, NavigatorConfigs);
-*/
-
-
 const App = () => {
 
     const Stack = createStackNavigator();
 
     return <Provider store={store}
-                     commonStore={store.commonStore}
                      galleryStore={store.galleryStore}>
 
         <NavigationContainer>

@@ -7,36 +7,36 @@ import {useStore} from "../mobx/store";
 
 const Gallery = (props) => {
 
-    const { commonStore } = useStore()
-    const { galleryStore } = useStore()
+    const {galleryStore} = useStore()
 
-    const windowWidth = useWindowDimensions().width
+    const imageWidth = (useWindowDimensions().width > useWindowDimensions().height)
+        ? useWindowDimensions().width
+        : useWindowDimensions().height
 
     useEffect(() => {
         galleryStore.getNextPage()
     }, [])
 
     useEffect(() => {
-        commonStore.setAppWindowWidth(windowWidth)
-
-    }, [windowWidth])
+        galleryStore.setAppImagesWidth(imageWidth)
+    }, [imageWidth])
 
     return <>
         {/*<Text>{`${props.galleryStore.detailId}`}</Text>*/}
-    <View style={{flex: 1}}>
-        {(props.galleryStore.gallery.length === 0)
-            ? <Text>loading...</Text>
-            : (props.galleryStore.gallery) &&  <FlatList
-            data={props.galleryStore.gallery}
-            renderItem={({item}) => <GalleryItem key={item.id} image={item} windowWidth={windowWidth}
-                                                 setDetailPhoto ={commonStore.setDetailPhoto}
-                                                 navigation={props.navigation}/>}
-            onEndReached={() => {
-                galleryStore.getNextPage()
-            }}
-            onEndReachedThreshold={0.5}
-        />}
-    </View>
+        <View style={{flex: 1}}>
+            {(props.galleryStore.gallery.length === 0)
+                ? <Text>loading...</Text>
+                : (props.galleryStore.gallery) && <FlatList
+                data={props.galleryStore.gallery}
+                renderItem={({item}) => <GalleryItem key={item.id} image={item}
+                                                     setDetailPhoto={galleryStore.setDetailPhoto}
+                                                     navigation={props.navigation}/>}
+                onEndReached={() => {
+                    galleryStore.getNextPage()
+                }}
+                onEndReachedThreshold={0.5}
+            />}
+        </View>
     </>
 }
-export default inject("commonStore", "galleryStore")(observer(Gallery))
+export default inject("galleryStore")(observer(Gallery))
