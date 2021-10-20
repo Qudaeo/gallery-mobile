@@ -1,12 +1,15 @@
 import React from "react";
 import {Text, View} from "react-native";
+import {inject} from "mobx-react";
+import {useStore} from "../mobx/store";
 
 
 const GalleryDetailedImage = () => {
+    const { galleryStore } = useStore()
 
     return <View>
-        <Text>detailPhotoId</Text>
+        <Text>{galleryStore.detailId}</Text>
     </View>
 }
 
-export default GalleryDetailedImage
+export default inject("galleryStore")(GalleryDetailedImage)

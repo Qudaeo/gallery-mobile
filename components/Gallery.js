@@ -17,7 +17,6 @@ const Gallery = (props) => {
     }, [])
 
     useEffect(() => {
-        galleryStore.setDetailId(10)
         galleryStore.setAppWindowWidth(windowWidth)
 
     }, [windowWidth])
@@ -30,6 +29,7 @@ const Gallery = (props) => {
             : (props.galleryStore.gallery) &&  <FlatList
             data={props.galleryStore.gallery}
             renderItem={({item}) => <GalleryImageItem key={item.id} image={item} windowWidth={windowWidth}
+                                                      setDetailId ={galleryStore.setDetailId}
                                                       navigation={props.navigation}/>}
             onEndReached={() => {
                 galleryStore.getNextPage()

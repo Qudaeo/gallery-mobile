@@ -1,16 +1,15 @@
 import React, {useCallback} from "react";
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import {marginHorizontalPercent, marginVerticalPercent} from "../common/const";
-import {inject, observer} from "mobx-react";
 import GalleryDetailedImage from "./GalleryDetailedImage";
 
-export const GalleryImageItem = ({image, windowWidth, navigation}) => {
+export const GalleryImageItem = ({image, windowWidth, setDetailId, navigation}) => {
 
     const calcImageWidth = Math.floor(windowWidth * (100 - 2 * marginHorizontalPercent) / 100)
     const calcImageHeight = Math.floor(calcImageWidth * image.height / image.width)
 
     const openDetailedImage = useCallback(() => {
- //       setDetailPhotoId(image.id)
+        setDetailId(image.id)
         navigation.navigate('GalleryDetailedImage')
     }, []);
 
