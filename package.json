@@ -24,7 +24,8 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "yarn": "^1.22.17"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

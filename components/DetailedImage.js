@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import {Image, TouchableOpacity, View} from "react-native";
 import {inject} from "mobx-react";
 import {marginHorizontalPercent, marginVerticalPercent} from "../common/const";
 import likePicture from '../images/DetailedImage/like.png'
