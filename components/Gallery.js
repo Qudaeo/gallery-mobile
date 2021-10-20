@@ -7,6 +7,7 @@ import {useStore} from "../mobx/store";
 
 const Gallery = (props) => {
 
+    const { commonStore } = useStore()
     const { galleryStore } = useStore()
 
     const windowWidth = useWindowDimensions().width
@@ -16,7 +17,7 @@ const Gallery = (props) => {
     }, [])
 
     useEffect(() => {
-        galleryStore.setAppWindowWidth(windowWidth)
+        commonStore.setAppWindowWidth(windowWidth)
 
     }, [windowWidth])
 
@@ -28,7 +29,7 @@ const Gallery = (props) => {
             : (props.galleryStore.gallery) &&  <FlatList
             data={props.galleryStore.gallery}
             renderItem={({item}) => <GalleryImageItem key={item.id} image={item} windowWidth={windowWidth}
-                                                      setDetailId ={galleryStore.setDetailId}
+                                                      setDetailId ={commonStore.setDetailId}
                                                       navigation={props.navigation}/>}
             onEndReached={() => {
                 galleryStore.getNextPage()
@@ -38,4 +39,4 @@ const Gallery = (props) => {
     </View>
     </>
 }
-export default inject("galleryStore")(observer(Gallery))
+export default inject("commonStore", "galleryStore")(observer(Gallery))

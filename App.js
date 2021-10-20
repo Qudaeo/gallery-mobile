@@ -34,6 +34,7 @@ const App = () => {
     const Stack = createStackNavigator();
 
     return <Provider store={store}
+                     commonStore={store.commonStore}
                      galleryStore={store.galleryStore}>
 
         <NavigationContainer>

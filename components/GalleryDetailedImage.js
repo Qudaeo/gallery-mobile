@@ -1,14 +1,13 @@
 import React from "react";
 import {Text, View} from "react-native";
 import {inject} from "mobx-react";
-import {useStore} from "../mobx/store";
 
 
-const GalleryDetailedImage = () => {
-    const { galleryStore } = useStore()
+const GalleryDetailedImage = (props) => {
+ //   const { galleryStore } = useStore()
 
     return <View>
-        <Text>{galleryStore.detailId}</Text>
+        <Text>{props.commonStore.detailId}</Text>
         {/*
         <Image
             style={{
@@ -22,4 +21,4 @@ const GalleryDetailedImage = () => {
     </View>
 }
 
-export default inject("galleryStore")(GalleryDetailedImage)
+export default inject("commonStore")(GalleryDetailedImage)

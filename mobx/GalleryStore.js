@@ -2,19 +2,12 @@ import {runInAction, makeAutoObservable} from 'mobx';
 import axios from "axios";
 
 export default class GalleryStore {
+
     gallery = []
-    appWindowWidth = null
     currentPage = 0
-    detailId = null
 
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true })
-    }
-
-    setDetailId(id) {
-        runInAction(() =>
-            this.detailId = id
-        )
     }
 
     _getGallery() {
@@ -35,12 +28,6 @@ export default class GalleryStore {
             this.currentPage++
             this._getGallery()
         })
-    }
-
-    setAppWindowWidth(width) {
-        runInAction(() =>
-            this.appWindowWidth = width
-        )
     }
 
 }
