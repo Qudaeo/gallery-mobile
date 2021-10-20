@@ -26,7 +26,7 @@ export const GalleryItem = (props) => {
 
         {/*<Text>{`${image.id} - ${image.width}:${image.height} - ${calcImageWidth}:${calcImageHeight}`}</Text>*/}
         <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
-            {/*
+
             <Image
                 style={{
                     width: imageDimensions.width,
@@ -35,9 +35,9 @@ export const GalleryItem = (props) => {
                 }}
                 source={{uri: props.galleryStore.images[props.image.id]}}
             />
-*/}
 
-            <Text>{props.galleryStore.images[props.image.id]}</Text>
+
+            {/* <Text>{props.galleryStore.images[props.image.id]}</Text>*/}
 
                 {/*
                 source={{

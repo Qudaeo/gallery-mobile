@@ -1,8 +1,7 @@
 import {runInAction, makeAutoObservable} from 'mobx';
 import axios from "axios";
 import {calcImageDimensions} from "../common/funcions";
-import binaryToBase64 from "react-native";
-import base64 from "react-native-base64";
+import {encode} from "base64-arraybuffer";
 
 export default class GalleryStore {
 
@@ -35,7 +34,7 @@ export default class GalleryStore {
                             runInAction(() => {
                                     //let image = Buffer.from(resp.data, 'binary').toString('base64')
 //`data:${resp.headers['content-type'].toLowerCase()};base64,${base64.encode(resp.data[0])}`
-                                    this.images[photo.id] = typeof resp.data
+                                    this.images[photo.id] = `data:${resp.headers['content-type'].toLowerCase()};base64,${encode(resp.data)}`
                                 }
                             )
 
