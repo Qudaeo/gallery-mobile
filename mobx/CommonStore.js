@@ -14,11 +14,8 @@ export default class CommonStore {
     }
 
     setDetailPhoto(id, width, height) {
-        runInAction(() => {
-                this.detailPhoto.id = id
-                this.detailPhoto.width = width
-                this.detailPhoto.height = height
-            }
+        runInAction(() =>
+            this.detailPhoto = {id, width, height}
         )
     }
 
