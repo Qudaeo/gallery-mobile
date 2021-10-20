@@ -13,7 +13,6 @@ const Gallery = (props) => {
 
     useEffect(() => {
         galleryStore.getNextPage()
-        alert(galleryStore.detailId)
     }, [])
 
     useEffect(() => {
@@ -22,7 +21,7 @@ const Gallery = (props) => {
     }, [windowWidth])
 
     return <>
-        {<Text>{`${props.galleryStore.detailId}`}</Text>}
+        {/*<Text>{`${props.galleryStore.detailId}`}</Text>*/}
     <View style={{flex: 1}}>
         {(props.galleryStore.gallery.length === 0)
             ? <Text>loading...</Text>
