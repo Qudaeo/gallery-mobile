@@ -5,7 +5,6 @@ import {calcImageDimensions} from "../../common/funcions";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 
-
 export const GalleryItem = (props) => {
 
     const {galleryStore} = useStore()
@@ -13,6 +12,9 @@ export const GalleryItem = (props) => {
     const ratio = props.image.height / props.image.width
 
     const imageDimensions = calcImageDimensions(useWindowDimensions().width, ratio)
+
+    imageDimensions.width /= galleryStore.appColumnCount
+    imageDimensions.height /= galleryStore.appColumnCount
 
     const openDetailedImage = () => {
         galleryStore.setDetailPhoto(props.image.id, imageDimensions.width, imageDimensions.height)
