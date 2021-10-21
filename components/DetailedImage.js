@@ -1,6 +1,6 @@
 import React from "react";
 import {Image, TouchableOpacity, useWindowDimensions, View} from "react-native";
-import {inject} from "mobx-react";
+import {observer} from "mobx-react";
 import {marginHorizontal, marginVertical} from "../common/const"
 import likePicture from '../images/DetailedImage/like.png'
 import messagePicture from '../images/DetailedImage/message.png'
@@ -8,12 +8,15 @@ import addPicture from '../images/DetailedImage/add.png'
 import add2Picture from '../images/DetailedImage/add2.png'
 import etcPicture from '../images/DetailedImage/etc.png'
 import {calcImageDimensions} from "../common/funcions"
+import {useStore} from "../mobx/store";
 
 
-const DetailedImage = (props) => {
+const DetailedImage = () => {
+    const {galleryStore} = useStore()
+
     const actionsPictures = [likePicture, messagePicture, addPicture, add2Picture, etcPicture]
 
-    const photo = props.galleryStore.detailPhoto
+    const photo = galleryStore.detailPhoto
 
     const photoDimensions = calcImageDimensions(useWindowDimensions().width,photo.height / photo.width)
 
@@ -31,9 +34,15 @@ const DetailedImage = (props) => {
                     width: photoDimensions.width,
                     height: photoDimensions.height
                 }}
-                source={{
-                    uri: `https://picsum.photos/id/${photo.id}/${photoDimensions.width}/${photoDimensions.height}.webp`
-                }}/>
+                source={{uri: galleryStore.base64Images[photo.id]}}
+/>
+            {/*
+            source={{
+            uri: `https://picsum.photos/id/${photo.id}/${photoDimensions.width}/${photoDimensions.height}.webp`
+
+        }}
+        */}
+
         </TouchableOpacity>
         <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
             {actionsPictures.map((el, index) => <Image key={index}
@@ -49,4 +58,4 @@ const DetailedImage = (props) => {
     </View>
 }
 
-export default inject("galleryStore")(DetailedImage)
+export default observer(DetailedImage)

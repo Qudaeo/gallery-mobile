@@ -2,7 +2,7 @@ import React from "react";
 import {Image, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {marginHorizontal, marginVertical} from "../common/const";
 import {calcImageDimensions} from "../common/funcions";
-import {inject, observer} from "mobx-react";
+import {observer} from "mobx-react";
 import {useStore} from "../mobx/store";
 
 
@@ -10,7 +10,9 @@ export const GalleryItem = (props) => {
 
     const {galleryStore} = useStore()
 
-    const imageDimensions = calcImageDimensions(useWindowDimensions().width,props.image.height / props.image.width)
+    const ratio = props.image.height / props.image.width
+
+    const imageDimensions = calcImageDimensions(useWindowDimensions().width, ratio)
 
     const openDetailedImage = () => {
         galleryStore.setDetailPhoto(props.image.id, imageDimensions.width, imageDimensions.height)
@@ -24,7 +26,7 @@ export const GalleryItem = (props) => {
         height: imageDimensions.height,
     }}>
 
-        {/*<Text>{`${image.id} - ${image.width}:${image.height} - ${calcImageWidth}:${calcImageHeight}`}</Text>*/}
+        {/*<Text>{`${props.image.id} - ${props.image.width}:${props.image.height} - ${imageDimensions.width}:${imageDimensions.height}`}</Text>*/}
         <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
 
             <Image
@@ -33,17 +35,11 @@ export const GalleryItem = (props) => {
                     height: imageDimensions.height,
                     position: "relative",
                 }}
-                source={{uri: props.galleryStore.images[props.image.id]}}
+                source={{uri: galleryStore.base64Images[props.image.id]}}
             />
 
 
             {/* <Text>{props.galleryStore.images[props.image.id]}</Text>*/}
-
-                {/*
-                source={{
-                    uri: `https://picsum.photos/id/${image.id}/${imageDimensions.width}/${imageDimensions.height}.webp`
-                }}
-                */}
 
 
             <Text style={{
@@ -60,5 +56,5 @@ export const GalleryItem = (props) => {
     </View>
 }
 
-export default inject("galleryStore")(observer(GalleryItem))
+export default observer(GalleryItem)
 

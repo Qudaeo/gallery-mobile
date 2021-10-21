@@ -7,16 +7,21 @@ export default class GalleryStore {
 
     gallery = []
     currentPage = 0
+
     appImagesWidth = null
+    appImagesCropSize = null
+
+
     detailPhoto = {
         id: null,
         width: null,
         height: null
     }
-    images = {}
+
+    base64Images = {}
 
     constructor() {
-        makeAutoObservable(this, {}, { autoBind: true })
+        makeAutoObservable(this, {}, {autoBind: true})
     }
 
     _getGallery() {
@@ -26,19 +31,19 @@ export default class GalleryStore {
 
                 for (let photo of response.data) {
 
-                    let imageDimensions =calcImageDimensions(this.appImagesWidth, photo.height / photo.width)
+                    let imageDimensions = calcImageDimensions(this.appImagesWidth, photo.height / photo.width)
 //                    alert(`https://picsum.photos/id/${photo.id}/${imageDimensions.width}/${imageDimensions.height}.webp`)
 
-                    axios.get(`https://picsum.photos/id/${photo.id}/${imageDimensions.width}/${imageDimensions.height}.webp`, { responseType: 'arraybuffer' })
+                    axios.get(`https://picsum.photos/id/${photo.id}/${imageDimensions.width}/${imageDimensions.height}.webp`, {responseType: 'arraybuffer'})
                         .then(resp => {
                             runInAction(() => {
                                     //let image = Buffer.from(resp.data, 'binary').toString('base64')
 //`data:${resp.headers['content-type'].toLowerCase()};base64,${base64.encode(resp.data[0])}`
-                                    this.images[photo.id] = `data:${resp.headers['content-type'].toLowerCase()};base64,${encode(resp.data)}`
+                                    this.base64Images[photo.id] = `data:${resp.headers['content-type'].toLowerCase()};base64,${encode(resp.data)}`
                                 }
                             )
 
-         //                   alert(resp.data)
+                            //                   alert(resp.data)
                         })
                         .catch((err) => {
                                 alert(err.message);
@@ -70,9 +75,10 @@ export default class GalleryStore {
         )
     }
 
-    setAppImagesWidth(width) {
-        runInAction(() =>
-            this.appImagesWidth = width
+    setAppImagesSize(width) {
+        runInAction(() => {
+                this.appImagesWidth = width
+            }
         )
     }
 
