@@ -11,16 +11,16 @@ export const GalleryRow = (props) => {
     return <View style={[{
 
         flexDirection: 'row',
- //       direction: 'row',
+        //       direction: 'row',
 
 
         marginVertical: marginVertical,
     }]}>
-        {props.row.map(el => <View key={el.id}  /*style={{
-            width: Math.round((el.height / heightRowSum) * 100) + '%'
-        }} */>
-            {/*<Text>{Math.round((el.height / heightRowSum) * 100) + '%'}</Text>*/}
-                <GalleryItem image={el} rowRatio={el.height / heightRowSum}
+        {props.row.map(el => <View key={el.id} style={{
+                width: Math.round(100 - el.height / heightRowSum * 100) + '%'
+            }}>
+                <Text>{Math.round(100 - el.height / heightRowSum * 100) + '%'}</Text>
+                <GalleryItem image={el} /* rowRatio={el.height / heightRowSum} */
                              navigation={props.navigation}/>
             </View>
         )}
