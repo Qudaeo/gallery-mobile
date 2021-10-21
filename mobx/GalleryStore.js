@@ -26,7 +26,7 @@ export default class GalleryStore {
     }
 
     async getGalleryImage(id, width, height) {
-        let imageDimensions = calcImageDimensions(this.appImagesWidth, height / width,1)
+        let imageDimensions = calcImageDimensions(this.appImagesWidth, height / width)
 
         const getImageResponse = await galleryAPI.getImage(id, imageDimensions.width, imageDimensions.height)
 

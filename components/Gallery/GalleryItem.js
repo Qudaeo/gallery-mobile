@@ -11,25 +11,13 @@ export const GalleryItem = (props) => {
 
     const ratio = props.image.height / props.image.width
 
-    const imageDimensions = calcImageDimensions(useWindowDimensions().width, ratio,galleryStore.appColumnCount)
-
-//    imageDimensions.width = (imageDimensions.width - (galleryStore.appColumnCount-1) * marginHorizontal)/ galleryStore.appColumnCount
-    imageDimensions.height = Math.round(imageDimensions.width * ratio)
+    const imageDimensions = calcImageDimensions(useWindowDimensions().width, ratio, galleryStore.appColumnCount)
 
     const openDetailedImage = () => {
         galleryStore.setDetailPhoto(props.image.id, imageDimensions.width, imageDimensions.height)
         props.navigation.navigate('DetailedImage')
     };
 
-
-    /*
-    return <View style={{
-        marginHorizontal: marginHorizontal,
-        marginVertical: marginVertical,
-        width: imageDimensions.width,
-        height: imageDimensions.height,
-    }}>
-*/
     return <View style={{
         marginLeft: marginHorizontal,
         width: imageDimensions.width,
@@ -70,4 +58,3 @@ export const GalleryItem = (props) => {
 }
 
 export default observer(GalleryItem)
-

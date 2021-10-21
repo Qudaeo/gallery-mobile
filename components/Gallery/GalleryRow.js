@@ -1,13 +1,13 @@
 import React from "react";
 import {useWindowDimensions, View} from "react-native";
 import GalleryItem from "./GalleryItem";
-import { marginVertical} from "../../common/const";
+import {marginVertical} from "../../common/const";
 import {calcImageDimensions} from "../../common/funcions";
 
 
 export const GalleryRow = (props) => {
 
-    const imageDimensions = calcImageDimensions(useWindowDimensions().width, props.row[0].height / props.row[0].width,props.row[0].length)
+    const imageDimensions = calcImageDimensions(useWindowDimensions().width, props.row[0].height / props.row[0].width, props.row[0].length)
 
     return <View style={[{
         flexDirection: 'row',
