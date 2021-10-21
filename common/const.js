@@ -7,6 +7,6 @@ import etcPicture from "../images/DetailedImage/etc.png";
 export const marginHorizontal = 5
 export const marginVertical = 3
 
-export const apiPageSize = 10
+export const apiPageSize = 4
 
 export const actionsPictures = [likePicture, messagePicture, addPicture, add2Picture, etcPicture]

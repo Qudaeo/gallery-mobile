@@ -38,11 +38,15 @@ const Gallery = (props) => {
 
     useEffect(() => {
         galleryStore.getNextPage()
+        galleryStore.setAppImagesSize(imagesWidth)
     }, [])
 
+    /*
     useEffect(() => {
         galleryStore.setAppImagesSize(imagesWidth)
+        alert('2 setAppImagesSize')
     }, [imagesWidth])
+*/
 
     const galleryByColumn = galleryStore.gallery.reduce((result, el, index) => {
         switch (index % galleryStore.appColumnCount) {
@@ -58,65 +62,32 @@ const Gallery = (props) => {
     }, [])
 
 
-return (
-    <View style={{flex: 1}}>
-        {/*<Text>{JSON.stringify(galleryByColumn)}</Text>*/}
-        <View style={styles.menuButton}>
-            <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
-                <Text style={{
-                    fontSize: 25,
-                    fontWeight: "bold"
+    return (
+        <View style={{flex: 1}}>
+            <View style={styles.menuButton}>
+                <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
+                    <Text style={{
+                        fontSize: 25,
+                        fontWeight: "bold"
+                    }}
+                    >{galleryStore.appColumnCount}</Text>
+                </TouchableOpacity>
+            </View>
+
+            {(galleryByColumn.length === 0)
+                ? <Text>loading...</Text>
+                : (galleryByColumn) && <FlatList
+                data={galleryByColumn}
+                renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
+                onEndReached={() => {
+                    galleryStore.getNextPage()
                 }}
-                >{galleryStore.appColumnCount}</Text>
-            </TouchableOpacity>
+                onEndReachedThreshold={0.5}
+            />}
+
+
         </View>
-
-        {(galleryByColumn.length === 0)
-            ? <Text>loading...</Text>
-            : (galleryByColumn) && <FlatList
-            data={galleryByColumn}
-            renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
-            onEndReached={() => {
-                galleryStore.getNextPage()
-            }}
-            onEndReachedThreshold={0.5}
-        />}
-
-
-    </View>
-)
-
-
-
-/*
-return (
-    <View style={{flex: 1}}>
-
-        <View style={styles.menuButton}>
-            <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
-                <Text style={{
-                    fontSize: 25,
-                    fontWeight: "bold"
-                }}
-                >{galleryStore.appColumnCount}</Text>
-            </TouchableOpacity>
-        </View>
-
-        {(galleryStore.gallery.length === 0)
-            ? <Text>loading...</Text>
-            : (galleryStore.gallery) && <FlatList
-            data={galleryStore.gallery}
-            renderItem={({item}) => <GalleryItem key={item.id} image={item} navigation={props.navigation}/>}
-            onEndReached={() => {
-                galleryStore.getNextPage()
-            }}
-            onEndReachedThreshold={0.5}
-        />}
-
-    </View>
-)
-*/
-
+    )
 
 }
 export default observer(Gallery)

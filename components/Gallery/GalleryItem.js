@@ -11,9 +11,9 @@ export const GalleryItem = (props) => {
 
     const ratio = props.image.height / props.image.width
 
-    const imageDimensions = calcImageDimensions(useWindowDimensions().width, ratio)
+    const imageDimensions = calcImageDimensions(useWindowDimensions().width, ratio,galleryStore.appColumnCount)
 
-    imageDimensions.width = imageDimensions.width / galleryStore.appColumnCount - marginHorizontal
+//    imageDimensions.width = (imageDimensions.width - (galleryStore.appColumnCount-1) * marginHorizontal)/ galleryStore.appColumnCount
     imageDimensions.height = Math.round(imageDimensions.width * ratio)
 
     const openDetailedImage = () => {

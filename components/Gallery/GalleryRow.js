@@ -1,26 +1,24 @@
 import React from "react";
-import {Text, View} from "react-native";
+import {useWindowDimensions, View} from "react-native";
 import GalleryItem from "./GalleryItem";
-import {marginVertical} from "../../common/const";
+import { marginVertical} from "../../common/const";
+import {calcImageDimensions} from "../../common/funcions";
 
 
 export const GalleryRow = (props) => {
 
-    const heightRowSum = props.row.reduce((sum, el) => sum += el.height, 0)
+    const imageDimensions = calcImageDimensions(useWindowDimensions().width, props.row[0].height / props.row[0].width,props.row[0].length)
 
     return <View style={[{
-
         flexDirection: 'row',
         //       direction: 'row',
-
-
         marginVertical: marginVertical,
     }]}>
         {props.row.map(el => <View key={el.id} style={{
-                width: Math.round(100 - el.height / heightRowSum * 100) + '%'
+                //width: Math.round( 1 * 100) + '%'
             }}>
-                <Text>{Math.round(100 - el.height / heightRowSum * 100) + '%'}</Text>
-                <GalleryItem image={el} /* rowRatio={el.height / heightRowSum} */
+
+                <GalleryItem image={el}
                              navigation={props.navigation}/>
             </View>
         )}
