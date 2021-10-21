@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, TouchableOpacity, useWindowDimensions, View} from "react-native";
+import {Image, ScrollView, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {observer} from "mobx-react";
 import {marginHorizontal, marginVertical} from "../common/const"
 import likePicture from '../images/DetailedImage/like.png'
@@ -24,7 +24,7 @@ const DetailedImage = () => {
         //navigation.navigate('DetailedImage')
     };
 
-    return <View style={{
+    return <ScrollView style={{
         marginHorizontal: marginHorizontal,
         marginVertical: marginVertical
     }}>
@@ -55,7 +55,7 @@ const DetailedImage = () => {
 
         </View>
 
-    </View>
+    </ScrollView>
 }
 
 export default observer(DetailedImage)
