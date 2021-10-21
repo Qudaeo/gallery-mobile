@@ -13,7 +13,7 @@ const DetailedImage = () => {
 
     const photo = galleryStore.detailPhoto
 
-    const photoDimensions = calcImageDimensions(useWindowDimensions().width, photo.height / photo.width)
+    const photoDimensions = calcImageDimensions(useWindowDimensions().width, photo.height / photo.width, 1)
 
     const openLargeImage = () => {
         //navigation.navigate('DetailedImage')

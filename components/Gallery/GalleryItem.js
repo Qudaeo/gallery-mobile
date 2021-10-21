@@ -1,6 +1,6 @@
 import React from "react";
 import {Image, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
-import {marginHorizontal, marginVertical} from "../../common/const";
+import {marginHorizontal} from "../../common/const";
 import {calcImageDimensions} from "../../common/funcions";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
@@ -13,20 +13,29 @@ export const GalleryItem = (props) => {
 
     const imageDimensions = calcImageDimensions(useWindowDimensions().width, ratio)
 
-    imageDimensions.width /= galleryStore.appColumnCount
-    imageDimensions.height /= galleryStore.appColumnCount
+    imageDimensions.width = imageDimensions.width / galleryStore.appColumnCount - marginHorizontal
+    imageDimensions.height = Math.round(imageDimensions.width * ratio)
 
     const openDetailedImage = () => {
         galleryStore.setDetailPhoto(props.image.id, imageDimensions.width, imageDimensions.height)
         props.navigation.navigate('DetailedImage')
     };
 
+
+    /*
     return <View style={{
         marginHorizontal: marginHorizontal,
         marginVertical: marginVertical,
         width: imageDimensions.width,
         height: imageDimensions.height,
     }}>
+*/
+    return  <View style={{
+        marginLeft: marginHorizontal,
+        width: imageDimensions.width,
+        height: imageDimensions.height,
+    }}>
+
 
         {/*<Text>{`${props.image.id} - ${props.image.width}:${props.image.height} - ${imageDimensions.width}:${imageDimensions.height}`}</Text>*/}
         <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
@@ -46,11 +55,11 @@ export const GalleryItem = (props) => {
 
             <Text style={{
                 position: 'absolute',
-                fontSize: 12,
+                fontSize: Math.round(12 / galleryStore.appColumnCount),
                 color: 'rgba(255,255,255,0.5)',
                 textAlign: "right",
-                bottom: 5,
-                right: 10
+                bottom: Math.round(5/ galleryStore.appColumnCount),
+                right: Math.round(10/ galleryStore.appColumnCount),
             }}>{`Photo by ${props.image.author}`}</Text>
 
 
