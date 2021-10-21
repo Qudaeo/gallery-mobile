@@ -13,7 +13,7 @@ const DetailedImage = () => {
 
     useEffect(() => {
         galleryStore.getGalleryImage(photo.id, photo.width, photo.height)
-    }, [galleryStore.base64Images[photo.id]])
+    }, [photo.id])
 
 
     const photoDimensions = calcImageDimensions(useWindowDimensions().width, photo.height / photo.width, 1)
