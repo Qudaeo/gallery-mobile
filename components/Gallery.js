@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 
 import {
     FlatList,
-    ImageBackground,
     Text,
     TouchableOpacity,
     useWindowDimensions,
@@ -14,35 +13,21 @@ import {observer} from "mobx-react";
 import {useStore} from "../mobx/store";
 
 const styles = StyleSheet.create({
-    backgroundImage: {
-
-        resizeMode: "cover",
+    menuButton: {
         position: 'absolute',
-        right: 10,
+        right: 15,
         top: 10,
-        //       width: 50,
-        //      height: 50,
-        zIndex: 100
-    },
+        zIndex: 100,
 
-    topBar: {
-        height: 50,
-        // color : 'red',
-        flex: 1,
-        alignItems: 'stretch'
-    },
-
-    profileButton: {
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.1)',
-        backgroundColor: 'rgba(51, 255, 51, 0.7)',
+        backgroundColor: 'rgba(153, 255, 153, 0.7)',
         alignItems: 'center',
         justifyContent: 'center',
         width: 50,
         height: 50,
         borderRadius: 50,
-
-    },
+    }
 });
 
 const Gallery = (props) => {
@@ -59,31 +44,18 @@ const Gallery = (props) => {
         galleryStore.setAppImagesSize(imagesWidth)
     }, [imagesWidth])
 
-    return <>
-        {/*<Text>{`${imagesWidth}`}</Text>*/}
+    return (
+        <View style={{flex: 1}}>
 
-
-        <View style={{
-            flex: 1,
-        }}>
-
-            <ImageBackground
-
-                style={styles.backgroundImage}>
-
-                <View>
-                    <TouchableOpacity style={styles.profileButton} onPress={() => galleryStore.toggleColumnCount()}>
-                        <Text style={{
-                            fontSize: 25,
-                            fontWeight: "bold"
-                        }}
-                        >{galleryStore.appColumnCount}</Text>
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>
-
-            {/* </View>*/}
-
+            <View style={styles.menuButton}>
+                <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
+                    <Text style={{
+                        fontSize: 25,
+                        fontWeight: "bold"
+                    }}
+                    >{galleryStore.appColumnCount}</Text>
+                </TouchableOpacity>
+            </View>
 
             {(galleryStore.gallery.length === 0)
                 ? <Text>loading...</Text>
@@ -95,7 +67,9 @@ const Gallery = (props) => {
                 }}
                 onEndReachedThreshold={0.5}
             />}
+
         </View>
-    </>
+    )
+
 }
 export default observer(Gallery)
