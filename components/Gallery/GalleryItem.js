@@ -30,7 +30,7 @@ export const GalleryItem = (props) => {
         height: imageDimensions.height,
     }}>
 */
-    return  <View style={{
+    return <View style={{
         marginLeft: marginHorizontal,
         width: imageDimensions.width,
         height: imageDimensions.height,
@@ -38,6 +38,8 @@ export const GalleryItem = (props) => {
 
 
         {/*<Text>{`${props.image.id} - ${props.image.width}:${props.image.height} - ${imageDimensions.width}:${imageDimensions.height}`}</Text>*/}
+        {/*<Text>{`${props.rowRatio}`}</Text>*/}
+
         <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
 
             <Image
@@ -58,8 +60,8 @@ export const GalleryItem = (props) => {
                 fontSize: Math.round(12 / galleryStore.appColumnCount),
                 color: 'rgba(255,255,255,0.5)',
                 textAlign: "right",
-                bottom: Math.round(5/ galleryStore.appColumnCount),
-                right: Math.round(10/ galleryStore.appColumnCount),
+                bottom: Math.round(5 / galleryStore.appColumnCount),
+                right: Math.round(10 / galleryStore.appColumnCount),
             }}>{`Photo by ${props.image.author}`}</Text>
 
 
