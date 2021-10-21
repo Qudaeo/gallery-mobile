@@ -8,6 +8,8 @@ export default class GalleryStore {
     gallery = []
     currentPage = 0
 
+    appColumnCount = 1
+
     appImagesWidth = null
 
     detailPhoto = {
@@ -22,6 +24,16 @@ export default class GalleryStore {
         makeAutoObservable(this, {}, {autoBind: true})
     }
 
+    async getGalleryImage(id, width, height) {
+        let imageDimensions = calcImageDimensions(this.appImagesWidth, height / width)
+
+        const getImageResponse = await galleryAPI.getImage(id, imageDimensions.width, imageDimensions.height)
+
+        runInAction(() => {
+            this.base64Images[id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+        })
+    }
+
     async _getGallery() {
         try {
             const getGalleryResponse = await galleryAPI.getGallery(this.currentPage, 5)
@@ -31,13 +43,7 @@ export default class GalleryStore {
             })
 
             for (let photo of getGalleryResponse.data) {
-                let imageDimensions = calcImageDimensions(this.appImagesWidth, photo.height / photo.width)
-
-                const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
-
-                runInAction(() => {
-                    this.base64Images[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
-                })
+                await this.getGalleryImage(photo.id, photo.width, photo.height)
             }
 
         } catch (error) {
@@ -61,5 +67,9 @@ export default class GalleryStore {
         runInAction(() => {
             this.appImagesWidth = width
         })
+    }
+
+    toggleColumnCount() {
+        this.appColumnCount = (this.appColumnCount === 1) ? 2 : 1
     }
 }

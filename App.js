@@ -10,7 +10,7 @@ import React from 'react';
 import Gallery from "./components/Gallery";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
-import DetailedImage from "./components/DetailedImage";
+import DetailedImage from "./components/DetailedImage/DetailedImage";
 import {store} from "./mobx/store";
 import {Provider} from "mobx-react";
 
