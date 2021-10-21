@@ -9,11 +9,11 @@ const instance = axios.create({
 })
 
 export const galleryAPI = {
-    getGallery(currentPage, pageUsersSize) {
-        return instance.get(`v2/list?page=${currentPage}&limit=${pageUsersSize}`)
+    async getGallery(currentPage, pageSize) {
+        return instance.get(`v2/list?page=${currentPage}&limit=${pageSize}`)
     },
 
-    getImage(id, width, height) {
+    async getImage(id, width, height) {
         return instance.get(`id/${id}/${width}/${height}.webp`, {responseType: 'arraybuffer'})
     }
 

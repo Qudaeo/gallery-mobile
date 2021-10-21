@@ -9,8 +9,6 @@ export default class GalleryStore {
     currentPage = 0
 
     appImagesWidth = null
-    appImagesCropSize = null
-
 
     detailPhoto = {
         id: null,
@@ -24,44 +22,33 @@ export default class GalleryStore {
         makeAutoObservable(this, {}, {autoBind: true})
     }
 
-    _getGallery() {
-        galleryAPI.getGallery(this.currentPage, 5)
-            .then(response => {
+    async _getGallery() {
+        try {
+            const getGalleryResponse = await galleryAPI.getGallery(this.currentPage, 5)
 
-                for (let photo of response.data) {
-                    let imageDimensions = calcImageDimensions(this.appImagesWidth, photo.height / photo.width)
+            runInAction(() => {
+                this.gallery.push(...getGalleryResponse.data)
+            })
 
-                    galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
-                        .then(resp => {
-                            runInAction(() => {
+            for (let photo of getGalleryResponse.data) {
+                let imageDimensions = calcImageDimensions(this.appImagesWidth, photo.height / photo.width)
 
-                                    this.base64Images[photo.id] = `data:${resp.headers['content-type'].toLowerCase()};base64,${encode(resp.data)}`
-                                }
-                            )
-
-                        })
-                        .catch((err) => {
-                                alert(err.message);
-                            }
-                        )
-
-                }
+                const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
 
                 runInAction(() => {
-                    this.gallery.push(...response.data)
+                    this.base64Images[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
                 })
-            })
-            .catch((error) => {
-                    alert(error.message);
-                }
-            )
+            }
+
+        } catch (error) {
+            alert(error.message)
+        }
+
     }
 
-    getNextPage() {
-        runInAction(() => {
-            this.currentPage++
-            this._getGallery()
-        })
+    async getNextPage() {
+        this.currentPage++
+        await this._getGallery()
     }
 
     setDetailPhoto(id, width, height) {
@@ -72,9 +59,7 @@ export default class GalleryStore {
 
     setAppImagesSize(width) {
         runInAction(() => {
-                this.appImagesWidth = width
-            }
-        )
+            this.appImagesWidth = width
+        })
     }
-
 }
