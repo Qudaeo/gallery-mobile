@@ -1,9 +1,9 @@
 import React from "react";
 import {Image, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
-import {marginHorizontal, marginVertical} from "../common/const";
-import {calcImageDimensions} from "../common/funcions";
+import {marginHorizontal, marginVertical} from "../../common/const";
+import {calcImageDimensions} from "../../common/funcions";
 import {observer} from "mobx-react";
-import {useStore} from "../mobx/store";
+import {useStore} from "../../mobx/store";
 
 
 export const GalleryItem = (props) => {

@@ -2,6 +2,7 @@ import {runInAction, makeAutoObservable} from 'mobx';
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
 import {galleryAPI} from "../api/api";
+import {apiPageSize} from "../common/const";
 
 export default class GalleryStore {
 
@@ -36,7 +37,7 @@ export default class GalleryStore {
 
     async _getGallery() {
         try {
-            const getGalleryResponse = await galleryAPI.getGallery(this.currentPage, 5)
+            const getGalleryResponse = await galleryAPI.getGallery(this.currentPage, apiPageSize)
 
             runInAction(() => {
                 this.gallery.push(...getGalleryResponse.data)

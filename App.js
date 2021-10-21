@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import Gallery from "./components/Gallery";
+import Gallery from "./components/Gallery/Gallery";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import DetailedImage from "./components/DetailedImage/DetailedImage";
