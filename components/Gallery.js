@@ -67,7 +67,7 @@ const Gallery = (props) => {
             flex: 1,
         }}>
 
-            <ImageBackground source={}
+            <ImageBackground
 
                 style={styles.backgroundImage}>
 
