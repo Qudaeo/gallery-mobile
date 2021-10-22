@@ -11,12 +11,6 @@ const DetailedImage = () => {
 
     const photo = galleryStore.detailPhoto
 
-    /*
-    useEffect(() => {
-        galleryStore.getGalleryImage(photo.id, photo.width, photo.height)
-    }, [photo.id])
-*/
-
     const photoDimensions = calcImageDimensions(useWindowDimensions().width, photo.height / photo.width, 1)
 
     const openLargeImage = () => {

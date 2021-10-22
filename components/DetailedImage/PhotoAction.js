@@ -2,7 +2,7 @@ import React from "react";
 import {Image, TouchableOpacity} from "react-native";
 import {actionsPictures} from "../../common/const";
 
-const PhotoAction = ({index}) => <TouchableOpacity activeOpacity={.5} /*onPress={() => {}}*/>
+const PhotoAction = ({index}) => <TouchableOpacity activeOpacity={.5}>
 
     <Image
         style={{
@@ -13,6 +13,5 @@ const PhotoAction = ({index}) => <TouchableOpacity activeOpacity={.5} /*onPress=
         source={actionsPictures[index]}/>
 
 </TouchableOpacity>
-
 
 export default PhotoAction
