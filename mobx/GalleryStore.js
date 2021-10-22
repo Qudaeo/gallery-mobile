@@ -37,13 +37,12 @@ export default class GalleryStore {
         })
     }
 
-    async _getGallery() {
+    async _getGallery(page) {
         try {
             runInAction(
                 () => this.isFetching = true
             )
-
-            const getGalleryResponse = await galleryAPI.getGallery(this.currentPage, apiPageSize)
+            const getGalleryResponse = await galleryAPI.getGallery(page, apiPageSize)
             return getGalleryResponse.data
 
         } catch (error) {
@@ -58,7 +57,8 @@ export default class GalleryStore {
 
     async getNextPage() {
         this.currentPage++
-        const  response = await this._getGallery()
+
+        const response = await this._getGallery(this.currentPage)
 
         runInAction(() => {
             this.gallery.push(...response)
@@ -70,10 +70,18 @@ export default class GalleryStore {
 
     }
 
+    async setGalleryToStorage(page, item) {
+        try {
+            await AsyncStorage.setItem('@galleryPage' + page, item)
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+
     async getGalleryFromStorage(page) {
         try {
-            const jsonValue = await AsyncStorage.getItem('galleryPage' + page)
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
+            const storageValue = await AsyncStorage.getItem('@galleryPage' + page)
+            return storageValue != null ? JSON.parse(storageValue) : null
         } catch (error) {
             alert(error.message)
         }
