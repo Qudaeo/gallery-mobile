@@ -64,6 +64,7 @@ const GalleryScreen = (props) => {
 
     return (
         <View style={{flex: 1}}>
+            <Text>{JSON.stringify(galleryStore.response)}</Text>
             <View style={styles.menuButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{

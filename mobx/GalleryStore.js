@@ -1,14 +1,19 @@
-import {runInAction, makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const STORAGE_GALLERY_PAGE_ = 'STORAGE_GALLERY_PAGE_'
+const STORAGE_BASE64_IMAGE_ = 'STORAGE_BASE64_IMAGE_'
+
 export default class GalleryStore {
 
     gallery = []
     currentPage = 0
+
+    response = ''
 
     appColumnCount = 1
     appImagesWidth = null
@@ -25,6 +30,23 @@ export default class GalleryStore {
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true})
+    }
+
+    async writeToStorage(prefix, id, item) {
+        try {
+            await AsyncStorage.setItem(prefix + id, JSON.stringify(item))
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+
+    async readFromStorage(prefix, id) {
+        try {
+            const storedValue = await AsyncStorage.getItem(prefix + id)
+            return storedValue ? JSON.parse(storedValue) : null
+        } catch (error) {
+            alert(error.message)
+        }
     }
 
     async getGalleryImage(id, width, height) {
@@ -68,24 +90,16 @@ export default class GalleryStore {
             await this.getGalleryImage(photo.id, photo.width, photo.height)
         }
 
+
+        await this.writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, response)
+        const value = await this.readFromStorage(STORAGE_GALLERY_PAGE_, this.currentPage)
+        runInAction(() => {
+            this.response = value
+        })
+
+
     }
 
-    async setGalleryToStorage(page, item) {
-        try {
-            await AsyncStorage.setItem('@galleryPage' + page, item)
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-
-    async getGalleryFromStorage(page) {
-        try {
-            const storageValue = await AsyncStorage.getItem('@galleryPage' + page)
-            return storageValue != null ? JSON.parse(storageValue) : null
-        } catch (error) {
-            alert(error.message)
-        }
-    }
 
     setDetailPhoto(id, width, height) {
         runInAction(() =>
