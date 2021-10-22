@@ -5,60 +5,48 @@ import {marginHorizontal, marginVertical} from "../../common/const";
 import {calcImageDimensions} from "../../common/funcions";
 
 
-export const GalleryRow = (props) => {
+export const GalleryRow = ({row, navigation}) => {
 
     const appWidth = useWindowDimensions().width
 
-    let imageDimensions = props.row.map(image =>
-        calcImageDimensions(appWidth, image.height / image.width, props.row.length))
+    let imageDimensions = row.map(image =>
+        calcImageDimensions(appWidth, image.height / image.width, row.length))
 
-    let imageRowDimensions = imageDimensions.map(el => ({...el}))
+    if (imageDimensions.length > 1) {
 
-    if (imageDimensions.length === 2 ) {
-        const h = Math.abs((Math.round(imageRowDimensions[0]['height']) + Math.round(imageRowDimensions[1]['height']))/2)
+        const normalizedHeight = 10000
+        const imageNormalizedHeightDimensions = imageDimensions.map(el => ({
+            width: Math.round(el['width'] * normalizedHeight / el['height']),
+            height: Math.round(normalizedHeight)
+        }))
 
-        imageRowDimensions[0]['width'] = Math.round(imageDimensions[0]['width'] * h/imageDimensions[0]['height'])
-        imageRowDimensions[0]['height'] =Math.round(h)
+        const imagesWidth = imageDimensions.reduce((sum, el) => sum + el['width'], 0)
+        const imagesHWidth = imageNormalizedHeightDimensions.reduce((sum, el) => sum + el['width'], 0)
+        const ratio = imagesWidth / imagesHWidth
 
-        imageRowDimensions[1]['width'] = Math.round(imageDimensions[1]['width'] * h/imageDimensions[1]['height'])
-        imageRowDimensions[1]['height'] =Math.round(h)
-
-        const ratio =  (imageDimensions[0]['width'] + imageDimensions[1]['width']) /(imageRowDimensions[0]['width'] + imageRowDimensions[1]['width'])
-
-        imageRowDimensions = imageRowDimensions.map(el => ({
+        imageDimensions = imageNormalizedHeightDimensions.map(el => ({
             width: Math.round(el.width * ratio),
             height: Math.round(el.height * ratio)
         }))
-
-        imageDimensions = imageRowDimensions
     }
 
 
-
-
-    //   const rowImageRatio = props.row.map(image => imageDimensions.width / (image.width + image.height))
-
-    return <>
-        {/*<Text>{JSON.stringify(imageDimensions)}</Text>*/}
-
-        {/*<Text>{JSON.stringify(imageRowDimensions)}</Text>*/}
-        <View style={[{
+    return <View
+        style={[{
             flexDirection: 'row',
-            //       direction: 'row',
             marginVertical: marginVertical,
         }]}>
 
-            {props.row.map((el, index) => <View key={el.id} style={{
-                    width: imageDimensions[index].width,
-                    height: imageDimensions[index].height,
-                    marginLeft: marginHorizontal,
-                }}>
-                    <GalleryItem image={el}
-                                 navigation={props.navigation} imageDimensions={imageDimensions[index]}/>
-                </View>
-            )}
-        </View>
-    </>
+        {row.map((el, index) => <View key={el.id} style={{
+                width: imageDimensions[index].width,
+                height: imageDimensions[index].height,
+                marginLeft: marginHorizontal,
+            }}>
+                <GalleryItem image={el}
+                             navigation={navigation} imageDimensions={imageDimensions[index]}/>
+            </View>
+        )}
+    </View>
 }
 
 export default GalleryRow
