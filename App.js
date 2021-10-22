@@ -7,10 +7,10 @@
  */
 
 import React from 'react';
-import Gallery from "./components/Gallery/Gallery";
+import GalleryScreen from "./components/GalleryScreen/GalleryScreen";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
-import DetailedImage from "./components/DetailedImage/DetailedImage";
+import DetailedImageScreen from "./components/DetailedImageScreen/DetailedImageScreen";
 import {store} from "./mobx/store";
 import {Provider} from "mobx-react";
 
@@ -26,12 +26,12 @@ const App = () => {
                 headerShown: false
             }}>
                 <Stack.Screen
-                    name="Gallery"
-                    component={Gallery}
+                    name="GalleryScreen"
+                    component={GalleryScreen}
                 />
                 <Stack.Screen
-                    name="DetailedImage"
-                    component={DetailedImage}
+                    name="DetailedImageScreen"
+                    component={DetailedImageScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

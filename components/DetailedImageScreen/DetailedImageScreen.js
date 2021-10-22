@@ -6,7 +6,7 @@ import {calcImageDimensions} from "../../common/funcions"
 import {useStore} from "../../mobx/store";
 import PhotoAction from "./PhotoAction";
 
-const DetailedImage = () => {
+const DetailedImageScreen = () => {
     const {galleryStore} = useStore()
 
     const photo = galleryStore.detailPhoto
@@ -14,7 +14,7 @@ const DetailedImage = () => {
     const photoDimensions = calcImageDimensions(useWindowDimensions().width, photo.height / photo.width, 1)
 
     const openLargeImage = () => {
-        //navigation.navigate('DetailedImage')
+        //navigation.navigate('DetailedImageScreen')
     };
 
     return <ScrollView style={{
@@ -38,4 +38,4 @@ const DetailedImage = () => {
     </ScrollView>
 }
 
-export default observer(DetailedImage)
+export default observer(DetailedImageScreen)

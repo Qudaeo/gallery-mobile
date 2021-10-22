@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const Gallery = (props) => {
+const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
 
@@ -92,4 +92,4 @@ const Gallery = (props) => {
     )
 
 }
-export default observer(Gallery)
+export default observer(GalleryScreen)

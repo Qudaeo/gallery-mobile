@@ -15,7 +15,7 @@ export const GalleryItem = (props) => {
 
     const openDetailedImage = () => {
         galleryStore.setDetailPhoto(id, width, height)
-        props.navigation.navigate('DetailedImage')
+        props.navigation.navigate('DetailedImageScreen')
     };
 
     return <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
