@@ -76,14 +76,16 @@ const Gallery = (props) => {
 
             {(galleryByColumn.length === 0)
                 ? <Text>loading...</Text>
-                : (galleryByColumn) && <FlatList
-                data={galleryByColumn}
-                renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
-                onEndReached={() => {
-                    galleryStore.getNextPage()
-                }}
-                onEndReachedThreshold={0.5}
-            />}
+                : (galleryByColumn) &&
+                <FlatList
+                    data={galleryByColumn}
+                    renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
+                    onEndReached={() => {
+                        galleryStore.getNextPage()
+                    }}
+                    onEndReachedThreshold={0.5}
+                    on
+                />}
 
 
         </View>

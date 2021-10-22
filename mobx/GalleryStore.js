@@ -10,7 +10,6 @@ export default class GalleryStore {
     currentPage = 0
 
     appColumnCount = 1
-
     appImagesWidth = null
 
     detailPhoto = {
@@ -20,6 +19,8 @@ export default class GalleryStore {
     }
 
     base64Images = {}
+
+    isFetching: false
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true})
@@ -37,6 +38,10 @@ export default class GalleryStore {
 
     async _getGallery() {
         try {
+            runInAction(
+                () => this.isFetching = true
+            )
+
             const getGalleryResponse = await galleryAPI.getGallery(this.currentPage, apiPageSize)
 
             runInAction(() => {
@@ -49,6 +54,10 @@ export default class GalleryStore {
 
         } catch (error) {
             alert(error.message)
+        } finally {
+            runInAction(
+                () => this.isFetching = false
+            )
         }
 
     }
