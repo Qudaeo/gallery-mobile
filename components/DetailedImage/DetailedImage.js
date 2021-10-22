@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Image, ScrollView, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {observer} from "mobx-react";
 import {actionsPictures, marginHorizontal, marginVertical} from "../../common/const"
@@ -11,10 +11,11 @@ const DetailedImage = () => {
 
     const photo = galleryStore.detailPhoto
 
+    /*
     useEffect(() => {
         galleryStore.getGalleryImage(photo.id, photo.width, photo.height)
     }, [photo.id])
-
+*/
 
     const photoDimensions = calcImageDimensions(useWindowDimensions().width, photo.height / photo.width, 1)
 
