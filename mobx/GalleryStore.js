@@ -3,6 +3,7 @@ import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default class GalleryStore {
 
@@ -43,14 +44,7 @@ export default class GalleryStore {
             )
 
             const getGalleryResponse = await galleryAPI.getGallery(this.currentPage, apiPageSize)
-
-            runInAction(() => {
-                this.gallery.push(...getGalleryResponse.data)
-            })
-
-            for (let photo of getGalleryResponse.data) {
-                await this.getGalleryImage(photo.id, photo.width, photo.height)
-            }
+            return getGalleryResponse.data
 
         } catch (error) {
             alert(error.message)
@@ -64,7 +58,25 @@ export default class GalleryStore {
 
     async getNextPage() {
         this.currentPage++
-        await this._getGallery()
+        const  response = await this._getGallery()
+
+        runInAction(() => {
+            this.gallery.push(...response)
+        })
+
+        for (let photo of response) {
+            await this.getGalleryImage(photo.id, photo.width, photo.height)
+        }
+
+    }
+
+    async getGalleryFromStorage(page) {
+        try {
+            const jsonValue = await AsyncStorage.getItem('galleryPage' + page)
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
+        } catch (error) {
+            alert(error.message)
+        }
     }
 
     setDetailPhoto(id, width, height) {

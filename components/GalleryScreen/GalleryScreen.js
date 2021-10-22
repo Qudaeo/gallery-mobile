@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         zIndex: 100,
 
         borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.1)',
+        borderColor: 'rgba(255,255,0,0.5)',
         backgroundColor: 'rgba(153, 255, 153, 0.7)',
         alignItems: 'center',
         justifyContent: 'center',
@@ -37,8 +37,8 @@ const GalleryScreen = (props) => {
     const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
     useEffect(() => {
-        galleryStore.getNextPage()
         galleryStore.setAppImagesSize(imagesWidth)
+        galleryStore.getNextPage()
     }, [])
 
     /*
