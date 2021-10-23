@@ -1,7 +1,16 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import NetInfo from "@react-native-community/netinfo"
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
 import {readFromStorage, writeToStorage} from "../storage/storageApi";
+
+
+const STORAGE_GALLERY = 'STORAGE_IMAGES_'
+const STORAGE_VIEWABLE_GALLERY = 'STORAGE_VIEWABLE_ITEMS_'
+const STORAGE_IMAGES = 'STORAGE_IMAGES_'
+const STORAGE_GALLERY_PAGE = 'STORAGE_GALLERY_PAGE_'
+const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE_'
+
 
 export default class GalleryStore {
 
@@ -38,8 +47,7 @@ export default class GalleryStore {
         const pageResponseData = response.data
 
         runInAction(() => {
-            this.response.push(...pageResponseData)
-            this.gallery.push(...pageResponseData)
+                       this.gallery.push(...pageResponseData)
         })
 
         /*
@@ -54,18 +62,39 @@ export default class GalleryStore {
          */
     }
 
-    saveStateToStorage() {
-        this.stateToStorage = 'сработал'
-        writeToStorage('prefix', 1, 'сработал')
-        alert('сработал')
-    }
 
-    initializeApp() {
-        this.stateToStorage = readFromStorage('prefix', 1)
+    async saveStateToStorage() {
+        const viewableGallery = this.viewableItems.map((el) => el.item)
+        await writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery)
 
     }
 
 
+    async initializeApp() {
+
+
+        if (NetInfo.useNetInfo().isInternetReachable) {
+            alert('good')
+        }
+        else {
+            alert('bad')
+        }
+
+        let storedGallery = await readFromStorage(STORAGE_VIEWABLE_GALLERY)
+
+        if (storedGallery) {
+
+            storedGallery = storedGallery.map(el => el[0])
+            alert(JSON.stringify(storedGallery))
+
+            runInAction(() => {
+                    this.gallery.push(...storedGallery)
+                }
+            )
+        }
+
+
+    }
 
 
     setDetailPhoto(photo) {

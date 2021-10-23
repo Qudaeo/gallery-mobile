@@ -1,20 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const STORAGE_GALLERY_PAGE_ = 'STORAGE_GALLERY_PAGE_'
-export const STORAGE_BASE64_IMAGE_ = 'STORAGE_BASE64_IMAGE_'
-
-export const writeToStorage = async (prefix, id, item) => {
+export const writeToStorage = async (prefix, item) => {
     try {
-        await AsyncStorage.setItem(prefix + id, JSON.stringify(item))
+        await AsyncStorage.setItem(prefix, JSON.stringify(item))
     } catch (e) {
         alert(e.message)
     }
 }
 
-export const readFromStorage = async (prefix, id) => {
+export const readFromStorage = async (prefix) => {
     try {
-        const storedValue = await AsyncStorage.getItem(prefix + id)
-        return !(storedValue === null) ? JSON.parse(storedValue) : null
+        const storedValue = await AsyncStorage.getItem(prefix)
+        if (storedValue !== null) {
+            return JSON.parse(storedValue)
+        }
     } catch (e) {
         alert(e.message)
     }
