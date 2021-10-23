@@ -38,6 +38,7 @@ export default class GalleryStore {
         })
     }
 
+    /*
     async _getGallery(page) {
         try {
 
@@ -49,6 +50,8 @@ export default class GalleryStore {
         }
 
     }
+
+     */
 
 
 
