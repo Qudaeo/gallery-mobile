@@ -5,6 +5,7 @@ import {actionsPictures, marginHorizontal, marginVertical} from "../../common/co
 import {calcImageDimensions} from "../../common/funcions"
 import {useStore} from "../../mobx/store";
 import PhotoAction from "./PhotoAction";
+import {baseURL} from "../../api/api";
 
 const DetailedImageScreen = (props) => {
     const {galleryStore} = useStore()
@@ -27,7 +28,9 @@ const DetailedImageScreen = (props) => {
                     width: photoDimensions.width,
                     height: photoDimensions.height
                 }}
-                source={{uri: galleryStore.base64Images[photo.id]}}
+                source={galleryStore.base64Images[photo.id]
+                    ?{uri: galleryStore.base64Images[photo.id]}
+                    :{uri: baseURL + `id/${photo.id}/${photoDimensions.width}/${photoDimensions.height}.webp`}}
             />
         </TouchableOpacity>
 

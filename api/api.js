@@ -1,7 +1,9 @@
 import axios from "axios";
 
+export const baseURL = "https://picsum.photos/"
+
 const instance = axios.create({
-    baseURL: "https://picsum.photos/"
+    baseURL
     /*,
     withCredentials: true,
     headers: {"API-KEY": "26818ec0-b02b-4c09-944c-b4d6ca23fec0"}

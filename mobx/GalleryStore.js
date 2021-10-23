@@ -1,6 +1,4 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {calcImageDimensions} from "../common/funcions";
-import {encode} from "base64-arraybuffer";
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
 
@@ -40,6 +38,7 @@ export default class GalleryStore {
             this.gallery.push(...pageResponseData)
         })
 
+        /*
         for (let photo of pageResponseData) {
             const imageDimensions = calcImageDimensions(this.appImagesWidth, photo.width / photo.height)
             const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
@@ -48,6 +47,7 @@ export default class GalleryStore {
                 this.base64Images[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
             })
         }
+         */
     }
 
 
