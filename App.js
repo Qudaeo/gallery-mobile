@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import GalleryScreen from "./components/GalleryScreen/GalleryScreen";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
@@ -19,13 +19,18 @@ const App = () => {
 
     const Stack = createStackNavigator();
 
+    const handleBlur = useCallback(() => {
+        alert('good')
+    }, [])
+
     return <Provider store={store}
                      galleryStore={store.galleryStore}>
 
         <NavigationContainer>
             <Stack.Navigator screenOptions={{
                 headerShown: false
-            }}>
+            }}
+                             onBlur ={handleBlur}>
                 <Stack.Screen
                     name="GalleryScreen"
                     component={GalleryScreen}

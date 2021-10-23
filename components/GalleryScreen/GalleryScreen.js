@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect} from "react";
+//import useFocusEffect from '@react-navigation/native'
 
 import {
     FlatList,
@@ -32,19 +33,18 @@ const styles = StyleSheet.create({
 
 const GalleryScreen = (props) => {
 
-    const {galleryStore} = useStore()
-
-    const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
-
-
     const handleViewableItemsChanged = useCallback(({viewableItems}) => {
-        galleryStore.setViewableItems(typeof(viewableItems))
+        galleryStore.setViewableItems(viewableItems)
     }, [])
 
     useEffect(() => {
         galleryStore.setAppImagesSize(imagesWidth)
         galleryStore.getNextPage()
     }, [])
+
+    const {galleryStore} = useStore()
+
+    const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
     /*
     useEffect(() => {

@@ -57,7 +57,7 @@ export default class GalleryStore {
     }
 
     setViewableItems(viewableItems) {
-        this.viewableItems = viewableItems
+        this.viewableItems = [...viewableItems]
     }
 
     setAppImagesSize(width) {
