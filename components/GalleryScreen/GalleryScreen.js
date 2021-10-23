@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 
 import {
     FlatList,
@@ -36,6 +36,11 @@ const GalleryScreen = (props) => {
 
     const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
+
+    const handleViewableItemsChanged = useCallback(({viewableItems}) => {
+        galleryStore.setViewableItems(typeof(viewableItems))
+    }, [])
+
     useEffect(() => {
         galleryStore.setAppImagesSize(imagesWidth)
         galleryStore.getNextPage()
@@ -65,6 +70,7 @@ const GalleryScreen = (props) => {
     return (
         <View style={{flex: 1}}>
             {/*<Text>{JSON.stringify(galleryStore.response)}</Text>*/}
+            {<Text>{JSON.stringify(galleryStore.viewableItems)}</Text>}
             <View style={styles.menuButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{
@@ -85,7 +91,8 @@ const GalleryScreen = (props) => {
                         galleryStore.getNextPage()
                     }}
                     onEndReachedThreshold={0.5}
-                    on
+                    onViewableItemsChanged={handleViewableItemsChanged}
+
                 />}
 
 

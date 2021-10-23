@@ -11,6 +11,7 @@ export default class GalleryStore {
 
     appColumnCount = 1
     appImagesWidth = null
+    viewableItems = ''
 
     detailPhoto = {
         id: null,
@@ -53,6 +54,10 @@ export default class GalleryStore {
 
     setDetailPhoto(photo) {
         this.detailPhoto = {...photo}
+    }
+
+    setViewableItems(viewableItems) {
+        this.viewableItems = viewableItems
     }
 
     setAppImagesSize(width) {
