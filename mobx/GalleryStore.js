@@ -22,8 +22,6 @@ export default class GalleryStore {
 
     base64Images = {}
 
-    isFetching: false
-
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true})
     }
@@ -38,77 +36,33 @@ export default class GalleryStore {
         })
     }
 
-    /*
-    async _getGallery(page) {
-        try {
-
-            const getGalleryResponse = await galleryAPI.getGallery(page, apiPageSize)
-            return getGalleryResponse.data
-
-        } catch (e) {
-            alert(e.message)
-        }
-
-    }
-
-     */
-
-
-
     async getNextPage() {
-        this.currentPage++
-        /*
-                let pageResponse = await readFromStorage(STORAGE_GALLERY_PAGE_, this.currentPage)
-                if (!pageResponse) {
-                    pageResponse = await this._getGallery(this.currentPage)
-                    await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, pageResponse)
-                }
-        */
-        // const pageResponse = await this._getGallery(this.currentPage)//await cacheRequest(STORAGE_GALLERY_PAGE_, {id: this.currentPage})
-
-        try {
-            const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
-            const pageResponseData = response.data
-
-            runInAction(() => {
-                this.response.push(...pageResponseData)
-                this.gallery.push(...pageResponseData)
-            })
-
-            for (let photo of pageResponseData) {
-                await this.getGalleryImage(photo.id, photo.width, photo.height)
-            }
-          //  return getGalleryResponse
-        } catch (e) {
-            alert(e.message)
-        }
-
-
-
-
-
-
-
- //       await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, response)
- //       const value = await readFromStorage(STORAGE_GALLERY_PAGE_, this.currentPage)
         runInAction(() => {
-            this.response = value
+            this.currentPage++
         })
+
+        const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
+        const pageResponseData = response.data
+
+        runInAction(() => {
+            this.response.push(...pageResponseData)
+            this.gallery.push(...pageResponseData)
+        })
+
+        for (let photo of pageResponseData) {
+            await this.getGalleryImage(photo.id, photo.width, photo.height)
+        }
 
 
     }
 
 
     setDetailPhoto(id, width, height) {
-        runInAction(() =>
-            this.detailPhoto = {id, width, height}
-        )
+        this.detailPhoto = {id, width, height}
     }
 
     setAppImagesSize(width) {
-        runInAction(() => {
-            this.appImagesWidth = width
-        })
+        this.appImagesWidth = width
     }
 
     toggleColumnCount() {
