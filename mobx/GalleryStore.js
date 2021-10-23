@@ -26,16 +26,6 @@ export default class GalleryStore {
         makeAutoObservable(this, {}, {autoBind: true})
     }
 
-    async getGalleryImage(id, width, height) {
-        let imageDimensions = calcImageDimensions(this.appImagesWidth, height / width)
-
-        const getImageResponse = await galleryAPI.getImage(id, imageDimensions.width, imageDimensions.height)
-
-        runInAction(() => {
-            this.base64Images[id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
-        })
-    }
-
     async getNextPage() {
         runInAction(() => {
             this.currentPage++
@@ -50,10 +40,13 @@ export default class GalleryStore {
         })
 
         for (let photo of pageResponseData) {
-            await this.getGalleryImage(photo.id, photo.width, photo.height)
+            const imageDimensions = calcImageDimensions(this.appImagesWidth, photo.width / photo.height)
+            const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
+
+            runInAction(() => {
+                this.base64Images[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+            })
         }
-
-
     }
 
 
