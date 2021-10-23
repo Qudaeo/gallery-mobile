@@ -17,7 +17,8 @@ export default class GalleryStore {
     detailPhoto = {
         id: null,
         width: null,
-        height: null
+        height: null,
+        download_url: null
     }
 
     base64Images = {}
@@ -50,8 +51,8 @@ export default class GalleryStore {
     }
 
 
-    setDetailPhoto(id, width, height) {
-        this.detailPhoto = {id, width, height}
+    setDetailPhoto(photo) {
+        this.detailPhoto = {...photo}
     }
 
     setAppImagesSize(width) {

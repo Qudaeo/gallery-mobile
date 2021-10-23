@@ -14,7 +14,7 @@ export const GalleryItem = (props) => {
 
 
     const openDetailedImage = () => {
-        galleryStore.setDetailPhoto(id, width, height)
+        galleryStore.setDetailPhoto(props.image)
         props.navigation.navigate('DetailedImageScreen')
     };
 
