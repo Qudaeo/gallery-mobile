@@ -28,24 +28,6 @@ export default class GalleryStore {
         makeAutoObservable(this, {}, {autoBind: true})
     }
 
-    /*
-    async writeToStorage(prefix, id, item) {
-        try {
-            await AsyncStorage.setItem(prefix + id, JSON.stringify(item))
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-
-    async readFromStorage(prefix, id) {
-        try {
-            const storedValue = await AsyncStorage.getItem(prefix + id)
-            return storedValue ? JSON.parse(storedValue) : null
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-*/
     async getGalleryImage(id, width, height) {
         let imageDimensions = calcImageDimensions(this.appImagesWidth, height / width)
 
@@ -58,18 +40,12 @@ export default class GalleryStore {
 
     async _getGallery(page) {
         try {
-            runInAction(
-                () => this.isFetching = true
-            )
+
             const getGalleryResponse = await galleryAPI.getGallery(page, apiPageSize)
             return getGalleryResponse.data
 
-        } catch (error) {
-            alert(error.message)
-        } finally {
-            runInAction(
-                () => this.isFetching = false
-            )
+        } catch (e) {
+            alert(e.message)
         }
 
     }
@@ -85,17 +61,29 @@ export default class GalleryStore {
                     await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, pageResponse)
                 }
         */
-        const pageResponse = await this._getGallery(this.currentPage)//await cacheRequest(STORAGE_GALLERY_PAGE_, {id: this.currentPage})
+        // const pageResponse = await this._getGallery(this.currentPage)//await cacheRequest(STORAGE_GALLERY_PAGE_, {id: this.currentPage})
 
-        runInAction(() => {
-            this.response.push(...pageResponse)
-            this.gallery.push(...pageResponse)
-        })
+        try {
+            const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
+            const pageResponseData = response.data
 
+            runInAction(() => {
+                this.response.push(...pageResponseData)
+                this.gallery.push(...pageResponseData)
+            })
 
-        for (let photo of pageResponse) {
-            await this.getGalleryImage(photo.id, photo.width, photo.height)
+            for (let photo of pageResponseData) {
+                await this.getGalleryImage(photo.id, photo.width, photo.height)
+            }
+          //  return getGalleryResponse
+        } catch (e) {
+            alert(e.message)
         }
+
+
+
+
+
 
 
  //       await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, response)
