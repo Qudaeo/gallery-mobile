@@ -3,7 +3,8 @@ import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {readFromStorage, writeToStorage} from "../storage/storageApi";
+//import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const STORAGE_GALLERY_PAGE_ = 'STORAGE_GALLERY_PAGE_'
 const STORAGE_BASE64_IMAGE_ = 'STORAGE_BASE64_IMAGE_'
@@ -32,6 +33,7 @@ export default class GalleryStore {
         makeAutoObservable(this, {}, {autoBind: true})
     }
 
+    /*
     async writeToStorage(prefix, id, item) {
         try {
             await AsyncStorage.setItem(prefix + id, JSON.stringify(item))
@@ -48,7 +50,7 @@ export default class GalleryStore {
             alert(error.message)
         }
     }
-
+*/
     async getGalleryImage(id, width, height) {
         let imageDimensions = calcImageDimensions(this.appImagesWidth, height / width)
 
@@ -91,8 +93,8 @@ export default class GalleryStore {
         }
 
 
-        await this.writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, response)
-        const value = await this.readFromStorage(STORAGE_GALLERY_PAGE_, this.currentPage)
+        await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, response)
+        const value = await readFromStorage(STORAGE_GALLERY_PAGE_, this.currentPage)
         runInAction(() => {
             this.response = value
         })

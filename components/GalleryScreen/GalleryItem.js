@@ -19,7 +19,7 @@ export const GalleryItem = (props) => {
     };
 
     return <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
-
+        {/*<Text>{JSON.stringify(galleryStore.base64Images[id])}</Text>*/}
         <Image
             style={{
                 width: width,
