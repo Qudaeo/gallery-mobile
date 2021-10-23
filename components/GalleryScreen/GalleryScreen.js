@@ -36,11 +36,7 @@ const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
 
-    if (NetInfo.useNetInfo().isInternetReachable) {
-        alert('good')
-    } else {
-        alert('bad')
-    }
+    galleryStore.setIsAppInternetReachable(NetInfo.useNetInfo().isInternetReachable)
 
     const handleViewableItemsChanged = useCallback(({viewableItems}) => {
         galleryStore.setViewableItems(viewableItems)
@@ -50,23 +46,27 @@ const GalleryScreen = (props) => {
         galleryStore.initializeApp()
         galleryStore.setAppImagesSize(imagesWidth)
         galleryStore.getNextPage()
-        return () => {
-            galleryStore.saveStateToStorage()
-        }
+ //       return () => {
+  //          galleryStore.saveStateToStorage()
+  //      }
     }, [])
 
-    React.useEffect(() => {
-        const exitAppAction = async () => {
-            await galleryStore.saveStateToStorage()
-            BackHandler.exitApp()
-        }
 
-        BackHandler.addEventListener('hardwareBackPress', exitAppAction)
+    const exitAppAction = useCallback(() => {
+        galleryStore.saveStateToStorage()
+        //       BackHandler.exitApp()
+    })
+
+
+    React.useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAppAction)
 
         return () => {
-            BackHandler.removeEventListener("hardwareBackPress", exitAppAction)
+            backHandler.remove()
         }
     }, []);
+
+
 
     const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
@@ -86,9 +86,7 @@ const GalleryScreen = (props) => {
 
     return (
         <View style={{flex: 1}}>
-            {/*<Text>{JSON.stringify(galleryStore.response)}</Text>*/}
-            {/*<Text>{JSON.stringify(galleryStore.viewableItems)}</Text>*/}
-            {<Text>{JSON.stringify(galleryStore.stateToStorage)}</Text>}
+          {/*<Text>{JSON.stringify(galleryStore.viewableItems)}</Text>*/}
             <View style={styles.menuButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{
