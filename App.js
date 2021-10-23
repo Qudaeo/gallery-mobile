@@ -13,6 +13,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import DetailedImageScreen from "./components/DetailedImageScreen/DetailedImageScreen";
 import {store} from "./mobx/store";
 import {Provider} from "mobx-react";
+import LargeImageScreen from "./components/LargeImageScreen/LargeImageScreen";
 
 const App = () => {
 
@@ -32,6 +33,10 @@ const App = () => {
                 <Stack.Screen
                     name="DetailedImageScreen"
                     component={DetailedImageScreen}
+                />
+                <Stack.Screen
+                    name="LargeImageScreen"
+                    component={LargeImageScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>
