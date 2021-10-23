@@ -3,11 +3,6 @@ import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
-import {cacheRequest, readFromStorage, writeToStorage} from "../storage/storageApi";
-//import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const STORAGE_GALLERY_PAGE_ = 'STORAGE_GALLERY_PAGE_'
-const STORAGE_BASE64_IMAGE_ = 'STORAGE_BASE64_IMAGE_'
 
 export default class GalleryStore {
 
@@ -90,8 +85,7 @@ export default class GalleryStore {
                     await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, pageResponse)
                 }
         */
-        const pageResponse = await cacheRequest(STORAGE_GALLERY_PAGE_, {id: this.currentPage})
-        alert(JSON.stringify(pageResponse))
+        const pageResponse = await this._getGallery(this.currentPage)//await cacheRequest(STORAGE_GALLERY_PAGE_, {id: this.currentPage})
 
         runInAction(() => {
             this.response.push(...pageResponse)
@@ -104,8 +98,8 @@ export default class GalleryStore {
         }
 
 
-        await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, response)
-        const value = await readFromStorage(STORAGE_GALLERY_PAGE_, this.currentPage)
+ //       await writeToStorage(STORAGE_GALLERY_PAGE_, this.currentPage, response)
+ //       const value = await readFromStorage(STORAGE_GALLERY_PAGE_, this.currentPage)
         runInAction(() => {
             this.response = value
         })

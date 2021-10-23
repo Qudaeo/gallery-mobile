@@ -1,3 +1,4 @@
+/*
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const STORAGE_GALLERY_PAGE_ = 'STORAGE_GALLERY_PAGE_'
@@ -34,3 +35,5 @@ export const cacheRequest = async (prefix, options) => {
 
     return response
 }
+
+ */
