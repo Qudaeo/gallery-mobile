@@ -35,14 +35,13 @@ const styles = StyleSheet.create({
 const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
-    /*
-        if (NetInfo.useNetInfo().isInternetReachable) {
-            alert('good')
-        }
-        else {
-            alert('bad')
-        }
-    */
+
+    if (NetInfo.useNetInfo().isInternetReachable) {
+        alert('good')
+    } else {
+        alert('bad')
+    }
+
     const handleViewableItemsChanged = useCallback(({viewableItems}) => {
         galleryStore.setViewableItems(viewableItems)
     }, [])
@@ -66,9 +65,8 @@ const GalleryScreen = (props) => {
 
         return () => {
             BackHandler.removeEventListener("hardwareBackPress", exitAppAction)
-            BackHandler.exitApp()
         }
-    }, [props.navigation]);
+    }, []);
 
     const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
