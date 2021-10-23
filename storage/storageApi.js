@@ -19,3 +19,18 @@ export const readFromStorage = async (prefix, id) => {
         alert(error.message)
     }
 }
+
+export const cacheRequest = async (prefix, options) => {
+    let response = await readFromStorage(prefix, options.id)
+    if (!response) {
+        if (prefix === STORAGE_GALLERY_PAGE_) {
+            response = await this._getGallery(options.id)
+        }
+
+        await writeToStorage(prefix, options.id, response)
+    }
+
+    alert(JSON.stringify(response))
+
+    return response
+}
