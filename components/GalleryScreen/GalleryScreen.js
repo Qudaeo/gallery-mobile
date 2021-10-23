@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect} from "react";
-//import useFocusEffect from '@react-navigation/native'
 
 import {
     FlatList,
@@ -13,6 +12,7 @@ import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
 import BackHandler from "react-native/Libraries/Utilities/BackHandler";
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
     menuButton: {
@@ -35,17 +35,22 @@ const styles = StyleSheet.create({
 const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
-
-
-
+    /*
+        if (NetInfo.useNetInfo().isInternetReachable) {
+            alert('good')
+        }
+        else {
+            alert('bad')
+        }
+    */
     const handleViewableItemsChanged = useCallback(({viewableItems}) => {
         galleryStore.setViewableItems(viewableItems)
     }, [])
 
-    useEffect(async () => {
-        await galleryStore.initializeApp()
+    useEffect(() => {
+        galleryStore.initializeApp()
         galleryStore.setAppImagesSize(imagesWidth)
-        await galleryStore.getNextPage()
+        galleryStore.getNextPage()
         return () => {
             galleryStore.saveStateToStorage()
         }

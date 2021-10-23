@@ -1,16 +1,11 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import NetInfo from "@react-native-community/netinfo"
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
 import {readFromStorage, writeToStorage} from "../storage/storageApi";
 
-
-const STORAGE_GALLERY = 'STORAGE_IMAGES_'
-const STORAGE_VIEWABLE_GALLERY = 'STORAGE_VIEWABLE_ITEMS_'
-const STORAGE_IMAGES = 'STORAGE_IMAGES_'
-const STORAGE_GALLERY_PAGE = 'STORAGE_GALLERY_PAGE_'
-const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE_'
-
+const STORAGE_CURRENT_PAGE = 'STORAGE_IMAGES'
+const STORAGE_VIEWABLE_GALLERY = 'STORAGE_VIEWABLE_ITEMS'
+const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
 
 export default class GalleryStore {
 
@@ -72,13 +67,6 @@ export default class GalleryStore {
 
     async initializeApp() {
 
-
-        if (NetInfo.useNetInfo().isInternetReachable) {
-            alert('good')
-        }
-        else {
-            alert('bad')
-        }
 
         let storedGallery = await readFromStorage(STORAGE_VIEWABLE_GALLERY)
 
