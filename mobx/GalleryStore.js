@@ -1,6 +1,7 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
+import {readFromStorage, writeToStorage} from "../storage/storageApi";
 
 export default class GalleryStore {
 
@@ -11,7 +12,9 @@ export default class GalleryStore {
 
     appColumnCount = 1
     appImagesWidth = null
+
     viewableItems = ''
+    stateToStorage = 'не сработал'
 
     detailPhoto = {
         id: null,
@@ -50,6 +53,19 @@ export default class GalleryStore {
         }
          */
     }
+
+    saveStateToStorage() {
+        this.stateToStorage = 'сработал'
+        writeToStorage('prefix', 1, 'сработал')
+        alert('сработал')
+    }
+
+    initializeApp() {
+        this.stateToStorage = readFromStorage('prefix', 1)
+
+    }
+
+
 
 
     setDetailPhoto(photo) {

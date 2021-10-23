@@ -12,6 +12,7 @@ import {
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
+import BackHandler from "react-native/Libraries/Utilities/BackHandler";
 
 const styles = StyleSheet.create({
     menuButton: {
@@ -33,25 +34,40 @@ const styles = StyleSheet.create({
 
 const GalleryScreen = (props) => {
 
+    const {galleryStore} = useStore()
+
     const handleViewableItemsChanged = useCallback(({viewableItems}) => {
         galleryStore.setViewableItems(viewableItems)
     }, [])
 
     useEffect(() => {
+        galleryStore.initializeApp()
         galleryStore.setAppImagesSize(imagesWidth)
         galleryStore.getNextPage()
+        return () => {
+            galleryStore.saveStateToStorage()
+        }
     }, [])
 
-    const {galleryStore} = useStore()
+    React.useEffect(() => {
 
-    const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
+        BackHandler.addEventListener('hardwareBackPress', galleryStore.saveStateToStorage)
+
+        return () =>
+            BackHandler.removeEventListener("hardwareBackPress", galleryStore.saveStateToStorage)
+    }, [props.navigation]);
 
     /*
-    useEffect(() => {
-        galleryStore.setAppImagesSize(imagesWidth)
-        alert('2 setAppImagesSize')
-    }, [imagesWidth])
+        const handleBlur = useCallback(() => {
+            galleryStore.saveStateToStorage()
+        }, [])
+    */
+    /*
+    props.navigation.addListener('willBlur', async () => {
+        galleryStore.saveStateToStorage()
+    });
 */
+    const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
     const galleryByColumn = galleryStore.gallery.reduce((result, el, index) => {
         switch (index % galleryStore.appColumnCount) {
@@ -71,6 +87,7 @@ const GalleryScreen = (props) => {
         <View style={{flex: 1}}>
             {/*<Text>{JSON.stringify(galleryStore.response)}</Text>*/}
             {<Text>{JSON.stringify(galleryStore.viewableItems)}</Text>}
+            {<Text>{JSON.stringify(galleryStore.stateToStorage)}</Text>}
             <View style={styles.menuButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{
