@@ -25,6 +25,8 @@ export const GalleryItem = (props) => {
                 width: width,
                 height: height,
                 position: "relative",
+
+         //       resizeMode:'contain'
             }}
             source={galleryStore.base64Images[id]
                 ?{uri: galleryStore.base64Images[id]}
@@ -37,7 +39,7 @@ export const GalleryItem = (props) => {
             textAlign: "right",
             bottom: Math.round(5 / galleryStore.appColumnCount),
             right: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`${props.image.id} - ${galleryStore.base64Images[id]?galleryStore.base64Images[id].length:''} b - Photo by ${props.image.author}`}</Text>
+        }}>{`id=${id} - ${width}:${height} - ${galleryStore.base64Images[props.image.id]?galleryStore.base64Images[id].length:''}b - Photo by ${props.image.author}`}</Text>
 
     </TouchableOpacity>
 }

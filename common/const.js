@@ -9,6 +9,6 @@ export const marginHorizontal = 4
 export const marginVertical = 2
 
 // размер страницы для чтения из API
-export const apiPageSize = 20
+export const apiPageSize = 100
 
 export const actionsPictures = [likePicture, messagePicture, addPicture, sendPicture, etcPicture]

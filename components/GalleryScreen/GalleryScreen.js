@@ -11,7 +11,7 @@ import {
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
-import BackHandler from "react-native/Libraries/Utilities/BackHandler";
+//import BackHandler from "react-native/Libraries/Utilities/BackHandler";
 import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
@@ -43,30 +43,29 @@ const GalleryScreen = (props) => {
     galleryStore.setIsAppInternetReachable(NetInfo.useNetInfo().isInternetReachable)
 
     useEffect(() => {
-        galleryStore.initializeApp()
-        galleryStore.setAppImagesSize(imagesWidth)
-        galleryStore.getNextPage()
-
-               return () => {
-                  galleryStore.saveStateToStorage()
-              }
-
-    }, [])
-
-
-    const exitAppAction = useCallback(() => {
-        galleryStore.saveStateToStorage()
-        //       BackHandler.exitApp()
-    })
-
-
-    React.useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAppAction)
+        galleryStore.initializeApp(imagesWidth)
+//        galleryStore.getNextPage()
 
         return () => {
-            backHandler.remove()
+            galleryStore.saveStateToStorage(galleryStore.appImagesWidth)
         }
-    }, []);
+    }, [])
+
+    /*
+        const exitAppAction = useCallback(() => {
+            galleryStore.saveStateToStorage()
+        })
+
+
+        React.useEffect(() => {
+            const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAppAction)
+
+            return () => {
+                backHandler.remove()
+            }
+        }, []);
+
+     */
 
 
     const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
@@ -87,12 +86,19 @@ const GalleryScreen = (props) => {
 
     return (
         <View style={{flex: 1}}>
-            {/*<Text>{JSON.stringify(galleryStore.viewableItems)}</Text>*/}
-            {<Text>{JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
-            {<Text>{JSON.stringify(Object.keys(galleryStore.base64Images).length) + ' base64'}</Text>}
-            {<Text>{JSON.stringify(galleryStore.currentPage)}</Text>}
+
+            {<Text>{'bebug info:'}</Text>}
+            {
+                <Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
+
+            {<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>}
+            {<Text>{'base64 objects=' + JSON.stringify(Object.keys(galleryStore.base64Images).length)}</Text>}
+            {<Text>{'galleryStore.currentPage=' + JSON.stringify(galleryStore.currentPage)}</Text>}
+            {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(this.startIndex)}</Text>*/}
             {<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>}
             {<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>}
+
+
             <View style={styles.menuButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{
@@ -110,7 +116,7 @@ const GalleryScreen = (props) => {
                     data={galleryByColumn}
                     renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
                     onEndReached={() => {
-                        galleryStore.getNextPage()
+                        //     galleryStore.getNextPage()
                     }}
                     onEndReachedThreshold={0.5}
                     onViewableItemsChanged={handleViewableItemsChanged}
