@@ -12,7 +12,8 @@ const DetailedImageScreen = (props) => {
 
     const photo = galleryStore.detailPhoto
 
-    const photoDimensions = calcImageDimensions(useWindowDimensions().width, photo.height / photo.width, 1)
+    const windowWidth = useWindowDimensions().width
+    const photoDimensions = calcImageDimensions(windowWidth, windowWidth * photo.height / photo.width, 1)
 
     const openLargeImage = () => {
         props.navigation.navigate('LargeImageScreen')

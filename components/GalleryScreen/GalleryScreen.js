@@ -11,7 +11,6 @@ import {
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
-//import BackHandler from "react-native/Libraries/Utilities/BackHandler";
 import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
@@ -44,29 +43,11 @@ const GalleryScreen = (props) => {
 
     useEffect(() => {
         galleryStore.initializeApp(imagesWidth)
-//        galleryStore.getNextPage()
 
         return () => {
-            galleryStore.saveStateToStorage(galleryStore.appImagesWidth)
+            galleryStore.saveStateToStorage()
         }
     }, [])
-
-    /*
-        const exitAppAction = useCallback(() => {
-            galleryStore.saveStateToStorage()
-        })
-
-
-        React.useEffect(() => {
-            const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAppAction)
-
-            return () => {
-                backHandler.remove()
-            }
-        }, []);
-
-     */
-
 
     const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
@@ -91,12 +72,12 @@ const GalleryScreen = (props) => {
             {
                 <Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
 
-            {<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>}
+            {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
             {<Text>{'base64 objects=' + JSON.stringify(Object.keys(galleryStore.base64Images).length)}</Text>}
             {<Text>{'galleryStore.currentPage=' + JSON.stringify(galleryStore.currentPage)}</Text>}
-            {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(this.startIndex)}</Text>*/}
-            {<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>}
-            {<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>}
+            {<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>}
+            {/*<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>*/}
+            {/*<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>*/}
 
 
             <View style={styles.menuButton}>

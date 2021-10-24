@@ -10,7 +10,7 @@ export const GalleryRow = ({row, navigation}) => {
     const appWidth = useWindowDimensions().width
 
     let imageDimensions = row.map(image =>
-        calcImageDimensions(appWidth, image.height / image.width, row.length))
+        calcImageDimensions(appWidth, appWidth * image.height / image.width, row.length))
 
     if (imageDimensions.length > 1) {
 

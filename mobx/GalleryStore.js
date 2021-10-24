@@ -15,7 +15,6 @@ export default class GalleryStore {
     startIndex = '' // индекс элемента при закрытии приложения
     currentPage = 0 // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
 
-
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
 
@@ -77,7 +76,7 @@ export default class GalleryStore {
                     for (let photo of viewableGallery) {
 
                         if (photo.id) {
-                            const imageDimensions = calcImageDimensions(this.appImagesWidth, photo.height/photo.width)
+                            const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * photo.height/photo.width)
                        //     alert(JSON.stringify(imageDimensions))
                             const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
 
@@ -105,6 +104,9 @@ export default class GalleryStore {
 
 
     async initializeApp(width) {
+        runInAction(() =>
+            this.appImagesWidth = width
+        )
         if (!this.isAppSync) {
             try {
                 const currentPage = await readFromStorage(STORAGE_CURRENT_PAGE)
@@ -157,10 +159,6 @@ export default class GalleryStore {
             }
 
         }
-
-        runInAction(() =>
-            this.appImagesWidth = width
-        )
 
     }
 
