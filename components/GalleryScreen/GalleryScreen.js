@@ -1,17 +1,17 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 
 import {
     FlatList,
     Text,
     TouchableOpacity,
-    useWindowDimensions,
     View,
-    StyleSheet, Button
+    StyleSheet
 } from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
 import NetInfo from "@react-native-community/netinfo";
+import {imagesWidth} from "../../common/const";
 
 const styles = StyleSheet.create({
     menuButton: {
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(153, 255, 153, 0.7)',
         alignItems: 'center',
         justifyContent: 'center',
-        width: 50,
-        height: 50,
+        width: 53,
+        height: 53,
         borderRadius: 50,
     }
 });
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
+    const flatList = useRef(null)
 
     const handleViewableItemsChanged = useCallback(async ({viewableItems}) => {
         await galleryStore.setViewableItems(viewableItems)
@@ -48,8 +49,6 @@ const GalleryScreen = (props) => {
             galleryStore.saveStateToStorage()
         }
     }, [])
-
-    const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
 
     const galleryByColumn = galleryStore.gallery.reduce((result, el, index) => {
         switch (index % galleryStore.appColumnCount) {
@@ -68,14 +67,13 @@ const GalleryScreen = (props) => {
     return (
         <View style={{flex: 1}}>
 
-            {<Text>{'bebug info:'}</Text>}
-            {
-                <Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
+            {/*<Text>{'bebug info:'}</Text>*/}
+            {<Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
 
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
-            {<Text>{'base64 objects=' + JSON.stringify(Object.keys(galleryStore.base64Images).length)}</Text>}
-            {<Text>{'galleryStore.currentPage=' + JSON.stringify(galleryStore.currentPage)}</Text>}
-            {<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>}
+            {/*<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>*/}
+            {<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>}
+            {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>*/}
             {/*<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>*/}
             {/*<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>*/}
 
@@ -83,7 +81,7 @@ const GalleryScreen = (props) => {
             <View style={styles.menuButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{
-                        fontSize: 25,
+                        fontSize: 24,
                         fontWeight: "bold"
                     }}
                     >{galleryStore.appColumnCount}</Text>
@@ -94,14 +92,14 @@ const GalleryScreen = (props) => {
                 ? <Text>loading...</Text>
                 : (galleryByColumn) &&
                 <FlatList
+                    ref={flatList}
                     data={galleryByColumn}
                     renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
                     onEndReached={() => {
-                        //     galleryStore.getNextPage()
+                        galleryStore.getNextPage()
                     }}
                     onEndReachedThreshold={0.5}
                     onViewableItemsChanged={handleViewableItemsChanged}
-
                 />}
 
 

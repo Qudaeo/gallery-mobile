@@ -8,7 +8,8 @@ import etcPicture from "../images/DetailedImage/etc.png";
 export const marginHorizontal = 4
 export const marginVertical = 2
 
-// размер страницы для чтения из API
-export const apiPageSize = 100
+
+export const apiPageSize = 25 // размер страницы для чтения из API
+export const imagesWidth = 1920 // размер получаемых картинок
 
 export const actionsPictures = [likePicture, messagePicture, addPicture, sendPicture, etcPicture]
