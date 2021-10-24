@@ -11,7 +11,7 @@ const LargeImageScreen = () => {
     return <ImageViewer
         imageUrls={[{url: galleryStore.detailPhoto.download_url}]}
         renderIndicator = {() => null}
-        backgroundColor = "white"
+//        backgroundColor = "white"
     />
 
 }

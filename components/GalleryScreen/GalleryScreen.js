@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     useWindowDimensions,
     View,
-    StyleSheet
+    StyleSheet, Button
 } from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
@@ -36,19 +36,21 @@ const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
 
-    galleryStore.setIsAppInternetReachable(NetInfo.useNetInfo().isInternetReachable)
-
-    const handleViewableItemsChanged = useCallback(({viewableItems}) => {
-        galleryStore.setViewableItems(viewableItems)
+    const handleViewableItemsChanged = useCallback(async ({viewableItems}) => {
+        await galleryStore.setViewableItems(viewableItems)
     }, [])
+
+    galleryStore.setIsAppInternetReachable(NetInfo.useNetInfo().isInternetReachable)
 
     useEffect(() => {
         galleryStore.initializeApp()
         galleryStore.setAppImagesSize(imagesWidth)
         galleryStore.getNextPage()
- //       return () => {
-  //          galleryStore.saveStateToStorage()
-  //      }
+
+               return () => {
+                  galleryStore.saveStateToStorage()
+              }
+
     }, [])
 
 
@@ -65,7 +67,6 @@ const GalleryScreen = (props) => {
             backHandler.remove()
         }
     }, []);
-
 
 
     const imagesWidth = Math.max(useWindowDimensions().width, useWindowDimensions().height)
@@ -86,7 +87,12 @@ const GalleryScreen = (props) => {
 
     return (
         <View style={{flex: 1}}>
-          {/*<Text>{JSON.stringify(galleryStore.viewableItems)}</Text>*/}
+            {/*<Text>{JSON.stringify(galleryStore.viewableItems)}</Text>*/}
+            {<Text>{JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
+            {<Text>{JSON.stringify(Object.keys(galleryStore.base64Images).length) + ' base64'}</Text>}
+            {<Text>{JSON.stringify(galleryStore.currentPage)}</Text>}
+            {<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>}
+            {<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>}
             <View style={styles.menuButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{

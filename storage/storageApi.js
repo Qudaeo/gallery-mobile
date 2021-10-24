@@ -2,9 +2,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const writeToStorage = async (prefix, item) => {
     try {
-        await AsyncStorage.setItem(prefix, JSON.stringify(item))
+        if (item) {
+            await AsyncStorage.removeItem(prefix);
+            await AsyncStorage.setItem(prefix, JSON.stringify(item))
+        }
     } catch (e) {
-        alert(e.message)
+        alert('Exception: writeToStorage = async (prefix, item): ' + e.message)
     }
 }
 
@@ -15,6 +18,6 @@ export const readFromStorage = async (prefix) => {
             return JSON.parse(storedValue)
         }
     } catch (e) {
-        alert(e.message)
+        alert('Exception: readFromStorage = async (prefix): ' + e.message)
     }
 }

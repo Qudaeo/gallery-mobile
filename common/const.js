@@ -4,9 +4,11 @@ import addPicture from "../images/DetailedImage/add.png";
 import sendPicture from "../images/DetailedImage/send.png";
 import etcPicture from "../images/DetailedImage/etc.png";
 
+// отступы в галареи
 export const marginHorizontal = 4
 export const marginVertical = 2
 
+// размер страницы для чтения из API
 export const apiPageSize = 20
 
 export const actionsPictures = [likePicture, messagePicture, addPicture, sendPicture, etcPicture]

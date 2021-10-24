@@ -20,7 +20,6 @@ export const GalleryItem = (props) => {
     };
 
     return <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
-        {/*<Text>{JSON.stringify(galleryStore.base64Images[id])}</Text>*/}
         <Image
             style={{
                 width: width,
@@ -31,7 +30,6 @@ export const GalleryItem = (props) => {
                 ?{uri: galleryStore.base64Images[id]}
                 :{uri: baseURL + `id/${id}/${width}/${height}.webp`}}
         />
-
         <Text style={{
             position: 'absolute',
             fontSize: Math.round(12 / galleryStore.appColumnCount),
@@ -39,7 +37,7 @@ export const GalleryItem = (props) => {
             textAlign: "right",
             bottom: Math.round(5 / galleryStore.appColumnCount),
             right: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`Photo by ${props.image.author}`}</Text>
+        }}>{`${props.image.id} - ${galleryStore.base64Images[id]?galleryStore.base64Images[id].length:''} b - Photo by ${props.image.author}`}</Text>
 
     </TouchableOpacity>
 }

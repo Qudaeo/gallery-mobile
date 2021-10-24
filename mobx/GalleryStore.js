@@ -5,9 +5,9 @@ import {readFromStorage, writeToStorage} from "../storage/storageApi";
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
 
-const STORAGE_CURRENT_PAGE = 'STORAGE_IMAGES'
-const STORAGE_VIEWABLE_GALLERY = 'STORAGE_VIEWABLE_ITEMS'
-const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
+export const STORAGE_CURRENT_PAGE = 'STORAGE_IMAGES'
+export const STORAGE_VIEWABLE_GALLERY = 'STORAGE_VIEWABLE_ITEMS'
+export const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
 
 export default class GalleryStore {
 
@@ -36,6 +36,7 @@ export default class GalleryStore {
     }
 
     async getNextPage() {
+        //       if (this.isAppInternetReachable) {
         runInAction(() => {
             this.currentPage++
         })
@@ -46,6 +47,7 @@ export default class GalleryStore {
         runInAction(() => {
             this.gallery.push(...pageResponseData)
         })
+        //      }
 
         /*
         for (let photo of pageResponseData) {
@@ -62,61 +64,113 @@ export default class GalleryStore {
 
     async saveStateToStorage() {
         if (this.isAppInternetReachable) {
-            const viewableGallery = this.viewableItems.map((el) => el.item)
-            await writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery)
+            try {
+                const viewableGallery = this.viewableItems.map((el) => el.item).map((el2) => el2[0])
 
-            this.base64Images.splice(0, this.base64Images.length) // очистка массива мутацией
-            for (let photo of viewableGallery) {
-                const imageDimensions = calcImageDimensions(this.appImagesWidth, photo.width / photo.height)
-                const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
+                if (viewableGallery) {
+                    await writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery)
 
-                runInAction(() => {
-                    this.base64Images[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
-                })
+                    let base64Items = {}
+
+                    for (let photo of viewableGallery) {
+
+                        if (photo.id) {
+                            const imageDimensions = calcImageDimensions(this.appImagesWidth, photo.width / photo.height)
+                            const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
+
+                            base64Items[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+
+                        }
+                    }
+
+                    await writeToStorage(STORAGE_BASE64_IMAGE, base64Items)
+
+                    // alert(JSON.stringify(Object.keys(base64Items).length) + ' saved')
+                }
+
+            } catch (e) {
+                alert('Exception: writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery): ' + e.message)
             }
 
-            await writeToStorage(STORAGE_CURRENT_PAGE, this.currentPage)
+            try {
+                await writeToStorage(STORAGE_CURRENT_PAGE, this.currentPage)
+            } catch (e) {
+                alert('Exception: writeToStorage(STORAGE_CURRENT_PAGE, this.currentPage): ' + e.message)
+            }
         }
     }
 
 
     async initializeApp() {
 
-        let storedGallery = await readFromStorage(STORAGE_VIEWABLE_GALLERY)
+        try {
+            const storedGallery = await readFromStorage(STORAGE_VIEWABLE_GALLERY)
 
-        if (storedGallery) {
-
-            storedGallery = storedGallery.map(el => el[0])
-            //           alert(JSON.stringify(storedGallery))
-
-            runInAction(() => {
-                    this.gallery.splice(0, this.gallery.length) // очистка массива мутацией
+            if (storedGallery) {
+                runInAction(() => {
+                    this.gallery = []
                     this.gallery.push(...storedGallery)
-                }
-            )
+                })
+            }
+        } catch (e) {
+            alert('Exception: readFromStorage(STORAGE_VIEWABLE_GALLERY): ' + e.message)
         }
 
+        try {
+            const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
+//            alert(JSON.stringify(Object.keys(imagesFromStorage).length) + ' base64 read')
+
+            if (imagesFromStorage) {
+                runInAction(() => {
+                    this.base64Images = imagesFromStorage
+                })
+            }
+        } catch (e) {
+            alert('Exception: readFromStorage(STORAGE_BASE64_IMAGE): ' + e.message)
+        }
+
+
+        try {
+            const currentPage = await readFromStorage(STORAGE_CURRENT_PAGE)
+
+            runInAction(() =>
+                this.currentPage = currentPage
+            )
+
+        } catch (e) {
+            alert('Exception: readFromStorage(STORAGE_CURRENT_PAGE): ' + e.message)
+        }
 
     }
 
 
     setIsAppInternetReachable(isReachable) {
-        this.isAppInternetReachable = isReachable
+        runInAction(() =>
+            this.isAppInternetReachable = isReachable
+        )
     }
 
     setDetailPhoto(photo) {
-        this.detailPhoto = {...photo}
+        runInAction(() =>
+            this.detailPhoto = {...photo}
+        )
     }
 
     setViewableItems(viewableItems) {
-        this.viewableItems = [...viewableItems]
+        runInAction(() =>
+            this.viewableItems = [...viewableItems]
+        )
     }
 
     setAppImagesSize(width) {
-        this.appImagesWidth = width
+        runInAction(() =>
+            this.appImagesWidth = width
+        )
     }
 
     toggleColumnCount() {
-        this.appColumnCount = (this.appColumnCount === 1) ? 2 : 1
+        runInAction(() =>
+            this.appColumnCount = (this.appColumnCount === 1) ? 2 : 1
+        )
     }
 }
