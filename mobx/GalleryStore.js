@@ -17,7 +17,7 @@ export default class GalleryStore {
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
 
-    isAppInternetReachable = false // доступен ли интернет
+    isAppInternetReachable = true // доступен ли интернет
     isAppSync = false // синхронизировано ли приложение с API
 
     viewableItems = [] // массив видимых элементов из FlatList основного скрина галерии
@@ -72,14 +72,10 @@ export default class GalleryStore {
                     let base64Items = {}
 
                     for (let photo of viewableGallery) {
-
                         if (photo.id) {
                             const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * photo.height / photo.width)
-                            //     alert(JSON.stringify(imageDimensions))
                             const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
-
                             base64Items[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
-
                         }
                     }
 
@@ -102,8 +98,6 @@ export default class GalleryStore {
 
 
     async initializeApp(width) {
-        alert('initializeApp start')
-
         if (!this.isAppSync) {
             runInAction(() => {
                 this.isAppSync = true

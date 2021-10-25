@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from "react";
+import React, {useCallback, useEffect} from "react";
 
 import {
     FlatList,
@@ -33,9 +33,8 @@ const styles = StyleSheet.create({
 const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
-    const flatList = useRef(null)
 
-    const imagesWidth =useWindowDimensions().width
+    const imagesWidth = useWindowDimensions().width
 
     const handleViewableItemsChanged = useCallback(async ({viewableItems}) => {
         await galleryStore.setViewableItems(viewableItems)
@@ -69,7 +68,8 @@ const GalleryScreen = (props) => {
         <View style={{flex: 1}}>
 
             {/*<Text>{'bebug info:'}</Text>*/}
-            {<Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
+            {
+                <Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
             {<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>}
 
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
@@ -94,7 +94,6 @@ const GalleryScreen = (props) => {
                 ? <Text>loading...</Text>
                 : (galleryByColumn) &&
                 <FlatList
-                    ref={flatList}
                     data={galleryByColumn}
                     renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
                     onEndReached={() => {
@@ -102,7 +101,6 @@ const GalleryScreen = (props) => {
                     }}
                     onEndReachedThreshold={0.5}
                     onViewableItemsChanged={handleViewableItemsChanged}
-                    windowSize={15}
                 />}
 
 
