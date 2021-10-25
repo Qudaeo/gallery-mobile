@@ -5,35 +5,16 @@ import {
     Text,
     TouchableOpacity,
     View,
-    StyleSheet, useWindowDimensions, Button
+    StyleSheet, useWindowDimensions
 } from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
 import NetInfo from "@react-native-community/netinfo";
 
-const styles = StyleSheet.create({
-    menuButton: {
-        position: 'absolute',
-        right: 15,
-        top: 10,
-        zIndex: 100,
-
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,0,0.5)',
-        backgroundColor: 'rgba(153, 255, 153, 0.7)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 53,
-        height: 53,
-        borderRadius: 50,
-    }
-});
-
 const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
-
     const imagesWidth = useWindowDimensions().width
 
     const handleViewableItemsChanged = useCallback(async ({viewableItems}) => {
@@ -63,21 +44,37 @@ const GalleryScreen = (props) => {
         }
     }, [])
 
+    const styles = StyleSheet.create({
+        menuButton: {
+            position: 'absolute',
+            right: 15,
+            top: 10,
+            zIndex: 100,
+
+            borderWidth: 1,
+            borderColor: 'rgba(255,255,0,0.5)',
+            backgroundColor: galleryStore.isAppInternetReachable
+                ?"rgba(153, 255, 153, 0.7)"
+                :"rgba(255, 26, 26, 0.7)",
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 53,
+            height: 53,
+            borderRadius: 50,
+        }
+    });
 
     return (
         <View style={{flex: 1}}>
 
             {/*<Text>{'bebug info:'}</Text>*/}
-            {
-                <Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
             {<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>}
-
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
             {<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>}
             {<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>}
             {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>*/}
-            {<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>}
-            {<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>}
+            {/*<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>*/}
+            {/*<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>*/}
 
 
             <View style={styles.menuButton}>

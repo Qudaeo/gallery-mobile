@@ -9,7 +9,7 @@ const instance = axios.create({
 export const galleryAPI = {
     async getGallery(currentPage, pageSize) {
         try {
-            return instance.get(`photos?page=${currentPage}&per_page=${pageSize}`)
+            return instance.get(`/photos?page=${currentPage}&per_page=${pageSize}`)
         } catch (e) {
             alert('Exception: galleryAPI: getGallery(currentPage, pageSize): ' + e.message)
         }
