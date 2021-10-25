@@ -40,6 +40,7 @@ export default class GalleryStore {
             try {
                 const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
                 const pageResponseData = response.data
+                alert(JSON.stringify(pageResponseData))
 
                 runInAction(() => {
                     this.gallery.push(...pageResponseData)
@@ -74,7 +75,8 @@ export default class GalleryStore {
                     for (let photo of viewableGallery) {
                         if (photo.id) {
                             const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * photo.height / photo.width)
-                            const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
+      //                      const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
+                            const getImageResponse = await galleryAPI.getImageByUrl(photo.urls.raw, imageDimensions.width, imageDimensions.height)
                             base64Items[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
                         }
                     }

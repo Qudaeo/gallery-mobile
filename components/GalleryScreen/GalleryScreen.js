@@ -5,7 +5,7 @@ import {
     Text,
     TouchableOpacity,
     View,
-    StyleSheet, useWindowDimensions
+    StyleSheet, useWindowDimensions, Button
 } from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
@@ -73,11 +73,11 @@ const GalleryScreen = (props) => {
             {<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>}
 
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
-            {/*<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>*/}
+            {<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>}
             {<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>}
             {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>*/}
-            {/*<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>*/}
-            {/*<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>*/}
+            {<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>}
+            {<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>}
 
 
             <View style={styles.menuButton}>

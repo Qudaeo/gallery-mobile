@@ -2,7 +2,7 @@ import React from "react";
 import {Image, Text, TouchableOpacity} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
-import {baseURL} from "../../api/api";
+import {API_KEY} from "../../api/api";
 
 export const GalleryItem = (props) => {
 
@@ -27,8 +27,9 @@ export const GalleryItem = (props) => {
             }}
             source={galleryStore.base64Images[id]
                 ? {uri: galleryStore.base64Images[id]}
-                : {uri: baseURL + `id/${id}/${width}/${height}.webp`}}
+                : {uri: `${props.image.urls.raw}?client_id=${API_KEY}&w=${width}h=${height}`}}
         />
+        {/*                : {uri: baseURL + `id/${id}/${width}/${height}.webp`}}*/}
         <Text style={{
             position: 'absolute',
             fontSize: Math.round(12 / galleryStore.appColumnCount),
