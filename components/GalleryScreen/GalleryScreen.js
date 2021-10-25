@@ -5,13 +5,12 @@ import {
     Text,
     TouchableOpacity,
     View,
-    StyleSheet
+    StyleSheet, useWindowDimensions
 } from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
 import NetInfo from "@react-native-community/netinfo";
-import {imagesWidth} from "../../common/const";
 
 const styles = StyleSheet.create({
     menuButton: {
@@ -35,6 +34,8 @@ const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
     const flatList = useRef(null)
+
+    const imagesWidth =useWindowDimensions().width
 
     const handleViewableItemsChanged = useCallback(async ({viewableItems}) => {
         await galleryStore.setViewableItems(viewableItems)
@@ -69,6 +70,7 @@ const GalleryScreen = (props) => {
 
             {/*<Text>{'bebug info:'}</Text>*/}
             {<Text>{'galleryStore.isAppInternetReachable=' + JSON.stringify(galleryStore.isAppInternetReachable)}</Text>}
+            {<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>}
 
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
             {/*<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>*/}
@@ -100,6 +102,7 @@ const GalleryScreen = (props) => {
                     }}
                     onEndReachedThreshold={0.5}
                     onViewableItemsChanged={handleViewableItemsChanged}
+                    windowSize={15}
                 />}
 
 

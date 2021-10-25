@@ -12,7 +12,7 @@ export const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
 export default class GalleryStore {
 
     gallery = [] // основной массив фотографий галереи
-    currentPage = 0 // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
+    currentPage = null // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
 
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
@@ -38,7 +38,6 @@ export default class GalleryStore {
     async getCurrentPage() {
         if (this.isAppInternetReachable) {
             try {
-                //         alert(this.currentPage)
                 const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
                 const pageResponseData = response.data
 
@@ -52,8 +51,8 @@ export default class GalleryStore {
     }
 
 
-    async getNextPage() {
-        if ((this.isAppInternetReachable) && (this.isAppSync)) {
+    getNextPage() {
+        if (this.isAppInternetReachable) {
             runInAction(() => {
                 this.currentPage++
                 this.getCurrentPage()
@@ -103,14 +102,19 @@ export default class GalleryStore {
 
 
     async initializeApp(width) {
-        runInAction(() =>
-            this.appImagesWidth = width
-        )
+        alert('initializeApp start')
+
         if (!this.isAppSync) {
+            runInAction(() => {
+                this.isAppSync = true
+                this.appImagesWidth = width
+            })
             try {
-                const currentPage = await readFromStorage(STORAGE_CURRENT_PAGE)
+                let currentPage = await readFromStorage(STORAGE_CURRENT_PAGE)
+                currentPage = currentPage ? currentPage : 1
+
                 runInAction(() =>
-                    this.currentPage = currentPage ? currentPage : 1
+                    this.currentPage = this.currentPage ? this.currentPage : currentPage
                 )
             } catch (e) {
                 alert('Exception: readFromStorage(STORAGE_CURRENT_PAGE): ' + e.message)
@@ -121,22 +125,6 @@ export default class GalleryStore {
 
                 if (this.isAppInternetReachable) {
                     await this.getCurrentPage()
-
-                    runInAction(() =>
-                        this.isAppSync = true
-                    )
-
-                    /*
-                                    if (storedGallery) {
-
-                                        runInAction(() => {
-                                            const firstId = (storedGallery[0]) ? storedGallery[0].id : null
-                                            if (firstId) {
-                                                this.startIndex = this.gallery.findIndex(el => el.id === firstId)
-                                            }
-                                        })
-                                        }
-                    */
                 } else if (storedGallery) {
                     runInAction(() => {
                         this.gallery = []
@@ -173,7 +161,7 @@ export default class GalleryStore {
         runInAction(() =>
             this.isAppInternetReachable = isReachable
         )
-        if ((this.isAppInternetReachable) && !(this.isAppSync)) {
+        if ((this.isAppInternetReachable) && (!this.isAppSync)) {
             this.initializeApp(this.appImagesWidth)
         }
     }

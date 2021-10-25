@@ -13,7 +13,6 @@ export const GalleryItem = (props) => {
     const height = props.imageDimensions.height
 
 
-
     const openDetailedImage = () => {
         galleryStore.setDetailPhoto(props.image)
         props.navigation.navigate('DetailedImageScreen')
@@ -24,13 +23,11 @@ export const GalleryItem = (props) => {
             style={{
                 width: width,
                 height: height,
-                position: "relative",
-
-         //       resizeMode:'contain'
+                position: "relative"
             }}
             source={galleryStore.base64Images[id]
-                ?{uri: galleryStore.base64Images[id]}
-                :{uri: baseURL + `id/${id}/${width}/${height}.webp`}}
+                ? {uri: galleryStore.base64Images[id]}
+                : {uri: baseURL + `id/${id}/${width}/${height}.webp`}}
         />
         <Text style={{
             position: 'absolute',
@@ -39,7 +36,16 @@ export const GalleryItem = (props) => {
             textAlign: "right",
             bottom: Math.round(5 / galleryStore.appColumnCount),
             right: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`id=${id} - ${width}:${height} - ${galleryStore.base64Images[props.image.id]?galleryStore.base64Images[id].length:''}b - Photo by ${props.image.author}`}</Text>
+        }}>{`Photo by ${props.image.author}`}</Text>
+        <Text style={{
+            position: 'absolute',
+            fontSize: Math.round(12 / galleryStore.appColumnCount),
+            color: 'rgba(255,255,255,1)',
+            textAlign: "left",
+            top: Math.round(5 / galleryStore.appColumnCount),
+            left: Math.round(10 / galleryStore.appColumnCount),
+        }}>{`id=${id}   ${width}:${height}${galleryStore.base64Images[id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>
+
 
     </TouchableOpacity>
 }

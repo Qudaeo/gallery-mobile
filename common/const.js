@@ -9,7 +9,6 @@ export const marginHorizontal = 4
 export const marginVertical = 2
 
 
-export const apiPageSize = 25 // размер страницы для чтения из API
-export const imagesWidth = 1920 // размер получаемых картинок
+export const apiPageSize = 30 // размер страницы для чтения из API
 
 export const actionsPictures = [likePicture, messagePicture, addPicture, sendPicture, etcPicture]
