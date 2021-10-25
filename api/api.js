@@ -14,15 +14,15 @@ export const galleryAPI = {
         try {
             return instance.get(`photos?page=${currentPage}&per_page=${pageSize}`)
         } catch (e) {
-            alert(e.message)
+            alert('Exception: galleryAPI: getGallery(currentPage, pageSize): ' + e.message)
         }
     },
 
-    async getImageByUrl(ulr, width, height) {
+    async getImageByUrl(url, width, height) {
         try {
-            return instance.get(`${url}?w=${width}h=${height}`, {responseType: 'arraybuffer'})
+            return instance.get(`${url}?w=${width}&h=${height}`, {responseType: 'arraybuffer'})
         } catch (e) {
-            alert(e.message)
+            alert('Exception: galleryAPI: getImageByUrl(url, width, height): ' + e.message)
         }
     }
 

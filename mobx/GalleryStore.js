@@ -35,22 +35,45 @@ export default class GalleryStore {
         makeAutoObservable(this, {}, {autoBind: true})
     }
 
+    async getBase64Image(url, id, width, height) {
+        try {
+            const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * height / width)
+
+//           await alert(url+ ' ' +imageDimensions.width+ ' ' +imageDimensions.height)
+
+            const getImageResponse = await galleryAPI.getImageByUrl(url, imageDimensions.width, imageDimensions.height)
+
+            runInAction(() => {
+                this.base64Images[id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+            })
+
+        } catch (e) {
+            alert('Exception: getBase64Image(url, id, width, height) : ' + e.message)
+        }
+    }
+
     async getCurrentPage() {
         if (this.isAppInternetReachable) {
             try {
                 const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
                 const pageResponseData = response.data
-                alert(JSON.stringify(pageResponseData))
+//                alert(JSON.stringify(pageResponseData))
 
                 runInAction(() => {
                     this.gallery.push(...pageResponseData)
                 })
+
+                for (let photo of pageResponseData) {
+                 //   await alert(photo.urls.raw + ' ' + photo.id+ ' ' +photo.width+ ' ' +photo.height)
+                    await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
+                }
+
+
             } catch (e) {
                 alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
             }
         }
     }
-
 
     getNextPage() {
         if (this.isAppInternetReachable) {
@@ -74,10 +97,7 @@ export default class GalleryStore {
 
                     for (let photo of viewableGallery) {
                         if (photo.id) {
-                            const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * photo.height / photo.width)
-      //                      const getImageResponse = await galleryAPI.getImage(photo.id, imageDimensions.width, imageDimensions.height)
-                            const getImageResponse = await galleryAPI.getImageByUrl(photo.urls.raw, imageDimensions.width, imageDimensions.height)
-                            base64Items[photo.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+  //                          await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
                         }
                     }
 
@@ -138,12 +158,14 @@ export default class GalleryStore {
             try {
                 const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
 //            alert(JSON.stringify(Object.keys(imagesFromStorage).length) + ' base64 read')
-
+/*
                 if (imagesFromStorage) {
                     runInAction(() => {
                         this.base64Images = imagesFromStorage
                     })
                 }
+
+ */
             } catch (e) {
                 alert('Exception: readFromStorage(STORAGE_BASE64_IMAGE): ' + e.message)
             }
