@@ -34,7 +34,7 @@ export const GalleryItem = (props) => {
             textAlign: "right",
             bottom: Math.round(5 / galleryStore.appColumnCount),
             right: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`Photo by ${props.image.author}`}</Text>
+        }}>{`Photo by ${props.image.user.name}`}</Text>
         <Text style={{
             position: 'absolute',
             fontSize: Math.round(12 / galleryStore.appColumnCount),

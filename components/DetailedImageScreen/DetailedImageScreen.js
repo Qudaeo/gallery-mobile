@@ -28,10 +28,9 @@ const DetailedImageScreen = (props) => {
                     width: photoDimensions.width,
                     height: photoDimensions.height
                 }}
-                source={{uri: galleryStore.base64Images[id]}}
+                source={{uri: galleryStore.base64Images[photo.id]}}
             />
         </TouchableOpacity>
-        {/*                    :{uri: baseURL + `id/${photo.id}/${photoDimensions.width}/${photoDimensions.height}.webp`}}*/}
         <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
             {actionsPictures.map((el, index) => <PhotoAction key={index} index={index}/>)}
         </View>

@@ -64,7 +64,7 @@ export default class GalleryStore {
                 })
 
                 for (let photo of pageResponseData) {
-                 //   await alert(photo.urls.raw + ' ' + photo.id+ ' ' +photo.width+ ' ' +photo.height)
+                    //   await alert(photo.urls.raw + ' ' + photo.id+ ' ' +photo.width+ ' ' +photo.height)
                     await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
                 }
 
@@ -96,8 +96,8 @@ export default class GalleryStore {
                     let base64Items = {}
 
                     for (let photo of viewableGallery) {
-                        if (photo.id) {
-  //                          await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
+                        if ((photo.id) && (this.base64Images[photo.id])) {
+                            base64Items[photo.id] = this.base64Images[photo.id]
                         }
                     }
 
@@ -157,15 +157,14 @@ export default class GalleryStore {
 
             try {
                 const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
-//            alert(JSON.stringify(Object.keys(imagesFromStorage).length) + ' base64 read')
-/*
-                if (imagesFromStorage) {
+
+                for (let base64 in imagesFromStorage) {
                     runInAction(() => {
-                        this.base64Images = imagesFromStorage
+                        this.base64Images[base64] = imagesFromStorage[base64]
                     })
                 }
 
- */
+
             } catch (e) {
                 alert('Exception: readFromStorage(STORAGE_BASE64_IMAGE): ' + e.message)
             }
