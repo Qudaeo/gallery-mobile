@@ -1,8 +1,5 @@
 import axios from "axios";
-
-export const API_KEY = "RfyHijtOTgB32xK8fjfc95K_cOMUIw7os6e_dT4Yehc"
-
-const baseURL = "https://api.unsplash.com/"
+import {API_KEY, baseURL} from "../common/const";
 
 const instance = axios.create({
     baseURL,
@@ -24,18 +21,15 @@ export const galleryAPI = {
         } catch (e) {
             alert('Exception: galleryAPI: getImageByUrl(url, width, height): ' + e.message)
         }
-    }
+    },
 
-    /*
-    async getImage(id, width, height) {
+    async getPhotoDetail(id) {
         try {
-            return instance.get(`id/${id}/${width}/${height}.webp`, {responseType: 'arraybuffer'})
+            return instance.get(`/photos/${id}`)
         } catch (e) {
-            alert(e.message)
+            alert('Exception: galleryAPI: getPhotoDetail(id): ' + e.message)
         }
-    }
-     */
-
+    },
 }
 
 
