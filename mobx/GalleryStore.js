@@ -22,13 +22,9 @@ export default class GalleryStore {
 
     viewableItems = [] // массив видимых элементов из FlatList основного скрина галерии
 
-    detailPhoto = { // 1 элемент из массива gallery для показа на детальных
-        id: null,
-        width: null,
-        height: null,
-        download_url: null
-    }
 
+    selectedDetailPhotoId = null
+    detailPhoto = {} // объект элементов вида {id: detailRequest}
     base64Images = {} // объект элементов вида {id: base64hash}
 
     constructor() {
@@ -36,19 +32,21 @@ export default class GalleryStore {
     }
 
     async getBase64Image(url, id, width, height) {
-        try {
-            const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * height / width)
+        if (this.isAppInternetReachable) {
+            try {
+                const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * height / width)
 
 //           await alert(url+ ' ' +imageDimensions.width+ ' ' +imageDimensions.height)
 
-            const getImageResponse = await galleryAPI.getImageByUrl(url, imageDimensions.width, imageDimensions.height)
+                const getImageResponse = await galleryAPI.getImageByUrl(url, imageDimensions.width, imageDimensions.height)
 
-            runInAction(() => {
-                this.base64Images[id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
-            })
+                runInAction(() => {
+                    this.base64Images[id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+                })
 
-        } catch (e) {
-            alert('Exception: getBase64Image(url, id, width, height) : ' + e.message)
+            } catch (e) {
+                alert('Exception: getBase64Image(url, id, width, height) : ' + e.message)
+            }
         }
     }
 
@@ -183,10 +181,28 @@ export default class GalleryStore {
         }
     }
 
-    setDetailPhoto(photo) {
-        runInAction(() =>
-            this.detailPhoto = {...photo}
-        )
+    async getDetailPhoto(id) {
+        if (!this.detailPhoto[id]) {
+            if (this.isAppInternetReachable) {
+
+                try {
+                    const response = await galleryAPI.getPhotoDetail(id)
+                    const detailResponseData = response.data
+         //           alert(JSON.stringify(detailResponseData))
+
+                    runInAction(() => {
+                        this.selectedDetailPhotoId = id
+                        this.detailPhoto[id] = detailResponseData
+                    })
+
+                } catch (e) {
+                    alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
+                }
+            } else {
+                alert('Check internet connection!')
+            }
+
+        }
     }
 
     setViewableItems(viewableItems) {

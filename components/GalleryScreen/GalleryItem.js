@@ -7,13 +7,13 @@ export const GalleryItem = (props) => {
 
     const {galleryStore} = useStore()
 
-    const id = props.image.id
+    const id = props.photo.id
     const width = props.imageDimensions.width
     const height = props.imageDimensions.height
 
 
-    const openDetailedImage = () => {
-        galleryStore.setDetailPhoto(props.image)
+    const openDetailedImage = async () => {
+        await galleryStore.getDetailPhoto(id)
         props.navigation.navigate('DetailedImageScreen')
     };
 
@@ -34,7 +34,7 @@ export const GalleryItem = (props) => {
             textAlign: "right",
             bottom: Math.round(5 / galleryStore.appColumnCount),
             right: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`Photo by ${props.image.user.name}`}</Text>
+        }}>{`Photo by ${props.photo.user.name}`}</Text>
         <Text style={{
             position: 'absolute',
             fontSize: Math.round(12 / galleryStore.appColumnCount),

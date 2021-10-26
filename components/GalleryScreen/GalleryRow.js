@@ -42,7 +42,7 @@ export const GalleryRow = ({row, navigation}) => {
                 height: imageDimensions[index].height,
                 marginLeft: marginHorizontal,
             }}>
-                <GalleryItem image={el}
+                <GalleryItem photo={el}
                              navigation={navigation} imageDimensions={imageDimensions[index]}/>
             </View>
         )}
