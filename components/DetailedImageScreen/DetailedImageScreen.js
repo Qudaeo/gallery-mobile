@@ -6,8 +6,11 @@ import {calcImageDimensions} from "../../common/funcions"
 import {useStore} from "../../mobx/store";
 import PhotoAction from "./PhotoAction";
 import locationPicture from "../../images/DetailedImage/location.png"
-import moment from "moment"
+import awardPicture from "../../images/DetailedImage/award.png"
+import statisticsPicture from "../../images/DetailedImage/statistics.png"
 
+import moment from "moment"
+import {TagComponent} from "./TagComponent";
 
 
 const DetailedImageScreen = (props) => {
@@ -108,6 +111,88 @@ const DetailedImageScreen = (props) => {
             <Text style={{marginLeft: 5, fontWeight: "bold"}}>
                 {`Taken: ${takenPhoto}      Uploaded: ${uploaded}`}
             </Text>
+        </View>
+
+        <View style={{marginTop: 20, marginLeft: 20, flexDirection: 'row'}}>
+            <View>
+                <View style={{width: 80, alignItems: "center"}}>
+                    <Text style={{marginLeft: 5, fontSize: 15}}>
+                        Pulse
+                    </Text>
+                </View>
+                <View style={{width: 80, alignItems: "center"}}>
+                    <Text style={{marginLeft: 5, marginTop: 2, fontSize: 20, fontWeight: "bold"}}>
+                        99,2
+                    </Text>
+                </View>
+            </View>
+            <View>
+                <View style={{width: 100, alignItems: "center"}}>
+                    <Text style={{marginLeft: 5, fontSize: 15}}>
+                        Impressions
+                    </Text>
+                </View>
+                <View style={{width: 100, alignItems: "center"}}>
+                    <Text style={{marginLeft: 5, marginTop: 2, fontSize: 20, fontWeight: "bold"}}>
+                        126,1K
+                    </Text>
+                </View>
+            </View>
+            <View>
+                <View style={{width: 120, alignItems: "center"}}>
+                    <Text style={{marginLeft: 5, fontSize: 15}}>
+                        Editors' choice
+                    </Text>
+                </View>
+                <View style={{width: 120}}>
+                    <Image source={awardPicture} style={{width: 25, height: 25, marginTop: 3, marginLeft: 10}}/>
+                </View>
+            </View>
+        </View>
+        <View style={{marginTop: 20, marginLeft: 20, flexDirection: 'row'}}>
+            <Text style={{marginLeft: 5, fontWeight: "bold"}}>
+                {`${photo.likes} people liked this photo >`}
+            </Text>
+        </View>
+
+        <View style={{
+            marginTop: 20, marginLeft: 20, flexDirection: 'row',
+            height: 80, borderWidth: 1, borderColor: 'rgb(128, 159, 255)',
+            width: 300
+        }}>
+            <View style={{width: 3, backgroundColor: 'rgb(128, 159, 255)'}}>
+
+            </View>
+            <View>
+                <Image source={statisticsPicture} style={{marginHorizontal: 10, marginTop: 15, width: 40, height: 40}}/>
+            </View>
+            <View>
+                <View style={{marginLeft: 10, marginTop: 8}}>
+                    <Text>Learn how your own photos{"\n"}
+                        perform and get access to</Text>
+                    <View style={{flexDirection: "row"}}>
+                        <Text>Statistics.</Text>
+                        <Text style={{color: "rgb(128, 159, 255)"}}>Learn more</Text>
+                    </View>
+                </View>
+            </View>
+        </View>
+
+        <View style={{
+            marginTop: 20, marginLeft: 20, flexDirection: "row",
+            flexWrap: "wrap",
+        }}>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
+            <TagComponent/>
 
         </View>
 

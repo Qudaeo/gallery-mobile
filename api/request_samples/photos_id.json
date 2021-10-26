@@ -28,7 +28,8 @@
   "current_user_collections": [],
   "sponsorship": null,
   "topic_submissions": {},
-  "user": {
+  "user":
+  {
     "id": "qsfKJRsTO0o",
     "updated_at": "2021-10-26T00:41:44-04:00",
     "username": "hq1",
@@ -88,7 +89,8 @@
   "meta": {
     "index": true
   },
-  "tags": [
+  "tags":
+  [
     {
     "type": "landing_page",
     "title": "owl",
@@ -482,11 +484,15 @@
     "type": "search",
     "title": "pet"
   }],
-  "tags_preview": [{
+  "tags_preview":
+  [
+    {
     "type": "landing_page",
     "title": "owl",
-    "source": {
-      "ancestry": {
+    "source":
+    {
+      "ancestry":
+      {
         "type": {
           "slug": "images",
           "pretty_slug": "Images"
@@ -505,7 +511,8 @@
       "description": "Be wise like the owl and choose from only the finest selection of owl images on Unsplash. These aren't your average stock photos: they're real-life images captured by real professionals. And they're free. You're welcome!",
       "meta_title": "27+ Owl Pictures | Download Free Images on Unsplash",
       "meta_description": "Choose from hundreds of free owl pictures. Download HD owl photos for free on Unsplash.",
-      "cover_photo": {
+      "cover_photo":
+      {
         "id": "tG5dTPMf1I4",
         "created_at": "2018-03-26T23:20:47-04:00",
         "updated_at": "2021-10-25T04:04:36-04:00",
@@ -580,10 +587,12 @@
         }
       }
     }
-  }, {
+  },
+    {
     "type": "landing_page",
     "title": "bird",
-    "source": {
+    "source":
+    {
       "ancestry": {
         "type": {
           "slug": "images",
@@ -676,7 +685,8 @@
   }, {
     "type": "landing_page",
     "title": "animal",
-    "source": {
+    "source":
+    {
       "ancestry": {
         "type": {
           "slug": "images",
@@ -768,7 +778,8 @@
       }
     }
   }],
-  "related_collections": {
+  "related_collections":
+  {
     "total": 3,
     "type": "related",
     "results": [{
