@@ -17,7 +17,6 @@ const DetailedImageScreen = (props) => {
     const takenPhoto = moment(new Date(photoGalleryInfo.created_at)).format('DD MMM YYYY')
     const uploaded = moment(new Date(photoGalleryInfo.updated_at)).fromNow();
 
-
     const photo = galleryStore.detailPhoto[galleryStore.selectedDetailPhotoId]
 
     const windowWidth = useWindowDimensions().width
@@ -107,7 +106,7 @@ const DetailedImageScreen = (props) => {
         </View>}
         <View style={{marginTop: 20, marginLeft: 20, flexDirection: 'row'}}>
             <Text style={{marginLeft: 5, fontWeight: "bold"}}>
-                {`Taken: ${takenPhoto}    Uploaded: ${uploaded}`}
+                {`Taken: ${takenPhoto}      Uploaded: ${uploaded}`}
             </Text>
 
         </View>
