@@ -1,7 +1,0 @@
-<application  xmlns:android="http://www.w3.org/2001/XMLSchema"
-        android:name="com.example.app"
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"/>
