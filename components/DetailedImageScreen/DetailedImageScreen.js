@@ -81,7 +81,7 @@ const DetailedImageScreen = (props) => {
 
 
         <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
-            <Text>{JSON.stringify(photo.user)}</Text>
+            <Text>{JSON.stringify(photo)}</Text>
         </View>
 
 

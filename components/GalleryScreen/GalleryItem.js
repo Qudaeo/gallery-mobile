@@ -35,14 +35,14 @@ export const GalleryItem = (props) => {
             bottom: Math.round(5 / galleryStore.appColumnCount),
             right: Math.round(10 / galleryStore.appColumnCount),
         }}>{`Photo by ${props.photo.user.name}`}</Text>
-        <Text style={{
+        {/*<Text style={{
             position: 'absolute',
             fontSize: Math.round(12 / galleryStore.appColumnCount),
             color: 'rgba(255,255,255,1)',
             textAlign: "left",
             top: Math.round(5 / galleryStore.appColumnCount),
             left: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`id=${id}   ${width}:${height}${galleryStore.base64Images[id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>
+        }}>{`id=${id}   ${width}:${height}${galleryStore.base64Images[id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>*/}
 
 
     </TouchableOpacity>
