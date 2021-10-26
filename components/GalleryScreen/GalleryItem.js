@@ -14,8 +14,13 @@ export const GalleryItem = (props) => {
 
     const openDetailedImage = async () => {
         await galleryStore.getDetailPhoto(id)
-        props.navigation.navigate('DetailedImageScreen')
-    };
+        if (galleryStore.detailPhoto[id]) {
+            props.navigation.navigate('DetailedImageScreen')
+        } else {
+            alert('Check internet connection!')
+        }
+    }
+
 
     return <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
         <Image

@@ -182,26 +182,22 @@ export default class GalleryStore {
     }
 
     async getDetailPhoto(id) {
+        runInAction(() => {
+            this.selectedDetailPhotoId = id
+        })
         if (!this.detailPhoto[id]) {
             if (this.isAppInternetReachable) {
-
                 try {
                     const response = await galleryAPI.getPhotoDetail(id)
                     const detailResponseData = response.data
-         //           alert(JSON.stringify(detailResponseData))
 
                     runInAction(() => {
-                        this.selectedDetailPhotoId = id
                         this.detailPhoto[id] = detailResponseData
                     })
-
                 } catch (e) {
                     alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
                 }
-            } else {
-                alert('Check internet connection!')
             }
-
         }
     }
 
