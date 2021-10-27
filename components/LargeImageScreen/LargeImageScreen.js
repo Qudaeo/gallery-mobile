@@ -6,15 +6,10 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 const LargeImageScreen = () => {
     const {galleryStore} = useStore()
-
     return <ImageViewer
-        imageUrls={[{url: galleryStore.detailPhoto.urls.raw}]}
-        renderIndicator = {() => null}
+        imageUrls={[{url: galleryStore.detailPhoto[galleryStore.selectedDetailPhotoId].urls.regular}]}
+        renderIndicator={() => null}
     />
- }
- //.urls.raw
-//       backgroundColor = "white"
-//       imageUrls={[{url: galleryStore.base64Images[galleryStore.detailPhoto.id]}]}
-
+}
 
 export default observer(LargeImageScreen)

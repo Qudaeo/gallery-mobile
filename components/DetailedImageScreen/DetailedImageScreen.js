@@ -179,27 +179,17 @@ const DetailedImageScreen = (props) => {
         </View>
 
         <View style={{
-            marginTop: 20, marginLeft: 20, flexDirection: "row",
-            flexWrap: "wrap",
+            margin: 20, marginRight: 60, flexDirection: "row",
+            flexWrap: "wrap", alignContent: "center"
         }}>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
-            <TagComponent/>
+            {photo.tags.map(tag => <TagComponent key={tag.title} tagTitle={tag.title}/>)}
 
         </View>
 
 
-        <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
-            <Text>{JSON.stringify(photo)}</Text>
-        </View>
+        {/*<View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+            <Text>{JSON.stringify(photo.tags)}</Text>
+        </View>*/}
 
 
     </ScrollView>

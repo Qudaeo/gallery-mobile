@@ -12,6 +12,8 @@ import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
 import NetInfo from "@react-native-community/netinfo";
 
+import SearchPhotoBar from "../SearchPhotoBar/SearchPhotoBar";
+
 const GalleryScreen = (props) => {
 
     const {galleryStore} = useStore()
@@ -45,7 +47,7 @@ const GalleryScreen = (props) => {
     }, [])
 
     const styles = StyleSheet.create({
-        menuButton: {
+        columnToggleButton: {
             position: 'absolute',
             right: 15,
             top: 10,
@@ -54,8 +56,8 @@ const GalleryScreen = (props) => {
             borderWidth: 1,
             borderColor: 'rgba(255,255,0,0.5)',
             backgroundColor: galleryStore.isAppInternetReachable
-                ?"rgba(153, 255, 153, 0.7)"
-                :"rgba(255, 26, 26, 0.7)",
+                ? "rgba(153, 255, 153, 0.7)"
+                : "rgba(255, 26, 26, 0.7)",
             alignItems: 'center',
             justifyContent: 'center',
             width: 53,
@@ -66,18 +68,17 @@ const GalleryScreen = (props) => {
 
     return (
         <View style={{flex: 1}}>
-
-            {/*<Text>{'bebug info:'}</Text>*/}
-            {<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>}
+            {/*<Text>{'debug info:'}</Text>*/}
+            {/*<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>*/}
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
-            {<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>}
-            {<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>}
+            {/*<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>*/}
+            {/*<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>*/}
             {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>*/}
             {/*<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>*/}
             {/*<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>*/}
+            <SearchPhotoBar searchText={galleryStore.searchText} searchTextChange={galleryStore.searchTextChange}/>
 
-
-            <View style={styles.menuButton}>
+            <View style={styles.columnToggleButton}>
                 <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
                     <Text style={{
                         fontSize: 24,

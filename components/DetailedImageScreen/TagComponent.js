@@ -1,7 +1,7 @@
 import React from "react";
 import {Text, TouchableOpacity, View} from "react-native";
 
-export const TagComponent = () => <TouchableOpacity>
+export const TagComponent = (props) => <TouchableOpacity>
     <View style={{
         height: 30,
         borderWidth: 1,
@@ -11,6 +11,6 @@ export const TagComponent = () => <TouchableOpacity>
         justifyContent: 'center',
         alignSelf: 'flex-start'
     }}>
-        <Text style={{marginHorizontal: 10}}>123</Text>
+        <Text style={{marginHorizontal: 10}}>{props.tagTitle}</Text>
     </View>
 </TouchableOpacity>

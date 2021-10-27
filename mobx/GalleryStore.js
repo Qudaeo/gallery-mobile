@@ -13,6 +13,7 @@ export default class GalleryStore {
 
     gallery = [] // основной массив фотографий галереи
     currentPage = null // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
+    searchText = '123'
 
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
@@ -29,6 +30,10 @@ export default class GalleryStore {
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true})
+    }
+
+    searchTextChange(text) {
+        this.searchText = text
     }
 
     async getBase64Image(url, id, width, height) {
