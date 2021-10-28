@@ -3,16 +3,16 @@ import React, {useCallback, useEffect} from "react";
 import {
     FlatList,
     Text,
-    TouchableOpacity,
     View,
-    StyleSheet, useWindowDimensions
+    useWindowDimensions
 } from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
 import NetInfo from "@react-native-community/netinfo";
 
-import SearchPhotoBar from "../SearchPhotoBar/SearchPhotoBar";
+import SearchPhotoBar from "./SearchPhotoBar";
+import ToggleColumnCount from "./ToggleColumnCount";
 
 const GalleryScreen = (props) => {
 
@@ -46,26 +46,6 @@ const GalleryScreen = (props) => {
         }
     }, [])
 
-    const styles = StyleSheet.create({
-        columnToggleButton: {
-            position: 'absolute',
-            right: 15,
-            top: 10,
-            zIndex: 100,
-
-            borderWidth: 1,
-            borderColor: 'rgba(255,255,0,0.5)',
-            backgroundColor: galleryStore.isAppInternetReachable
-                ? "rgba(153, 255, 153, 0.7)"
-                : "rgba(255, 26, 26, 0.7)",
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 53,
-            height: 53,
-            borderRadius: 50,
-        }
-    });
-
     return (
         <View style={{flex: 1}}>
             {/*<Text>{'debug info:'}</Text>*/}
@@ -76,17 +56,14 @@ const GalleryScreen = (props) => {
             {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>*/}
             {/*<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>*/}
             {/*<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>*/}
-            <SearchPhotoBar searchText={galleryStore.searchText} searchTextChange={galleryStore.searchTextChange}/>
+            <SearchPhotoBar
+                searchText={galleryStore.searchText}
+                searchTextChange={galleryStore.searchTextChange}/>
 
-            <View style={styles.columnToggleButton}>
-                <TouchableOpacity onPress={() => galleryStore.toggleColumnCount()}>
-                    <Text style={{
-                        fontSize: 24,
-                        fontWeight: "bold"
-                    }}
-                    >{galleryStore.appColumnCount}</Text>
-                </TouchableOpacity>
-            </View>
+            <ToggleColumnCount
+                appColumnCount={galleryStore.appColumnCount}
+                toggleColumnCount={galleryStore.toggleColumnCount}
+                isAppInternetReachable={galleryStore.isAppInternetReachable}/>
 
             {(galleryByColumn.length === 0)
                 ? <Text>loading...</Text>
@@ -100,7 +77,6 @@ const GalleryScreen = (props) => {
                     onEndReachedThreshold={0.5}
                     onViewableItemsChanged={handleViewableItemsChanged}
                 />}
-
 
         </View>
     )
