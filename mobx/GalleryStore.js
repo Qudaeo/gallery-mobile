@@ -15,6 +15,8 @@ export default class GalleryStore {
     currentPage = null // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
     searchText = ''
 
+    messageText = ''
+
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
 
@@ -34,12 +36,15 @@ export default class GalleryStore {
 
     searchTextChange(text) {
         if (this.searchText !== text) {
-            this.searchText = text
-            if (this.isAppInternetReachable) {
-                this.currentPage = 1
-                this.gallery = []
-                this.getCurrentPage()
-            }
+            runInAction(() => {
+                this.messageText = (this.searchText === '') ? 'downloading photos...' : 'find photos...'
+                this.searchText = text
+                if (this.isAppInternetReachable) {
+                    this.currentPage = 1
+                    this.gallery = []
+                    this.getCurrentPage()
+                }
+            })
         }
     }
 
@@ -80,9 +85,9 @@ export default class GalleryStore {
         if (this.isAppInternetReachable) {
             try {
                 const pageResponseData = await this.getResponseData()
-                //             alert(JSON.stringify(pageResponseData))
 
                 runInAction(() => {
+                    this.messageText = 'found ' + pageResponseData.length + ' photos'
                     this.gallery.push(...pageResponseData)
                 })
 
@@ -146,6 +151,7 @@ export default class GalleryStore {
             runInAction(() => {
                 this.isAppSync = true
                 this.appImagesWidth = width
+                this.messageText = 'read saved photos...'
             })
             try {
                 let currentPage = await readFromStorage(STORAGE_CURRENT_PAGE)
@@ -162,6 +168,10 @@ export default class GalleryStore {
                 const storedGallery = await readFromStorage(STORAGE_VIEWABLE_GALLERY)
 
                 if (this.isAppInternetReachable) {
+                    runInAction(() => {
+                        this.messageText = 'downloading photos...'
+                    })
+
                     await this.getCurrentPage()
                 } else if (storedGallery) {
                     runInAction(() => {
@@ -169,7 +179,9 @@ export default class GalleryStore {
                         this.gallery.push(...storedGallery)
                     })
                 } else {
-                    alert('Check internet connection!')
+                    runInAction(() => {
+                        this.messageText = 'no internet connection'
+                    })
                 }
 
 

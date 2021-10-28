@@ -2,7 +2,6 @@ import React, {useCallback, useEffect} from "react";
 
 import {
     FlatList,
-    Text,
     View,
     useWindowDimensions
 } from "react-native";
@@ -13,6 +12,7 @@ import NetInfo from "@react-native-community/netinfo";
 
 import SearchPhotoBar from "./SearchPhotoBar";
 import ToggleColumnCount from "./ToggleColumnCount";
+import Loading from "../Loading/Loading";
 
 const GalleryScreen = (props) => {
 
@@ -67,7 +67,7 @@ const GalleryScreen = (props) => {
                 isAppInternetReachable={galleryStore.isAppInternetReachable}/>
 
             {(galleryByColumn.length === 0)
-                ? <Text>loading...</Text>
+                ? <Loading messageText={galleryStore.messageText ? galleryStore.messageText : 'loadind...'}/>
                 : (galleryByColumn) &&
                 <FlatList
                     data={galleryByColumn}
