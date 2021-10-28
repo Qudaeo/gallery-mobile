@@ -56,12 +56,16 @@ export default class GalleryStore {
     }
 
     async getResponseData() {
-        if (this.searchText !== '') {
-            const response = await galleryAPI.getSearchedGallery(this.searchText, this.currentPage, apiPageSize)
-            return response.data.results
-        } else {
-            const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
-            return response.data
+        try {
+            if (this.searchText !== '') {
+                const response = await galleryAPI.getSearchedGallery(this.searchText, this.currentPage, apiPageSize)
+                return response.data.results
+            } else {
+                const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
+                return response.data
+            }
+        } catch (e) {
+            alert('Exception: getResponseData(): ' + e.message)
         }
     }
 
@@ -69,7 +73,7 @@ export default class GalleryStore {
         if (this.isAppInternetReachable) {
             try {
                 const pageResponseData = await this.getResponseData()
-   //             alert(JSON.stringify(pageResponseData))
+                //             alert(JSON.stringify(pageResponseData))
 
                 runInAction(() => {
                     this.gallery.push(...pageResponseData)
@@ -79,7 +83,6 @@ export default class GalleryStore {
                     //   await alert(photo.urls.raw + ' ' + photo.id+ ' ' +photo.width+ ' ' +photo.height)
                     await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
                 }
-
 
             } catch (e) {
                 alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
