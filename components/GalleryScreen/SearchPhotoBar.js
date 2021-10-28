@@ -66,14 +66,14 @@ const SearchPhotoBar = (props) => {
 
                 icon={magnifierPicture}
                 clearIcon={clearPicture}
-                iconColor={'rgb(0, 0, 255)'}
+                iconColor={'rgb(46, 45, 41)'}
 
             />
         </View>
         {!!(props.searchText) &&
         <View style={{
             borderWidth: 1,
-            marginLeft: isFocused ? currentWindowWidth : 120,
+            marginLeft: isFocused ? currentWindowWidth : 115,
             marginTop: 20,
             borderRadius: 8,
             backgroundColor: 'rgba(230, 249, 255, 0.7)',
@@ -82,9 +82,10 @@ const SearchPhotoBar = (props) => {
 
         }}>
             <Text style={{
-                fontSize: 17,
+                fontSize: 18,
                 marginHorizontal: 5,
                 marginVertical:2,
+                color: 'rgb(46, 45, 41)',
             }}>{props.searchText}</Text>
         </View>}
     </View>
