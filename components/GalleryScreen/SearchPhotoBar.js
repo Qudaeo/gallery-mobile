@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {StyleSheet, Text, useWindowDimensions, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {Searchbar} from 'react-native-paper';
 import magnifierPicture from '../../images/GalleryScreen/magnifier.png'
 import clearPicture from '../../images/GalleryScreen/cancel.png'
@@ -71,23 +71,29 @@ const SearchPhotoBar = (props) => {
             />
         </View>
         {!!(props.searchText) &&
-        <View style={{
-            borderWidth: 1,
-            marginLeft: isFocused ? currentWindowWidth : 115,
-            marginTop: 20,
-            borderRadius: 8,
-            backgroundColor: 'rgba(230, 249, 255, 0.7)',
-            borderColor: 'rgba(191, 191, 191,0.5)',
+        <TouchableOpacity onPress={() => setIsFocused(true)}>
+            <View style={{
+                borderWidth: 1,
+                marginLeft: isFocused ? currentWindowWidth : 115,
+                marginTop: 20,
+                borderRadius: 8,
+                backgroundColor: 'rgba(230, 249, 255, 0.7)',
+                borderColor: 'rgba(191, 191, 191,0.7)',
+                elevation: 12,
+                opacity:10,
 
 
-        }}>
-            <Text style={{
-                fontSize: 18,
-                marginHorizontal: 5,
-                marginVertical:2,
-                color: 'rgb(46, 45, 41)',
-            }}>{props.searchText}</Text>
-        </View>}
+            }}>
+                <Text style={{
+                    fontSize: 18,
+                    marginHorizontal: 5,
+                    marginVertical: 2,
+                    color: 'rgb(46, 45, 41)',
+                    maxWidth: currentWindowWidth - 180,
+
+                }}>{props.searchText}</Text>
+            </View>
+        </TouchableOpacity>}
     </View>
 }
 

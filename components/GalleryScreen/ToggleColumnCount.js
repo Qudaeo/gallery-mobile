@@ -11,7 +11,8 @@ const ToggleColumnCount = ({appColumnCount, toggleColumnCount, isAppInternetReac
             zIndex: 100,
 
             borderWidth: 1,
-            borderColor: 'rgba(191, 191, 191,0.5)',
+            borderColor: 'rgba(180, 180, 180,0.7)',
+
             backgroundColor: isAppInternetReachable
                 ? "rgba(153, 255, 153, 0.7)"
                 : "rgba(255, 26, 26, 0.7)",
@@ -20,13 +21,16 @@ const ToggleColumnCount = ({appColumnCount, toggleColumnCount, isAppInternetReac
             width: 53,
             height: 53,
             borderRadius: 50,
+            elevation: 10,
         }
     })
 
     return <View style={styles.columnToggleButton}>
         <TouchableOpacity onPress={() => toggleColumnCount()}>
             <Text style={{
-                fontSize: 24
+                fontSize: 25,
+                paddingBottom:1
+
             }}
             >{appColumnCount}</Text>
         </TouchableOpacity>
