@@ -6,7 +6,13 @@ import clearPicture from '../../images/GalleryScreen/cancel.png'
 
 const SearchPhotoBar = (props) => {
 
-    const [isFocused, setIsFocused] = useState(false);
+    const [isFocused, setIsFocused] = useState(false)
+    const [searchTextTemp, setSearchTextTemp] = useState(props.searchText)
+
+    useEffect(
+        () => setSearchTextTemp(props.searchText),
+        [props.searchText]
+    )
 
     const currentWindowWidth = useWindowDimensions().width
 
@@ -29,22 +35,31 @@ const SearchPhotoBar = (props) => {
 
             backgroundColor: isFocused ? "rgba(230, 249, 255, 0.92)" : "rgba(230, 249, 255, 0.7)",
         }
-    });
+    })
 
     return <Searchbar
         ref={searchbarRef}
         style={styles.searchButton}
         placeholder="Search photos..."
         onChangeText={text => {
-            props.searchTextChange(text)
+            setSearchTextTemp(text)
+            if (text === '') {
+                props.searchTextChange('')
+            }
         }}
-        value={props.searchText}
+        value={searchTextTemp}
         onIconPress={() => {
             setIsFocused(!isFocused)
         }}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+            setIsFocused(false)
+            props.searchTextChange(searchTextTemp)
+        }}
 
         icon={magnifierPicture}
-        clearIcon={clearPicture}/>
+        clearIcon={clearPicture}
+        iconColor={null}
+    />
 }
+
 export default SearchPhotoBar
