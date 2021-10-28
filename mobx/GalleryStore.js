@@ -55,21 +55,21 @@ export default class GalleryStore {
         }
     }
 
+    async getResponseData() {
+        if (this.searchText !== '') {
+            const response = await galleryAPI.getSearchedGallery(this.searchText, this.currentPage, apiPageSize)
+            return response.data.results
+        } else {
+            const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
+            return response.data
+        }
+    }
+
     async getCurrentPage() {
         if (this.isAppInternetReachable) {
             try {
-
-                let response
-                let pageResponseData
-                if (this.searchText !== '') {
-                    response = await galleryAPI.getSearchedGallery(this.searchText, this.currentPage, apiPageSize)
-                    pageResponseData = response.data.results
-                } else {
-                    response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
-                    pageResponseData = response.data
-                }
-
-                //alert(JSON.stringify(pageResponseData))
+                const pageResponseData = await this.getResponseData()
+   //             alert(JSON.stringify(pageResponseData))
 
                 runInAction(() => {
                     this.gallery.push(...pageResponseData)
