@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {Searchbar} from 'react-native-paper';
-import magnifierPicture from '../../images/GalleryScreen/magnifier.png'
-import clearPicture from '../../images/GalleryScreen/cancel.png'
+import magnifierPicture from '../../images/SearchPhotoBar/magnifier.png'
+import clearPicture from '../../images/SearchPhotoBar/cancel.png'
 
 const SearchPhotoBar = (props) => {
 
