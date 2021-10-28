@@ -77,7 +77,7 @@ const SearchPhotoBar = (props) => {
             marginTop: 20,
             borderRadius: 8,
             backgroundColor: 'rgba(230, 249, 255, 0.7)',
-            borderColor: 'rgba(245,245,245,0.5)',
+            borderColor: 'rgba(191, 191, 191,0.5)',
 
 
         }}>

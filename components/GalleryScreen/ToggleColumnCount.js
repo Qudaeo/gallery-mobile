@@ -11,7 +11,7 @@ const ToggleColumnCount = ({appColumnCount, toggleColumnCount, isAppInternetReac
             zIndex: 100,
 
             borderWidth: 1,
-            borderColor: 'rgba(245,245,245,0.5)',
+            borderColor: 'rgba(191, 191, 191,0.5)',
             backgroundColor: isAppInternetReachable
                 ? "rgba(153, 255, 153, 0.7)"
                 : "rgba(255, 26, 26, 0.7)",
