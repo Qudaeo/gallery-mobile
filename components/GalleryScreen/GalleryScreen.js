@@ -48,8 +48,8 @@ const GalleryScreen = (props) => {
 
     return (
         <View style={{flex: 1}}>
-            {<Text>'debug info:'</Text>}
-            {<Text>{galleryStore.searchText}</Text>}
+            {/*<Text>'debug info:'</Text>*/}
+            {/*<Text>{galleryStore.searchText}</Text>*/}
             {/*<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>*/}
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
             {/*<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>*/}
