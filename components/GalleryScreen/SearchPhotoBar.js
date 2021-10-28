@@ -66,7 +66,7 @@ const SearchPhotoBar = (props) => {
 
                 icon={magnifierPicture}
                 clearIcon={clearPicture}
-                iconColor={'rgb(46, 45, 41)'}
+                iconColor={'rgb(51, 102, 255)'}
 
             />
         </View>

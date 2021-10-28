@@ -13,7 +13,7 @@ export default class GalleryStore {
 
     gallery = [] // основной массив фотографий галереи
     currentPage = null // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
-    searchText = 'animals'
+    searchText = ''
 
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
@@ -33,7 +33,14 @@ export default class GalleryStore {
     }
 
     searchTextChange(text) {
-        this.searchText = text
+        if (this.searchText !== text) {
+            this.searchText = text
+            if (this.isAppInternetReachable) {
+                this.currentPage = 1
+                this.gallery = []
+                this.getCurrentPage()
+            }
+        }
     }
 
     async getBase64Image(url, id, width, height) {
