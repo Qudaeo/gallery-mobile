@@ -13,7 +13,7 @@ export default class GalleryStore {
 
     gallery = [] // основной массив фотографий галереи
     currentPage = null // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
-    searchText = '123'
+    searchText = 'animals'
 
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
@@ -58,9 +58,18 @@ export default class GalleryStore {
     async getCurrentPage() {
         if (this.isAppInternetReachable) {
             try {
-                const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
-                const pageResponseData = response.data
-//                alert(JSON.stringify(pageResponseData))
+
+                let response
+                let pageResponseData
+                if (this.searchText !== '') {
+                    response = await galleryAPI.getSearchedGallery(this.searchText, this.currentPage, apiPageSize)
+                    pageResponseData = response.data.results
+                } else {
+                    response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
+                    pageResponseData = response.data
+                }
+
+                //alert(JSON.stringify(pageResponseData))
 
                 runInAction(() => {
                     this.gallery.push(...pageResponseData)

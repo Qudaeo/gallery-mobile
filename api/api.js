@@ -15,6 +15,14 @@ export const galleryAPI = {
         }
     },
 
+    async getSearchedGallery(searchText, currentPage, pageSize) {
+        try {
+            return instance.get(`/search/photos?query=${searchText}&page=${currentPage}&per_page=${pageSize}`)
+        } catch (e) {
+            alert('Exception: galleryAPI: getSearchedGallery(searchText, currentPage, pageSize): ' + e.message)
+        }
+    },
+
     async getImageByUrl(url, width, height) {
         try {
             return instance.get(`${url}?w=${width}&h=${height}`, {responseType: 'arraybuffer'})
