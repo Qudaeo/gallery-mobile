@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 
-import {FlatList, View, useWindowDimensions} from "react-native";
+import {FlatList, View, useWindowDimensions, Text} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
@@ -46,6 +46,7 @@ const GalleryScreen = (props) => {
     return (
         <View style={{flex: 1}}>
             {/*<Text>'debug info:'</Text>*/}
+            {/*<Text>{'galleryStore.gallery.length=' + galleryStore.gallery.length}</Text>*/}
             {/*<Text>{galleryStore.searchText}</Text>*/}
             {/*<Text>{'galleryStore.setIsShowActivityIndicator=' + galleryStore.isShowActivityIndicator}</Text>*/}
             {/*<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>*/}
@@ -73,7 +74,9 @@ const GalleryScreen = (props) => {
                         data={galleryByColumn}
                         renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
                         onEndReached={() => {
-                            galleryStore.getNextPage()
+                            if (!galleryStore.isFetchingInProgress) {
+                                galleryStore.getNextPage()
+                            }
                         }}
                         onEndReachedThreshold={0.5}
                         onViewableItemsChanged={handleViewableItemsChanged}

@@ -12,8 +12,10 @@ export const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
 export default class GalleryStore {
 
     gallery = [] // основной массив фотографий галереи
-    currentPage = null // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
+    currentPage = 1 // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
     searchText = ''
+
+    isFetchingInProgress = false
 
     messageText = '' // сообщение для окна LoadingScreen
 
@@ -125,35 +127,27 @@ export default class GalleryStore {
 
 
     async saveStateToStorage() {
-        if (this.isAppInternetReachable) {
-            try {
-                const viewableGallery = this.viewableItems.map(el => el.item).map(el2 => el2[0])
+        try {
+            const viewableGallery = this.viewableItems.map(el => el.item).map(el2 => el2[0])
 
-                if (viewableGallery) {
-                    await writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery)
+            if (viewableGallery) {
+                await writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery)
 
-                    let base64Items = {}
+                let base64Items = {}
 
-                    for (let photo of viewableGallery) {
-                        if ((photo.id) && (this.base64Images[photo.id])) {
-                            base64Items[photo.id] = this.base64Images[photo.id]
-                        }
+                for (let photo of viewableGallery) {
+                    if ((photo.id) && (this.base64Images[photo.id])) {
+                        base64Items[photo.id] = this.base64Images[photo.id]
                     }
-
-                    await writeToStorage(STORAGE_BASE64_IMAGE, base64Items)
-
-                    // alert(JSON.stringify(Object.keys(base64Items).length) + ' saved')
                 }
 
-            } catch (e) {
-                alert('Exception: writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery): ' + e.message)
+                await writeToStorage(STORAGE_BASE64_IMAGE, base64Items)
+
+                // alert(JSON.stringify(Object.keys(base64Items).length) + ' saved')
             }
 
-            try {
-                await writeToStorage(STORAGE_CURRENT_PAGE, this.currentPage)
-            } catch (e) {
-                alert('Exception: writeToStorage(STORAGE_CURRENT_PAGE, this.currentPage): ' + e.message)
-            }
+        } catch (e) {
+            alert('Exception: writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery): ' + e.message)
         }
     }
 
@@ -162,19 +156,10 @@ export default class GalleryStore {
         if (!this.isAppSync) {
             runInAction(() => {
                 this.isAppSync = true
+                this.isFetchingInProgress = true
                 this.appImagesWidth = width
                 this.messageText = 'read saved photos...'
             })
-            try {
-                let currentPage = await readFromStorage(STORAGE_CURRENT_PAGE)
-                currentPage = currentPage ? currentPage : 1
-
-                runInAction(() =>
-                    this.currentPage = this.currentPage ? this.currentPage : currentPage
-                )
-            } catch (e) {
-                alert('Exception: readFromStorage(STORAGE_CURRENT_PAGE): ' + e.message)
-            }
 
             try {
                 const storedGallery = await readFromStorage(STORAGE_VIEWABLE_GALLERY)
@@ -185,7 +170,7 @@ export default class GalleryStore {
                     })
 
                     await this.getCurrentPage()
-                } else if (storedGallery) {
+                } else if (storedGallery && (storedGallery.length > 0)) {
                     runInAction(() => {
                         this.gallery = []
                         this.gallery.push(...storedGallery)
@@ -215,18 +200,23 @@ export default class GalleryStore {
                 alert('Exception: readFromStorage(STORAGE_BASE64_IMAGE): ' + e.message)
             }
 
+            runInAction(() => {
+                this.isFetchingInProgress = false
+            })
+
         }
 
     }
 
 
     setIsAppInternetReachable(isReachable) {
+        if ((isReachable) && (!this.isAppInternetReachable) && (this.gallery.length === 0)) {
+            this.getCurrentPage()
+        }
+
         runInAction(() =>
             this.isAppInternetReachable = isReachable
         )
-        if ((this.isAppInternetReachable) && (!this.isAppSync)) {
-            this.initializeApp(this.appImagesWidth)
-        }
     }
 
     async getDetailPhoto(id) {
