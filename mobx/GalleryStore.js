@@ -141,11 +141,18 @@ export default class GalleryStore {
                 const firstViewableIndex = this.gallery.findIndex(photo => photo.id === firstViewableId)
 
 
-                const minIndex = (firstViewableIndex < 15) ? 0 : (firstViewableIndex - 15)
-                alert(JSON.stringify(firstViewableIndex))
+                let minIndex
+                if (firstViewableIndex < 15) {
+                    minIndex = 0
+                } else if (this.gallery.length - firstViewableIndex < 15)
+                    minIndex = Math.min(0, this.gallery.length - 30)
+                else {
+                    minIndex = firstViewableIndex - 15
+                }
 
+       //         alert(JSON.stringify(firstViewableIndex))
 
-                const gallerySave = []
+                const gallerySave = this.gallery.slice(minIndex, Math.min(minIndex+30, this.gallery.length))
                 const base64ImagesSave = {}
                 const detailPhotoSave = {}
                 const base64UsersAvatarSave = {}
@@ -153,7 +160,7 @@ export default class GalleryStore {
                 //gallery.length
 
 
-                for (let photo of this.gallery) {
+                for (let photo of gallerySave) {
                     if ((photo.id) && (this.base64Images[photo.id])) {
                         base64ImagesSave[photo.id] = this.base64Images[photo.id]
 
@@ -161,7 +168,7 @@ export default class GalleryStore {
                         if (this.detailPhoto[photo.id]) {
                             detailPhotoSave[photo.id] = details
 
-                            let userId = details.user.id
+                            const userId = details.user.id
                             if (this.base64UsersAvatar[userId]) {
                                 base64UsersAvatarSave[userId] = this.base64UsersAvatar[userId]
 
@@ -170,7 +177,7 @@ export default class GalleryStore {
                     }
                 }
 
-                await writeToStorage(STORAGE_GALLERY, this.gallery)
+                await writeToStorage(STORAGE_GALLERY, gallerySave)
                 await writeToStorage(STORAGE_BASE64_IMAGE, base64ImagesSave)
                 await writeToStorage(STORAGE_DETAILS, detailPhotoSave)
                 await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
