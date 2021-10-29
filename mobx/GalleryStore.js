@@ -31,6 +31,7 @@ export default class GalleryStore {
     selectedDetailPhotoId = null
     detailPhoto = {} // объект элементов вида {id: detailRequest}
     base64Images = {} // объект элементов вида {id: base64hash}
+    base64UsersAvatar = {} // объект элементов вида {userId: base64hash}
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true})
@@ -237,6 +238,18 @@ export default class GalleryStore {
                     runInAction(() => {
                         this.detailPhoto[id] = detailResponseData
                     })
+
+
+
+                    const getImageResponse = await galleryAPI.getImageByUrl(detailResponseData.user.profile_image.large)
+
+                    runInAction(() => {
+                        this.base64UsersAvatar[detailResponseData.user.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+                    })
+
+
+
+
                 } catch (e) {
                     alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
                 } finally {

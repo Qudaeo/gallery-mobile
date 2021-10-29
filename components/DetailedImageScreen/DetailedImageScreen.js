@@ -64,7 +64,7 @@ const DetailedImageScreen = (props) => {
                         borderRadius: 50,
                         marginLeft: 15,
                     }}
-                    source={{uri: photo.user.profile_image.large}}
+                    source={{uri: galleryStore.base64UsersAvatar[photo.user.id]}}
                 />
             </TouchableOpacity>
             <View style={{
@@ -103,7 +103,7 @@ const DetailedImageScreen = (props) => {
 
         </View>
         {photo.user.location &&
-        <View style={{marginTop: 20, marginLeft: 20, flexDirection: 'row'}}>
+        <View style={{marginTop: 15, marginLeft: 20, flexDirection: 'row'}}>
             <Image source={locationPicture} style={{width: 20, height: 20}}/>
             <View style={{marginLeft: 5}}>
                 <Text style={{
