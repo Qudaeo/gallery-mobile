@@ -224,11 +224,6 @@ export default class GalleryStore {
     }
 
     async getDetailPhoto(id) {
-
-        runInAction(() => {
-            this.selectedDetailPhotoId = id
-        })
-
         if (!this.detailPhoto[id]) {
             if (this.isAppInternetReachable) {
                 try {
@@ -252,6 +247,9 @@ export default class GalleryStore {
             }
         }
 
+        runInAction(() => {
+            this.selectedDetailPhotoId = id
+        })
     }
 
     setViewableItems(viewableItems) {
