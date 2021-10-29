@@ -10,14 +10,20 @@ import awardPicture from "../../images/DetailedImage/award.png"
 import statisticsPicture from "../../images/DetailedImage/statistics.png"
 
 import moment from "moment"
-import {TagComponent} from "./TagComponent";
+import TagComponent from "./TagComponent";
 
 const DetailedImageScreen = (props) => {
     const {galleryStore} = useStore()
 
     const photoGalleryInfo = galleryStore.gallery.find(el => (el.id === galleryStore.selectedDetailPhotoId))
-    const takenPhoto = moment(new Date(photoGalleryInfo.created_at)).format('DD MMM YYYY')
-    const uploaded = moment(new Date(photoGalleryInfo.updated_at)).fromNow();
+
+    let takenPhoto
+    let uploaded
+
+    if (photoGalleryInfo) {
+        takenPhoto = moment(new Date(photoGalleryInfo.created_at)).format('DD MMM YYYY')
+        uploaded = moment(new Date(photoGalleryInfo.updated_at)).fromNow()
+    }
 
     const photo = galleryStore.detailPhoto[galleryStore.selectedDetailPhotoId]
 
@@ -30,7 +36,6 @@ const DetailedImageScreen = (props) => {
         } else {
             alert('Check internet connection!')
         }
-
     }
 
     return <ScrollView style={{
@@ -181,9 +186,9 @@ const DetailedImageScreen = (props) => {
 
         <View style={{
             margin: 20, marginRight: 60, flexDirection: "row",
-            flexWrap: "wrap", alignContent: "center"
+            flexWrap: "wrap"
         }}>
-            {photo.tags.map(tag => <TagComponent key={tag.title} tagTitle={tag.title}/>)}
+            {photo.tags.map(tag => <TagComponent key={tag.title} tagTitle={tag.title}  navigation={props.navigation}/>)}
 
         </View>
 
