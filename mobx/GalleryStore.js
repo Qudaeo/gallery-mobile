@@ -5,9 +5,10 @@ import {readFromStorage, writeToStorage} from "../storage/storageApi";
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
 
-export const STORAGE_CURRENT_PAGE = 'STORAGE_IMAGES'
-export const STORAGE_VIEWABLE_GALLERY = 'STORAGE_VIEWABLE_ITEMS'
+export const STORAGE_GALLERY = 'STORAGE_ITEMS'
 export const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
+export const STORAGE_DETAILS = 'STORAGE_DETAILS'
+export const STORAGE_USERS_AVATAR = 'STORAGE_USERS_AVATAR'
 
 export default class GalleryStore {
 
@@ -89,6 +90,10 @@ export default class GalleryStore {
     async getCurrentPage() {
         if (this.isAppInternetReachable) {
             try {
+                runInAction(() => {
+                    this.isFetchingInProgress = true
+                })
+
                 const pageResponseData = await this.getResponseData()
 
                 runInAction(() => {
@@ -105,7 +110,9 @@ export default class GalleryStore {
                     }
                 }
 
-
+                runInAction(() => {
+                    this.isFetchingInProgress = false
+                })
             } catch (e) {
                 alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
             }
@@ -114,6 +121,8 @@ export default class GalleryStore {
                 this.messageText = 'no internet connection'
             })
         }
+
+        await this.saveStateToStorage();
     }
 
     getNextPage() {
@@ -128,85 +137,134 @@ export default class GalleryStore {
 
     async saveStateToStorage() {
         try {
-            const viewableGallery = this.viewableItems.map(el => el.item).map(el2 => el2[0])
+            if (this.gallery) {
 
-            if (viewableGallery) {
-                await writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery)
-
-                let base64Items = {}
-
-                for (let photo of viewableGallery) {
+                let base64ImagesSave = {}
+                let detailPhotoSave = {}
+                let base64UsersAvatarSave = {}
+                for (let photo of this.gallery) {
                     if ((photo.id) && (this.base64Images[photo.id])) {
-                        base64Items[photo.id] = this.base64Images[photo.id]
+                        base64ImagesSave[photo.id] = this.base64Images[photo.id]
+
+                        let details = this.detailPhoto[photo.id]
+                        if (this.detailPhoto[photo.id]) {
+                            detailPhotoSave[photo.id] = details
+
+                            let userId = details.user.id
+                            if (this.base64UsersAvatar[userId]) {
+                                base64UsersAvatarSave[userId] = this.base64UsersAvatar[userId]
+
+                            }
+                        }
                     }
                 }
 
-                await writeToStorage(STORAGE_BASE64_IMAGE, base64Items)
+                await writeToStorage(STORAGE_GALLERY, this.gallery)
+                await writeToStorage(STORAGE_BASE64_IMAGE, base64ImagesSave)
+                await writeToStorage(STORAGE_DETAILS, detailPhotoSave)
+                await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
 
-                // alert(JSON.stringify(Object.keys(base64Items).length) + ' saved')
+                alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
             }
 
         } catch (e) {
-            alert('Exception: writeToStorage(STORAGE_VIEWABLE_GALLERY, viewableGallery): ' + e.message)
+            alert('Exception: saveStateToStorage(): ' + e.message)
         }
     }
 
 
     async initializeApp(width) {
-        if (!this.isAppSync) {
-            runInAction(() => {
-                this.isAppSync = true
-                this.isFetchingInProgress = true
-                this.appImagesWidth = width
-                this.messageText = 'read saved photos...'
-            })
+        //     if (!this.isAppSync) {
+        runInAction(() => {
+            this.isAppSync = true
+            this.isFetchingInProgress = true
+            this.appImagesWidth = width
+            this.messageText = 'read saved photos...'
+        })
 
-            try {
-                const storedGallery = await readFromStorage(STORAGE_VIEWABLE_GALLERY)
+        try {
+            const storedGallery = await readFromStorage(STORAGE_GALLERY)
 
-                if (this.isAppInternetReachable) {
-                    runInAction(() => {
-                        this.messageText = 'loading photos...'
-                    })
+            //       alert('storedGallery.length=' + JSON.stringify(storedGallery.length))
 
-                    await this.getCurrentPage()
-                } else if (storedGallery && (storedGallery.length > 0)) {
-                    runInAction(() => {
-                        this.gallery = []
-                        this.gallery.push(...storedGallery)
-                    })
-                } else {
-                    runInAction(() => {
-                        this.messageText = 'no internet connection'
-                    })
-                }
+            if (storedGallery && (storedGallery.length > 0)) {
+                runInAction(() => {
+                    this.gallery = []
+                    this.gallery.push(...storedGallery)
+                })
+            } else if (this.isAppInternetReachable) {
+                runInAction(() => {
+                    this.messageText = 'loading photos...'
+                })
 
-
-            } catch (e) {
-                alert('Exception: readFromStorage(STORAGE_VIEWABLE_GALLERY): ' + e.message)
+                await this.getCurrentPage()
+            } else {
+                runInAction(() => {
+                    this.messageText = 'no internet connection'
+                })
             }
 
-            try {
-                const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
-
-                for (let base64 in imagesFromStorage) {
-                    runInAction(() => {
-                        this.base64Images[base64] = imagesFromStorage[base64]
-                    })
-                }
-
-
-            } catch (e) {
-                alert('Exception: readFromStorage(STORAGE_BASE64_IMAGE): ' + e.message)
-            }
-
-            runInAction(() => {
-                this.isFetchingInProgress = false
-            })
-
+        } catch (e) {
+            alert('Exception: readFromStorage(STORAGE_GALLERY): ' + e.message)
         }
 
+
+        try {
+            const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
+
+            //    alert('imagesFromStorage.length=' + JSON.stringify(imagesFromStorage.length))
+
+            for (let base64 in imagesFromStorage) {
+                runInAction(() => {
+                    this.base64Images[base64] = imagesFromStorage[base64]
+                })
+            }
+
+        } catch (e) {
+            alert('Exception: readFromStorage(STORAGE_BASE64_IMAGE): ' + e.message)
+        }
+
+
+        try {
+            const detailsFromStorage = await readFromStorage(STORAGE_DETAILS)
+
+            //    alert('detailsFromStorage.length=' + JSON.stringify(detailsFromStorage.length))
+
+            for (let detail in detailsFromStorage) {
+                runInAction(() => {
+                    this.detailPhoto[detail] = detailsFromStorage[detail]
+                })
+            }
+
+        } catch (e) {
+            alert('Exception: readFromStorage(STORAGE_DETAILS): ' + e.message)
+        }
+
+
+        //   await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
+        try {
+            const base64UsersAvatarFromStorage = await readFromStorage(STORAGE_USERS_AVATAR)
+
+            //    alert('detailsFromStorage.length=' + JSON.stringify(detailsFromStorage.length))
+
+            for (let detail in base64UsersAvatarFromStorage) {
+                runInAction(() => {
+                    this.base64UsersAvatar[detail] = base64UsersAvatarFromStorage[detail]
+                })
+            }
+
+        } catch (e) {
+            alert('Exception: readFromStorage(STORAGE_USERS_AVATAR): ' + e.message)
+        }
+
+
+        runInAction(() => {
+            this.isFetchingInProgress = false
+        })
+
     }
+
+    //  }
 
 
     setIsAppInternetReachable(isReachable) {

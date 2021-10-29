@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 
-import {FlatList, View, useWindowDimensions, Text} from "react-native";
+import {FlatList, View, useWindowDimensions, Text, Button} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
@@ -46,16 +46,17 @@ const GalleryScreen = (props) => {
     return (
         <View style={{flex: 1}}>
             {/*<Text>'debug info:'</Text>*/}
-            {/*<Text>{'galleryStore.gallery.length=' + galleryStore.gallery.length}</Text>*/}
+            {<Text>{'galleryStore.gallery.length=' + galleryStore.gallery.length}</Text>}
             {/*<Text>{galleryStore.searchText}</Text>*/}
             {/*<Text>{'galleryStore.setIsShowActivityIndicator=' + galleryStore.isShowActivityIndicator}</Text>*/}
             {/*<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>*/}
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
-            {/*<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>*/}
-            {/*<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>*/}
-            {/*<Text>{'galleryStore.startIndex=' + JSON.stringify(galleryStore.startIndex)}</Text>*/}
-            {/*<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>*/}
-            {/*<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>*/}
+            {<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>}
+            {<Text>{'galleryStore.detailPhoto.length=' + Object.keys(galleryStore.detailPhoto).length}</Text>}
+            {<Text>{'galleryStore.base64UsersAvatar.length=' + Object.keys(galleryStore.base64UsersAvatar).length}</Text>}
+            {<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>}
+            {<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>}
+            {<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>}
             <SearchPhotoBar
                 searchText={galleryStore.searchText}
                 searchTextChange={galleryStore.searchTextChange}/>
