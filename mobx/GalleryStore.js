@@ -91,13 +91,18 @@ export default class GalleryStore {
 
                 runInAction(() => {
                     this.messageText = 'found ' + pageResponseData.length + ' photos'
-                    this.gallery.push(...pageResponseData)
                 })
 
                 for (let photo of pageResponseData) {
-                    //   await alert(photo.urls.raw + ' ' + photo.id+ ' ' +photo.width+ ' ' +photo.height)
-                    await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
+                    if (this.gallery.findIndex(p => p.id === photo.id) === -1) {
+                        runInAction(() => {
+                            this.gallery.push(photo)
+                        })
+
+                        await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
+                    }
                 }
+
 
             } catch (e) {
                 alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
@@ -234,21 +239,16 @@ export default class GalleryStore {
 
                     const response = await galleryAPI.getPhotoDetail(id)
                     const detailResponseData = response.data
-
                     runInAction(() => {
                         this.detailPhoto[id] = detailResponseData
                     })
 
-
-
-                    const getImageResponse = await galleryAPI.getImageByUrl(detailResponseData.user.profile_image.large)
-
-                    runInAction(() => {
-                        this.base64UsersAvatar[detailResponseData.user.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
-                    })
-
-
-
+                    if (!this.base64UsersAvatar[detailResponseData.user.id]) {
+                        const getImageResponse = await galleryAPI.getImageByUrl(detailResponseData.user.profile_image.large)
+                        runInAction(() => {
+                            this.base64UsersAvatar[detailResponseData.user.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+                        })
+                    }
 
                 } catch (e) {
                     alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
