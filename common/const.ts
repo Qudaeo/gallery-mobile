@@ -1,4 +1,4 @@
-import likePicture from "../images/DetailedImage/like.png";
+import likePicture from "../images/DetailedImage/like.png"
 import messagePicture from "../images/DetailedImage/message.png";
 import addPicture from "../images/DetailedImage/add.png";
 import sendPicture from "../images/DetailedImage/send.png";
