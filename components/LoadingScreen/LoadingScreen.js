@@ -1,7 +1,7 @@
 import {Text, View} from "react-native";
 import React from "react";
 
-const Loading = ({messageText}) => <View style={{
+const LoadingScreen = ({messageText}) => <View style={{
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -11,4 +11,4 @@ const Loading = ({messageText}) => <View style={{
     }}>{messageText}</Text>
 </View>
 
-export default Loading
+export default LoadingScreen

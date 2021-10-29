@@ -1,10 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 
-import {
-    FlatList,
-    View,
-    useWindowDimensions
-} from "react-native";
+import {FlatList, View, useWindowDimensions} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
@@ -12,7 +8,8 @@ import NetInfo from "@react-native-community/netinfo";
 
 import SearchPhotoBar from "./SearchPhotoBar";
 import ToggleColumnCount from "./ToggleColumnCount";
-import Loading from "../Loading/Loading";
+import LoadingScreen from "../LoadingScreen/LoadingScreen";
+import GalleryScreenActivityIndicator from "../LoadingScreen/GalleryScreenActivityIndicator";
 
 const GalleryScreen = (props) => {
 
@@ -39,7 +36,7 @@ const GalleryScreen = (props) => {
                 return [...result, [el]]
             }
             default: {
-                let lastRow = result.pop()
+                const lastRow = result.pop()
                 lastRow.push(el)
                 return [...result, lastRow]
             }
@@ -50,6 +47,7 @@ const GalleryScreen = (props) => {
         <View style={{flex: 1}}>
             {/*<Text>'debug info:'</Text>*/}
             {/*<Text>{galleryStore.searchText}</Text>*/}
+            {/*<Text>{'galleryStore.setIsShowActivityIndicator=' + galleryStore.isShowActivityIndicator}</Text>*/}
             {/*<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>*/}
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
             {/*<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>*/}
@@ -67,17 +65,20 @@ const GalleryScreen = (props) => {
                 isAppInternetReachable={galleryStore.isAppInternetReachable}/>
 
             {(galleryByColumn.length === 0)
-                ? <Loading messageText={galleryStore.messageText ? galleryStore.messageText : 'loadind...'}/>
+                ? <LoadingScreen messageText={galleryStore.messageText ? galleryStore.messageText : 'loadind...'}/>
                 : (galleryByColumn) &&
-                <FlatList
-                    data={galleryByColumn}
-                    renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
-                    onEndReached={() => {
-                        galleryStore.getNextPage()
-                    }}
-                    onEndReachedThreshold={0.5}
-                    onViewableItemsChanged={handleViewableItemsChanged}
-                />}
+                <>
+                    {galleryStore.isShowActivityIndicator && <GalleryScreenActivityIndicator/>}
+                    <FlatList
+                        data={galleryByColumn}
+                        renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
+                        onEndReached={() => {
+                            galleryStore.getNextPage()
+                        }}
+                        onEndReachedThreshold={0.5}
+                        onViewableItemsChanged={handleViewableItemsChanged}
+                    />
+                </>}
 
         </View>
     )

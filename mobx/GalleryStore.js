@@ -15,7 +15,9 @@ export default class GalleryStore {
     currentPage = null // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
     searchText = ''
 
-    messageText = ''
+    messageText = '' // сообщение для окна LoadingScreen
+
+    isShowActivityIndicator = false // показывать индикатор загрузки?
 
     appColumnCount = 1 // количество колонок по умолчанию
     appImagesWidth = null // ширина загрущаемых картинок
@@ -222,12 +224,18 @@ export default class GalleryStore {
     }
 
     async getDetailPhoto(id) {
+
         runInAction(() => {
             this.selectedDetailPhotoId = id
         })
+
         if (!this.detailPhoto[id]) {
             if (this.isAppInternetReachable) {
                 try {
+                    runInAction(() => {
+                        this.isShowActivityIndicator = true
+                    })
+
                     const response = await galleryAPI.getPhotoDetail(id)
                     const detailResponseData = response.data
 
@@ -236,9 +244,14 @@ export default class GalleryStore {
                     })
                 } catch (e) {
                     alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
+                } finally {
+                    runInAction(() => {
+                        this.isShowActivityIndicator = false
+                    })
                 }
             }
         }
+
     }
 
     setViewableItems(viewableItems) {

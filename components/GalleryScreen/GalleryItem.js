@@ -21,7 +21,6 @@ export const GalleryItem = (props) => {
         }
     }
 
-
     return <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
         <Image
             style={{
@@ -48,7 +47,6 @@ export const GalleryItem = (props) => {
             top: Math.round(5 / galleryStore.appColumnCount),
             left: Math.round(10 / galleryStore.appColumnCount),
         }}>{`id=${id}   ${width}:${height}${galleryStore.base64Images[id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>*/}
-
 
     </TouchableOpacity>
 }
