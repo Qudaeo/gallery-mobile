@@ -63,8 +63,10 @@ const DetailedImageScreen = (props) => {
                     source={{uri: photo.user.profile_image.large}}
                 />
             </TouchableOpacity>
-            <View style={{left: 20, height: 80}}>
-                <Text style={{fontSize: 20, fontWeight: "900", paddingTop: 7}}>
+            <View style={{
+                marginLeft: 20,
+            }}>
+                <Text style={{fontSize: 20, fontWeight: "900", paddingTop: 7, paddingRight:105 }}>
                     {photo.description ? photo.description : "No description"}
                 </Text>
 
@@ -139,13 +141,13 @@ const DetailedImageScreen = (props) => {
                 </View>
             </View>
             <View>
-                <View style={{width: 120, alignItems: "center"}}>
+                <View style={{width: 140, alignItems: "center"}}>
                     <Text style={{marginLeft: 5, fontSize: 15}}>
                         Editors' choice
                     </Text>
                 </View>
-                <View style={{width: 120}}>
-                    <Image source={awardPicture} style={{width: 25, height: 25, marginTop: 3, marginLeft: 10}}/>
+                <View style={{width: 140}}>
+                    <Image source={awardPicture} style={{width: 25, height: 25, marginTop: 3, marginLeft: 20}}/>
                 </View>
             </View>
         </View>

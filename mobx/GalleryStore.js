@@ -37,7 +37,7 @@ export default class GalleryStore {
     searchTextChange(text) {
         if (this.searchText !== text) {
             runInAction(() => {
-                this.messageText = (this.searchText === '') ? 'downloading photos...' : 'find photos...'
+                this.messageText = 'loading photos...'
                 this.searchText = text
                 if (this.isAppInternetReachable) {
                     this.currentPage = 1
@@ -99,6 +99,10 @@ export default class GalleryStore {
             } catch (e) {
                 alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
             }
+        } else {
+            runInAction(() => {
+                this.messageText = 'no internet connection'
+            })
         }
     }
 
@@ -169,7 +173,7 @@ export default class GalleryStore {
 
                 if (this.isAppInternetReachable) {
                     runInAction(() => {
-                        this.messageText = 'downloading photos...'
+                        this.messageText = 'loading photos...'
                     })
 
                     await this.getCurrentPage()
