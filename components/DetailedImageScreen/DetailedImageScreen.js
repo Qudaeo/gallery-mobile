@@ -57,7 +57,7 @@ const DetailedImageScreen = (props) => {
                         width: 80,
                         height: 80,
                         borderRadius: 50,
-                        marginLeft: 15
+                        marginLeft: 15,
                     }}
                     source={{uri: photo.user.profile_image.large}}
                 />
@@ -65,7 +65,7 @@ const DetailedImageScreen = (props) => {
             <View style={{
                 marginLeft: 20,
             }}>
-                <Text style={{fontSize: 20, fontWeight: "900", paddingTop: 7, paddingRight:105 }}>
+                <Text style={{fontSize: 20, fontWeight: "900", paddingRight: 105}}>
                     {photo.description ? photo.description : "No description"}
                 </Text>
 
@@ -87,7 +87,7 @@ const DetailedImageScreen = (props) => {
                             style={{
                                 fontSize: 15,
                                 fontWeight: "700",
-                                color: "rgb(102, 163, 255)"
+                                color: "rgb(22, 114, 190)"
                             }}>
                             {'Follow'}
                         </Text>
@@ -158,10 +158,10 @@ const DetailedImageScreen = (props) => {
 
         <View style={{
             marginTop: 20, marginLeft: 20, flexDirection: 'row',
-            height: 80, borderWidth: 1, borderColor: 'rgb(128, 159, 255)',
+            height: 80, borderWidth: 1, borderColor: "rgb(22, 114, 190)",
             width: 300
         }}>
-            <View style={{width: 3, backgroundColor: 'rgb(128, 159, 255)'}}>
+            <View style={{width: 3, backgroundColor: "rgb(22, 114, 190)"}}>
 
             </View>
             <View>
@@ -173,7 +173,7 @@ const DetailedImageScreen = (props) => {
                         perform and get access to</Text>
                     <View style={{flexDirection: "row"}}>
                         <Text>Statistics.</Text>
-                        <Text style={{color: "rgb(128, 159, 255)"}}>Learn more</Text>
+                        <Text style={{color: "rgb(22, 114, 190)"}}>Learn more</Text>
                     </View>
                 </View>
             </View>
