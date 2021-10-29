@@ -211,6 +211,11 @@ export default class GalleryStore {
 
     setIsAppInternetReachable(isReachable) {
         if ((isReachable) && (!this.isAppInternetReachable) && (this.gallery.length === 0)) {
+
+            runInAction(() =>
+                this.isAppInternetReachable = isReachable
+            )
+
             this.getCurrentPage()
         }
 
