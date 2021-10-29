@@ -7,7 +7,7 @@ const instance = axios.create({
 })
 
 export const galleryAPI = {
-    async getGallery(currentPage, pageSize) {
+    async getGallery(currentPage: number, pageSize: number) {
         try {
             return instance.get(`/photos?page=${currentPage}&per_page=${pageSize}`)
         } catch (e) {
@@ -15,7 +15,7 @@ export const galleryAPI = {
         }
     },
 
-    async getSearchedGallery(searchText, currentPage, pageSize) {
+    async getSearchedGallery(searchText: string, currentPage: number, pageSize: number) {
         try {
             return instance.get(`/search/photos?query=${searchText}&page=${currentPage}&per_page=${pageSize}`)
         } catch (e) {
@@ -23,7 +23,7 @@ export const galleryAPI = {
         }
     },
 
-    async getImageByUrl(url, width, height) {
+    async getImageByUrl(url: string, width: number, height: number) {
         try {
             return instance.get(`${url}?w=${width}&h=${height}`, {responseType: 'arraybuffer'})
         } catch (e) {
@@ -31,7 +31,7 @@ export const galleryAPI = {
         }
     },
 
-    async getPhotoDetail(id) {
+    async getPhotoDetail(id: string) {
         try {
             return instance.get(`/photos/${id}`)
         } catch (e) {
@@ -39,33 +39,3 @@ export const galleryAPI = {
         }
     },
 }
-
-
-/*
-import axios from "axios";
-
-export const baseURL = "https://picsum.photos/"
-
-const instance = axios.create({
-    baseURL
-})
-
-export const galleryAPI = {
-    async getGallery(currentPage, pageSize) {
-        try {
-            return instance.get(`v2/list?page=${currentPage}&limit=${pageSize}`)
-        } catch (e) {
-            alert(e.message)
-        }
-    },
-
-    async getImage(id, width, height) {
-        try {
-            return instance.get(`id/${id}/${width}/${height}.webp`, {responseType: 'arraybuffer'})
-        } catch (e) {
-            alert(e.message)
-        }
-    }
-
-}
-*/
