@@ -24,10 +24,6 @@ const GalleryScreen = (props) => {
 
     useEffect(() => {
         galleryStore.initializeApp(imagesWidth)
-
-        return () => {
-            galleryStore.saveStateToStorage()
-        }
     }, [])
 
     const galleryByColumn = galleryStore.gallery.reduce((result, el, index) => {
@@ -47,7 +43,6 @@ const GalleryScreen = (props) => {
         <View style={{flex: 1}}>
             {/*<Text>'debug info:'</Text>*/}
             {<Text>{'galleryStore.gallery.length=' + galleryStore.gallery.length}</Text>}
-            {/*<Text>{galleryStore.searchText}</Text>*/}
             {/*<Text>{'galleryStore.setIsShowActivityIndicator=' + galleryStore.isShowActivityIndicator}</Text>*/}
             {/*<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>*/}
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}

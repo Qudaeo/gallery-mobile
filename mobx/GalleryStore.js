@@ -13,11 +13,10 @@ export const STORAGE_USERS_AVATAR = 'STORAGE_USERS_AVATAR'
 export default class GalleryStore {
 
     gallery = [] // основной массив фотографий галереи
-    currentPage = 1 // максимальная загрущенная старница по API по apiPageSize(по умолчаанию 20) элеметов
+    currentPage = 1 // максимальная загрущенная страница через API
     searchText = ''
 
     isFetchingInProgress = false
-
     messageText = '' // сообщение для окна LoadingScreen
 
     isShowActivityIndicator = false // показывать индикатор загрузки?
@@ -26,10 +25,8 @@ export default class GalleryStore {
     appImagesWidth = null // ширина загрущаемых картинок
 
     isAppInternetReachable = true // доступен ли интернет
-    isAppSync = false // синхронизировано ли приложение с API
 
     viewableItems = [] // массив видимых элементов из FlatList основного скрина галерии
-
 
     selectedDetailPhotoId = null
     detailPhoto = {} // объект элементов вида {id: detailRequest}
@@ -139,9 +136,23 @@ export default class GalleryStore {
         try {
             if (this.gallery) {
 
-                let base64ImagesSave = {}
-                let detailPhotoSave = {}
-                let base64UsersAvatarSave = {}
+                const viewableItems = this.viewableItems.map(el => el.item).map(el2 => el2[0])
+                const firstViewableId = viewableItems[0].id
+                const firstViewableIndex = this.gallery.findIndex(photo => photo.id === firstViewableId)
+
+
+                const minIndex = (firstViewableIndex < 15) ? 0 : (firstViewableIndex - 15)
+                alert(JSON.stringify(firstViewableIndex))
+
+
+                const gallerySave = []
+                const base64ImagesSave = {}
+                const detailPhotoSave = {}
+                const base64UsersAvatarSave = {}
+
+                //gallery.length
+
+
                 for (let photo of this.gallery) {
                     if ((photo.id) && (this.base64Images[photo.id])) {
                         base64ImagesSave[photo.id] = this.base64Images[photo.id]
@@ -164,7 +175,7 @@ export default class GalleryStore {
                 await writeToStorage(STORAGE_DETAILS, detailPhotoSave)
                 await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
 
-                alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
+                //          alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
             }
 
         } catch (e) {
@@ -174,9 +185,8 @@ export default class GalleryStore {
 
 
     async initializeApp(width) {
-        //     if (!this.isAppSync) {
+
         runInAction(() => {
-            this.isAppSync = true
             this.isFetchingInProgress = true
             this.appImagesWidth = width
             this.messageText = 'read saved photos...'
@@ -192,6 +202,28 @@ export default class GalleryStore {
                     this.gallery = []
                     this.gallery.push(...storedGallery)
                 })
+
+                const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
+                if (imagesFromStorage) {
+                    runInAction(() => {
+                        this.base64Images = imagesFromStorage
+                    })
+                }
+
+                const detailsFromStorage = await readFromStorage(STORAGE_DETAILS)
+                if (detailsFromStorage) {
+                    runInAction(() => {
+                        this.detailPhoto = detailsFromStorage
+                    })
+                }
+
+                const base64UsersAvatarFromStorage = await readFromStorage(STORAGE_USERS_AVATAR)
+                if (base64UsersAvatarFromStorage) {
+                    runInAction(() => {
+                        this.base64UsersAvatar = base64UsersAvatarFromStorage
+                    })
+                }
+
             } else if (this.isAppInternetReachable) {
                 runInAction(() => {
                     this.messageText = 'loading photos...'
@@ -205,56 +237,7 @@ export default class GalleryStore {
             }
 
         } catch (e) {
-            alert('Exception: readFromStorage(STORAGE_GALLERY): ' + e.message)
-        }
-
-
-        try {
-            const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
-
-            //    alert('imagesFromStorage.length=' + JSON.stringify(imagesFromStorage.length))
-
-            for (let base64 in imagesFromStorage) {
-                runInAction(() => {
-                    this.base64Images[base64] = imagesFromStorage[base64]
-                })
-            }
-
-        } catch (e) {
-            alert('Exception: readFromStorage(STORAGE_BASE64_IMAGE): ' + e.message)
-        }
-
-
-        try {
-            const detailsFromStorage = await readFromStorage(STORAGE_DETAILS)
-
-            //    alert('detailsFromStorage.length=' + JSON.stringify(detailsFromStorage.length))
-
-            for (let detail in detailsFromStorage) {
-                runInAction(() => {
-                    this.detailPhoto[detail] = detailsFromStorage[detail]
-                })
-            }
-
-        } catch (e) {
-            alert('Exception: readFromStorage(STORAGE_DETAILS): ' + e.message)
-        }
-
-
-        //   await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
-        try {
-            const base64UsersAvatarFromStorage = await readFromStorage(STORAGE_USERS_AVATAR)
-
-            //    alert('detailsFromStorage.length=' + JSON.stringify(detailsFromStorage.length))
-
-            for (let detail in base64UsersAvatarFromStorage) {
-                runInAction(() => {
-                    this.base64UsersAvatar[detail] = base64UsersAvatarFromStorage[detail]
-                })
-            }
-
-        } catch (e) {
-            alert('Exception: readFromStorage(STORAGE_USERS_AVATAR): ' + e.message)
+            alert('Exception: readFromStorage: ' + e.message)
         }
 
 
@@ -263,8 +246,6 @@ export default class GalleryStore {
         })
 
     }
-
-    //  }
 
 
     setIsAppInternetReachable(isReachable) {
