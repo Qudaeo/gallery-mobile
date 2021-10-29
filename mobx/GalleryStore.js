@@ -140,7 +140,6 @@ export default class GalleryStore {
                 const firstViewableId = viewableItems[0].id
                 const firstViewableIndex = this.gallery.findIndex(photo => photo.id === firstViewableId)
 
-
                 let minIndex
                 if (firstViewableIndex < 15) {
                     minIndex = 0
@@ -304,6 +303,8 @@ export default class GalleryStore {
         runInAction(() => {
             this.selectedDetailPhotoId = id
         })
+
+        await this.saveStateToStorage();
     }
 
     setViewableItems(viewableItems) {
