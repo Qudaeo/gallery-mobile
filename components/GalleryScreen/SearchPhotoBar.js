@@ -80,7 +80,8 @@ const SearchPhotoBar = (props) => {
                 backgroundColor: 'rgba(230, 249, 255, 0.7)',
                 borderColor: 'rgba(191, 191, 191,0.7)',
                 elevation: 12,
-                opacity:10,
+                opacity: 10,
+                maxWidth: currentWindowWidth - 180,
 
 
             }}>
@@ -89,8 +90,6 @@ const SearchPhotoBar = (props) => {
                     marginHorizontal: 5,
                     marginVertical: 2,
                     color: 'rgb(46, 45, 41)',
-                    maxWidth: currentWindowWidth - 180,
-
                 }}>{props.searchText}</Text>
             </View>
         </TouchableOpacity>}
