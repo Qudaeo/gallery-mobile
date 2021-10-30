@@ -10,34 +10,54 @@ export const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
 export const STORAGE_DETAILS = 'STORAGE_DETAILS'
 export const STORAGE_USERS_AVATAR = 'STORAGE_USERS_AVATAR'
 
+export type PhotoType = {
+    id: string
+    width: number
+    height: number
+    urls: {
+        raw: string
+    }
+}
+
+export type DetailsType = {
+    id: string
+    user: {
+        id: string
+        profile_image: {
+            large: string
+        }
+    }
+}
+
 export default class GalleryStore {
 
-    gallery = [] // основной массив фотографий галереи
+    gallery: PhotoType[] = [] // основной массив фотографий галереи
     currentPage = 1 // максимальная загрущенная страница через API
     searchText = ''
 
-    isFetchingInProgress = false
+    isFetchingInProgress = true
     messageText = '' // сообщение для окна LoadingScreen
 
     isShowActivityIndicator = false // показывать индикатор загрузки?
 
     appColumnCount = 1 // количество колонок по умолчанию
-    appImagesWidth = null // ширина загрущаемых картинок
+    appImagesWidth = 0 // ширина загрущаемых картинок
 
     isAppInternetReachable = true // доступен ли интернет
 
     viewableItems = [] // массив видимых элементов из FlatList основного скрина галерии
 
-    selectedDetailPhotoId = null
-    detailPhoto = {} // объект элементов вида {id: detailRequest}
-    base64Images = {} // объект элементов вида {id: base64hash}
-    base64UsersAvatar = {} // объект элементов вида {userId: base64hash}
+    selectedDetailPhotoId = ''
+
+    detailPhoto: { [key: string]: DetailsType } = {} // объект элементов вида {id: detailRequest}
+    base64Images: { [key: string]: string } = {} // картинки в галерее
+    base64UsersAvatar: { [key: string]: string } = {} // аватарки пользователей
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true})
     }
 
-    searchTextChange(text) {
+    searchTextChange(text: string) {
         if (this.searchText !== text) {
             runInAction(() => {
                 this.messageText = 'loading photos...'
@@ -51,7 +71,7 @@ export default class GalleryStore {
         }
     }
 
-    async getBase64Image(url, id, width, height) {
+    async getBase64Image(url: string, id: string, width: number, height: number) {
         if (this.isAppInternetReachable) {
             try {
                 const imageDimensions = calcImageDimensions(this.appImagesWidth, this.appImagesWidth * height / width)
@@ -60,9 +80,11 @@ export default class GalleryStore {
 
                 const getImageResponse = await galleryAPI.getImageByUrl(url, imageDimensions.width, imageDimensions.height)
 
-                runInAction(() => {
-                    this.base64Images[id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
-                })
+                if (getImageResponse) {
+                    runInAction(() => {
+                        this.base64Images[id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(<ArrayBuffer>getImageResponse.data)}`
+                    })
+                }
 
             } catch (e) {
                 alert('Exception: getBase64Image(url, id, width, height) : ' + e.message)
@@ -74,10 +96,11 @@ export default class GalleryStore {
         try {
             if (this.searchText !== '') {
                 const response = await galleryAPI.getSearchedGallery(this.searchText, this.currentPage, apiPageSize)
-                return response.data.results
+
+                return response?.data.results
             } else {
                 const response = await galleryAPI.getGallery(this.currentPage, apiPageSize)
-                return response.data
+                return response?.data
             }
         } catch (e) {
             alert('Exception: getResponseData(): ' + e.message)
@@ -93,17 +116,19 @@ export default class GalleryStore {
 
                 const pageResponseData = await this.getResponseData()
 
-                runInAction(() => {
-                    this.messageText = 'found ' + pageResponseData.length + ' photos'
-                })
+                if (pageResponseData) {
+                    runInAction(() => {
+                        this.messageText = 'found ' + pageResponseData.length + ' photos'
+                    })
 
-                for (let photo of pageResponseData) {
-                    if (this.gallery.findIndex(p => p.id === photo.id) === -1) {
-                        runInAction(() => {
-                            this.gallery.push(photo)
-                        })
+                    for (let photo of pageResponseData) {
+                        if (this.gallery.findIndex(p => p.id === photo.id) === -1) {
+                            runInAction(() => {
+                                this.gallery.push(photo)
+                            })
 
-                        await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
+                            await this.getBase64Image(photo.urls.raw, photo.id, photo.width, photo.height)
+                        }
                     }
                 }
 
@@ -136,6 +161,7 @@ export default class GalleryStore {
         try {
             if (this.gallery) {
 
+// @ts-ignore
                 const viewableItems = this.viewableItems.map(el => el.item).map(el2 => el2[0])
                 const firstViewableId = viewableItems[0].id
                 const firstViewableIndex = this.gallery.findIndex(photo => photo.id === firstViewableId)
@@ -149,12 +175,12 @@ export default class GalleryStore {
                     minIndex = firstViewableIndex - 15
                 }
 
-       //         alert(JSON.stringify(firstViewableIndex))
+                //         alert(JSON.stringify(firstViewableIndex))
 
-                const gallerySave = this.gallery.slice(minIndex, Math.min(minIndex+30, this.gallery.length))
-                const base64ImagesSave = {}
-                const detailPhotoSave = {}
-                const base64UsersAvatarSave = {}
+                const gallerySave = this.gallery.slice(minIndex, Math.min(minIndex + 30, this.gallery.length))
+                const base64ImagesSave: { [key: string]: string } = {}
+                const detailPhotoSave: { [key: string]: DetailsType } = {}
+                const base64UsersAvatarSave: { [key: string]: string } = {}
 
                 //gallery.length
 
@@ -190,7 +216,7 @@ export default class GalleryStore {
     }
 
 
-    async initializeApp(width) {
+    async initializeApp(width: number) {
 
         runInAction(() => {
             this.isFetchingInProgress = true
@@ -254,7 +280,7 @@ export default class GalleryStore {
     }
 
 
-    setIsAppInternetReachable(isReachable) {
+    setIsAppInternetReachable(isReachable: boolean) {
         if ((isReachable) && (!this.isAppInternetReachable) && (this.gallery.length === 0)) {
 
             runInAction(() =>
@@ -269,7 +295,7 @@ export default class GalleryStore {
         )
     }
 
-    async getDetailPhoto(id) {
+    async getDetailPhoto(id: string) {
         if (!this.detailPhoto[id]) {
             if (this.isAppInternetReachable) {
                 try {
@@ -278,16 +304,21 @@ export default class GalleryStore {
                     })
 
                     const response = await galleryAPI.getPhotoDetail(id)
-                    const detailResponseData = response.data
-                    runInAction(() => {
-                        this.detailPhoto[id] = detailResponseData
-                    })
-
-                    if (!this.base64UsersAvatar[detailResponseData.user.id]) {
-                        const getImageResponse = await galleryAPI.getImageByUrl(detailResponseData.user.profile_image.large)
+                    const detailResponseData = response?.data
+                    if (detailResponseData) {
                         runInAction(() => {
-                            this.base64UsersAvatar[detailResponseData.user.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+                            this.detailPhoto[id] = detailResponseData
                         })
+
+                        if (!this.base64UsersAvatar[detailResponseData.user.id]) {
+                            const getImageResponse = await galleryAPI.getImageByUrl(detailResponseData.user.profile_image.large)
+
+                            if (getImageResponse) {
+                                runInAction(() => {
+                                    this.base64UsersAvatar[detailResponseData.user.id] = `data:${getImageResponse.headers['content-type'].toLowerCase()};base64,${encode(getImageResponse.data)}`
+                                })
+                            }
+                        }
                     }
 
                 } catch (e) {
@@ -304,11 +335,13 @@ export default class GalleryStore {
             this.selectedDetailPhotoId = id
         })
 
-        await this.saveStateToStorage();
+        await this.saveStateToStorage()
     }
 
+// @ts-ignore
     setViewableItems(viewableItems) {
         runInAction(() =>
+// @ts-ignore
             this.viewableItems = [...viewableItems]
         )
     }

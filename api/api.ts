@@ -1,13 +1,21 @@
 import axios from "axios";
 import {API_KEY, baseURL} from "../common/const";
+import {DetailsType, PhotoType} from "../mobx/GalleryStore";
 
 const instance = axios.create({
     baseURL,
     headers: {"Authorization": `Client-ID ${API_KEY}`}
 })
 
+type GetImageResponseType = {
+    headers: {
+        'content-type': string
+    }
+    data: ArrayBuffer
+}
+
 export const galleryAPI = {
-    async getGallery(currentPage: number, pageSize: number) {
+    async getGallery(currentPage: number, pageSize: number): Promise<{ data: PhotoType[] } | undefined> {
         try {
             return instance.get(`/photos?page=${currentPage}&per_page=${pageSize}`)
         } catch (e) {
@@ -15,7 +23,7 @@ export const galleryAPI = {
         }
     },
 
-    async getSearchedGallery(searchText: string, currentPage: number, pageSize: number) {
+    async getSearchedGallery(searchText: string, currentPage: number, pageSize: number): Promise<{ data: { results: PhotoType[] } } | undefined> {
         try {
             return instance.get(`/search/photos?query=${searchText}&page=${currentPage}&per_page=${pageSize}`)
         } catch (e) {
@@ -23,7 +31,7 @@ export const galleryAPI = {
         }
     },
 
-    async getImageByUrl(url: string, width: number, height: number) {
+    async getImageByUrl(url: string, width?: number, height?: number): Promise<GetImageResponseType | undefined> {
         try {
             return instance.get(`${url}?w=${width}&h=${height}`, {responseType: 'arraybuffer'})
         } catch (e) {
@@ -31,7 +39,7 @@ export const galleryAPI = {
         }
     },
 
-    async getPhotoDetail(id: string) {
+    async getPhotoDetail(id: string): Promise<{ data: DetailsType } | undefined> {
         try {
             return instance.get(`/photos/${id}`)
         } catch (e) {
