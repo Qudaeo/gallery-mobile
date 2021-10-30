@@ -3,9 +3,17 @@ import {useWindowDimensions, View} from "react-native";
 import GalleryItem from "./GalleryItem";
 import {marginHorizontal, marginVertical} from "../../common/const";
 import {calcImageDimensions} from "../../common/funcions";
+import {useNavigation} from "@react-navigation/native";
+import {GalleryNavigationProps} from "../../App";
+import {PhotoType} from "../../mobx/GalleryStore";
 
+type IProps = {
+    row: PhotoType[]
+}
 
-export const GalleryRow = ({row, navigation}) => {
+export const GalleryRow: React.FC<IProps> = ({row}) => {
+
+    const navigation = useNavigation<GalleryNavigationProps>();
 
     const appWidth = useWindowDimensions().width
 
@@ -29,7 +37,6 @@ export const GalleryRow = ({row, navigation}) => {
             height: Math.round(el.height * ratio)
         }))
     }
-
 
     return <View
         style={[{

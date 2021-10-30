@@ -10,12 +10,8 @@ import SearchPhotoBar from "./SearchPhotoBar";
 import ToggleColumnCount from "./ToggleColumnCount";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import GalleryScreenActivityIndicator from "../LoadingScreen/GalleryScreenActivityIndicator";
-import {GalleryNavigationProps} from "../../App";
-import {useNavigation} from "@react-navigation/native";
 
 const GalleryScreen = () => {
-    const navigation = useNavigation<GalleryNavigationProps>();
-
     const {galleryStore} = useStore()
 
     const imagesWidth = useWindowDimensions().width
@@ -73,7 +69,7 @@ const GalleryScreen = () => {
                     {galleryStore.isShowActivityIndicator && <GalleryScreenActivityIndicator/>}
                     <FlatList
                         data={galleryByColumn}
-                        renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={navigation}/>}
+                        renderItem={({item}) => <GalleryRow key={item.id} row={item}/>}
                         onEndReached={() => {
                             if (!galleryStore.isFetchingInProgress) {
                                 galleryStore.getNextPage()
