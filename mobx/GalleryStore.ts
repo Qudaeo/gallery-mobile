@@ -37,6 +37,9 @@ export type DetailsType = {
             large: string
         }
     }
+    urls:{
+        regular: string
+    }
     tags: {
         title: string
     }[]
