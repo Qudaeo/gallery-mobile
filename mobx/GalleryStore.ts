@@ -18,6 +18,9 @@ export type PhotoType = {
     urls: {
         raw: string
     }
+    user: {
+        name: string
+    }
 }
 
 export type DetailsType = {

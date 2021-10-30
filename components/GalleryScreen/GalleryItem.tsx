@@ -2,20 +2,28 @@ import React from "react";
 import {Image, Text, TouchableOpacity} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
+import {PhotoType} from "../../mobx/GalleryStore";
 
-export const GalleryItem = (props) => {
+type IProps = {
+    photo: PhotoType
+    imageDimensions: {
+        width: number
+        height: number
+    }
+    navigation: {
+        navigate: (screen: string) => void
+    }
+}
 
+export const GalleryItem: React.FC<IProps> = ({photo, imageDimensions, navigation}) => {
     const {galleryStore} = useStore()
 
-    const id = props.photo.id
-    const width = props.imageDimensions.width
-    const height = props.imageDimensions.height
-
+    const id = photo.id
 
     const openDetailedImage = async () => {
         await galleryStore.getDetailPhoto(id)
         if (galleryStore.detailPhoto[id]) {
-            props.navigation.navigate('DetailedImageScreen')
+            navigation.navigate('DetailedImageScreen')
         } else {
             alert('Check internet connection!')
         }
@@ -24,8 +32,8 @@ export const GalleryItem = (props) => {
     return <TouchableOpacity activeOpacity={.7} onPress={() => openDetailedImage()}>
         <Image
             style={{
-                width: width,
-                height: height,
+                width: imageDimensions.width,
+                height: imageDimensions.height,
                 position: "relative"
             }}
             source={{uri: galleryStore.base64Images[id]}}
@@ -38,7 +46,7 @@ export const GalleryItem = (props) => {
             textAlign: "right",
             bottom: Math.round(5 / galleryStore.appColumnCount),
             right: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`Photo by ${props.photo.user.name}`}</Text>
+        }}>{`Photo by ${photo.user.name}`}</Text>
         {/*<Text style={{
             position: 'absolute',
             fontSize: Math.round(12 / galleryStore.appColumnCount),
@@ -46,7 +54,7 @@ export const GalleryItem = (props) => {
             textAlign: "left",
             top: Math.round(5 / galleryStore.appColumnCount),
             left: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`id=${id}   ${width}:${height}${galleryStore.base64Images[id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>*/}
+        }}>{`id=${photo.id}   ${width}:${height}${galleryStore.base64Images[photo.id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>*/}
 
     </TouchableOpacity>
 }

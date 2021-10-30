@@ -14,7 +14,6 @@ type IProps = {
 export const GalleryRow: React.FC<IProps> = ({row}) => {
 
     const navigation = useNavigation<GalleryNavigationProps>();
-
     const appWidth = useWindowDimensions().width
 
     let imageDimensions = row.map(image =>
