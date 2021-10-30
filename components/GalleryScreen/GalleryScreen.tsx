@@ -16,7 +16,7 @@ const GalleryScreen = () => {
 
     const imagesWidth = useWindowDimensions().width
 
-    const handleViewableItemsChanged = useCallback(async (info: {viewableItems: ViewToken[]}) => {
+    const handleViewableItemsChanged = useCallback(async (info: { viewableItems: ViewToken[] }) => {
         await galleryStore.setViewableItems(info.viewableItems)
     }, [])
 
@@ -71,7 +71,7 @@ const GalleryScreen = () => {
                         data={galleryByColumn}
                         renderItem={({item}) => <GalleryRow key={item.id} row={item}/>}
                         onEndReached={() => {
-                            if (!galleryStore.isFetchingInProgress) {
+                            if ((!galleryStore.isFetchingInProgress) && (galleryStore.isAppSync)) {
                                 galleryStore.getNextPage()
                             }
                         }}

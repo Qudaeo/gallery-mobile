@@ -52,6 +52,7 @@ export default class GalleryStore {
     currentPage = 1 // максимальная загрущенная страница через API
     searchText = ''
 
+    isAppSync = false
     isFetchingInProgress = true
     messageText = '' // сообщение для окна LoadingScreen
 
@@ -75,7 +76,7 @@ export default class GalleryStore {
     }
 
     searchTextChange(text: string) {
-        if (this.searchText !== text) {
+        if ((this.searchText !== text) && (this.isAppSync)){
             runInAction(() => {
                 this.messageText = 'loading photos...'
                 this.searchText = text
@@ -236,78 +237,80 @@ export default class GalleryStore {
 
 
     async initializeApp(width: number) {
+        if (!this.isAppSync) {
 
-        runInAction(() => {
-            this.isFetchingInProgress = true
-            this.appImagesWidth = width
-            this.messageText = 'read saved photos...'
-        })
+            runInAction(() => {
+                this.isFetchingInProgress = true
+                this.appImagesWidth = width
+                this.messageText = 'read saved photos...'
+            })
 
-        try {
-            const storedGallery: PhotoType[] = await readFromStorage(STORAGE_GALLERY)
+            try {
+                const storedGallery: PhotoType[] = await readFromStorage(STORAGE_GALLERY)
 
-            //       alert('storedGallery.length=' + JSON.stringify(storedGallery.length))
+                //       alert('storedGallery.length=' + JSON.stringify(storedGallery.length))
 
-            if (storedGallery && (storedGallery.length > 0)) {
-                runInAction(() => {
-                    this.gallery = []
-                    this.gallery.push(...storedGallery)
-                })
-
-                const imagesFromStorage: { [key: string]: string } = await readFromStorage(STORAGE_BASE64_IMAGE)
-                if (imagesFromStorage) {
+                if (storedGallery && (storedGallery.length > 0)) {
                     runInAction(() => {
-                        this.base64Images = imagesFromStorage
+                        this.gallery = []
+                        this.gallery.push(...storedGallery)
+                    })
+
+                    const imagesFromStorage: { [key: string]: string } = await readFromStorage(STORAGE_BASE64_IMAGE)
+                    if (imagesFromStorage) {
+                        runInAction(() => {
+                            this.base64Images = imagesFromStorage
+                        })
+                    }
+
+                    const detailsFromStorage: { [key: string]: DetailsType } = await readFromStorage(STORAGE_DETAILS)
+                    if (detailsFromStorage) {
+                        runInAction(() => {
+                            this.detailPhoto = detailsFromStorage
+                        })
+                    }
+
+                    const base64UsersAvatarFromStorage: { [key: string]: string } = await readFromStorage(STORAGE_USERS_AVATAR)
+                    if (base64UsersAvatarFromStorage) {
+                        runInAction(() => {
+                            this.base64UsersAvatar = base64UsersAvatarFromStorage
+                        })
+                    }
+
+                    const searchTextStorage: string = await readFromStorage(STORAGE_SEARCH_TEXT)
+                    if (searchTextStorage) {
+                        runInAction(() => {
+                            this.searchText = searchTextStorage
+                        })
+                    }
+
+                } else if (this.isAppInternetReachable) {
+                    runInAction(() => {
+                        this.messageText = 'loading photos...'
+                    })
+
+                    await this.getCurrentPage()
+                } else {
+                    runInAction(() => {
+                        this.messageText = 'no internet connection'
                     })
                 }
 
-                const detailsFromStorage: { [key: string]: DetailsType } = await readFromStorage(STORAGE_DETAILS)
-                if (detailsFromStorage) {
-                    runInAction(() => {
-                        this.detailPhoto = detailsFromStorage
-                    })
-                }
-
-                const base64UsersAvatarFromStorage: { [key: string]: string } = await readFromStorage(STORAGE_USERS_AVATAR)
-                if (base64UsersAvatarFromStorage) {
-                    runInAction(() => {
-                        this.base64UsersAvatar = base64UsersAvatarFromStorage
-                    })
-                }
-
-                const searchTextStorage:  string  = await readFromStorage(STORAGE_SEARCH_TEXT)
-                if (searchTextStorage) {
-                    runInAction(() => {
-                        this.searchText = searchTextStorage
-                    })
-                }
-
-            } else if (this.isAppInternetReachable) {
-                runInAction(() => {
-                    this.messageText = 'loading photos...'
-                })
-
-                await this.getCurrentPage()
-            } else {
-                runInAction(() => {
-                    this.messageText = 'no internet connection'
-                })
+            } catch (e) {
+                alert('Exception: readFromStorage: ' + e.message)
             }
 
-        } catch (e) {
-            alert('Exception: readFromStorage: ' + e.message)
+
+            runInAction(() => {
+                this.isFetchingInProgress = false
+                this.isAppSync = true
+            })
         }
-
-
-        runInAction(() => {
-            this.isFetchingInProgress = false
-        })
-
     }
 
 
     setIsAppInternetReachable(isReachable: boolean | null) {
-        if ((isReachable) && (!this.isAppInternetReachable) && (this.gallery.length === 0)) {
+        if ((isReachable) && (this.isAppInternetReachable) && (this.isAppSync) &&(this.gallery.length === 0)) {
 
             runInAction(() =>
                 this.isAppInternetReachable = isReachable
