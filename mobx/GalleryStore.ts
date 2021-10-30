@@ -8,6 +8,7 @@ import {
 } from "../storage/storageApi";
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
+import {ViewToken} from "react-native";
 
 export type PhotoType = {
     id: string
@@ -61,7 +62,7 @@ export default class GalleryStore {
 
     isAppInternetReachable: boolean | null = true // доступен ли интернет
 
-    viewableItems = [] // массив видимых элементов из FlatList основного скрина галерии
+    viewableItems: ViewToken[] = [] // массив видимых элементов из FlatList основного скрина галерии
 
     selectedDetailPhotoId = ''
 
@@ -178,7 +179,6 @@ export default class GalleryStore {
         try {
             if (this.gallery) {
 
-// @ts-ignore
                 const viewableItems = this.viewableItems.map(el => el.item).map(el2 => el2[0])
                 const firstViewableId = viewableItems[0].id
                 const firstViewableIndex = this.gallery.findIndex(photo => photo.id === firstViewableId)

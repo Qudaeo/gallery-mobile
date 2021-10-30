@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 
-import {FlatList, View, useWindowDimensions} from "react-native";
+import {FlatList, View, useWindowDimensions, ViewToken} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
@@ -16,8 +16,9 @@ const GalleryScreen = () => {
 
     const imagesWidth = useWindowDimensions().width
 
-    const handleViewableItemsChanged = useCallback(async ({viewableItems}) => {
-        await galleryStore.setViewableItems(viewableItems)
+    // ((info: {viewableItems: ViewToken[], changed: ViewToken[]}) => void)
+    const handleViewableItemsChanged = useCallback(async (info: {viewableItems: ViewToken[]}) => {
+        await galleryStore.setViewableItems(info.viewableItems)
     }, [])
 
     galleryStore.setIsAppInternetReachable(NetInfo.useNetInfo().isInternetReachable)
