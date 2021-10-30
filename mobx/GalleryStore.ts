@@ -11,6 +11,8 @@ import {encode} from "base64-arraybuffer";
 
 export type PhotoType = {
     id: string
+    created_at: string
+    updated_at: string
     width: number
     height: number
     urls: {
@@ -20,6 +22,8 @@ export type PhotoType = {
 
 export type DetailsType = {
     id: string
+    width: number
+    height: number
     user: {
         id: string
         profile_image: {

@@ -12,6 +12,12 @@ import statisticsPicture from "../../images/DetailedImage/statistics.png"
 import moment from "moment"
 import TagComponent from "./TagComponent";
 
+/*
+type IProps = {
+
+}
+ */
+
 const DetailedImageScreen = (props) => {
     const {galleryStore} = useStore()
 
