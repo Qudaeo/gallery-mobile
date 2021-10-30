@@ -2,11 +2,9 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
 import {
-    readFromStorage,
-    STORAGE_BASE64_IMAGE,
-    STORAGE_DETAILS,
-    STORAGE_GALLERY, STORAGE_USERS_AVATAR,
-    writeToStorage
+    readFromStorage, writeToStorage,
+    STORAGE_BASE64_IMAGE, STORAGE_DETAILS,
+    STORAGE_GALLERY, STORAGE_USERS_AVATAR
 } from "../storage/storageApi";
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
