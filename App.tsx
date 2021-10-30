@@ -19,6 +19,10 @@ type RootStackParamList = {
     Gallery: undefined
 }
 
+export type NavigationType = {
+    navigate: (screen: string) => void
+}
+
 export type GalleryNavigationProps = StackNavigationProp<RootStackParamList, 'Gallery'>
 
 const App = () => {

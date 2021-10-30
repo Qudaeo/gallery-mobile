@@ -3,6 +3,7 @@ import {Image, Text, TouchableOpacity} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import {PhotoType} from "../../mobx/GalleryStore";
+import {NavigationType} from "../../App";
 
 type IProps = {
     photo: PhotoType
@@ -10,9 +11,7 @@ type IProps = {
         width: number
         height: number
     }
-    navigation: {
-        navigate: (screen: string) => void
-    }
+    navigation: NavigationType
 }
 
 export const GalleryItem: React.FC<IProps> = ({photo, imageDimensions, navigation}) => {

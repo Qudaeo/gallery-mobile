@@ -11,13 +11,11 @@ import statisticsPicture from "../../images/DetailedImage/statistics.png"
 
 import moment from "moment"
 import TagComponent from "./TagComponent";
+import {NavigationType} from "../../App";
 
 type IProps = {
-    navigation: {
-        navigate: (screen: string) => void
-    }
+    navigation: NavigationType
 }
-
 
 const DetailedImageScreen: React.FC<IProps> = (props) => {
 
