@@ -67,7 +67,7 @@ const GalleryScreen = () => {
                 isAppInternetReachable={galleryStore.isAppInternetReachable}/>
 
             {(galleryByColumn.length === 0)
-                ? <LoadingScreen messageText={galleryStore.messageText ? galleryStore.messageText : 'loadind...'}/>
+                ? <LoadingScreen messageText={galleryStore.messageText ? galleryStore.messageText : 'loading...'}/>
                 : (galleryByColumn) &&
                 <>
                     {galleryStore.isShowActivityIndicator && <GalleryScreenActivityIndicator/>}

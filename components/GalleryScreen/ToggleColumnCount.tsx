@@ -1,7 +1,13 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
-const ToggleColumnCount = ({appColumnCount, toggleColumnCount, isAppInternetReachable}) => {
+type IProps = {
+    appColumnCount: 1 | 2,
+    toggleColumnCount: () => void,
+    isAppInternetReachable: boolean
+}
+
+const ToggleColumnCount: React.FC<IProps> = ({appColumnCount, toggleColumnCount, isAppInternetReachable}) => {
 
     const styles = StyleSheet.create({
         columnToggleButton: {
@@ -29,7 +35,7 @@ const ToggleColumnCount = ({appColumnCount, toggleColumnCount, isAppInternetReac
         <TouchableOpacity onPress={() => toggleColumnCount()}>
             <Text style={{
                 fontSize: 25,
-                paddingBottom:1
+                paddingBottom: 1
 
             }}
             >{appColumnCount}</Text>
