@@ -1,14 +1,15 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {galleryAPI} from "../api/api";
 import {apiPageSize} from "../common/const";
-import {readFromStorage, writeToStorage} from "../storage/storageApi";
+import {
+    readFromStorage,
+    STORAGE_BASE64_IMAGE,
+    STORAGE_DETAILS,
+    STORAGE_GALLERY, STORAGE_USERS_AVATAR,
+    writeToStorage
+} from "../storage/storageApi";
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
-
-export const STORAGE_GALLERY = 'STORAGE_ITEMS'
-export const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
-export const STORAGE_DETAILS = 'STORAGE_DETAILS'
-export const STORAGE_USERS_AVATAR = 'STORAGE_USERS_AVATAR'
 
 export type PhotoType = {
     id: string
