@@ -230,7 +230,7 @@ export default class GalleryStore {
                 await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
                 await writeToStorage(STORAGE_SEARCH_TEXT, this.searchText)
 
-                //          alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
+                //alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
             }
 
         } catch (e) {
@@ -367,7 +367,7 @@ export default class GalleryStore {
             this.selectedDetailPhotoId = id
         })
 
-        await this.saveStateToStorage()
+//        await this.saveStateToStorage()
     }
 
 
