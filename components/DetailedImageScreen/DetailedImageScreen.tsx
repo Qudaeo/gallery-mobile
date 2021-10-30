@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, ScrollView, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
+import {Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {observer} from "mobx-react";
 import {actionsPictures, marginHorizontal, marginVertical} from "../../common/const"
 import {calcImageDimensions} from "../../common/funcions"
@@ -12,13 +12,15 @@ import statisticsPicture from "../../images/DetailedImage/statistics.png"
 import moment from "moment"
 import TagComponent from "./TagComponent";
 
-/*
 type IProps = {
-
+    navigation: {
+        navigate: (screen: string) => void
+    }
 }
- */
 
-const DetailedImageScreen = (props) => {
+
+const DetailedImageScreen: React.FC<IProps> = (props) => {
+
     const {galleryStore} = useStore()
 
     const photoGalleryInfo = galleryStore.gallery.find(el => (el.id === galleryStore.selectedDetailPhotoId))
@@ -82,7 +84,6 @@ const DetailedImageScreen = (props) => {
 
                 <View style={{
                     flex: 1,
-                    textAlignVertical: "bottom",
                     paddingBottom: 12,
                     flexDirection: 'row'
                 }}>
@@ -110,7 +111,8 @@ const DetailedImageScreen = (props) => {
         </View>
         {photo.user.location &&
         <View style={{marginTop: 15, marginLeft: 20, flexDirection: 'row'}}>
-            <Image source={locationPicture} style={{width: 20, height: 20}}/>
+            <Image
+                source={locationPicture as ImageSourcePropType} style={{width: 20, height: 20}}/>
             <View style={{marginLeft: 5}}>
                 <Text style={{
                     textDecorationStyle: "dashed",
@@ -157,7 +159,8 @@ const DetailedImageScreen = (props) => {
                     </Text>
                 </View>
                 <View style={{width: 140}}>
-                    <Image source={awardPicture} style={{width: 25, height: 25, marginTop: 3, marginLeft: 20}}/>
+                    <Image source={awardPicture as ImageSourcePropType}
+                           style={{width: 25, height: 25, marginTop: 3, marginLeft: 20}}/>
                 </View>
             </View>
         </View>
@@ -176,7 +179,8 @@ const DetailedImageScreen = (props) => {
 
             </View>
             <View>
-                <Image source={statisticsPicture} style={{marginHorizontal: 10, marginTop: 15, width: 40, height: 40}}/>
+                <Image source={statisticsPicture as ImageSourcePropType}
+                       style={{marginHorizontal: 10, marginTop: 15, width: 40, height: 40}}/>
             </View>
             <View>
                 <View style={{marginLeft: 10, marginTop: 8}}>
@@ -194,16 +198,13 @@ const DetailedImageScreen = (props) => {
             margin: 20, marginRight: 60, flexDirection: "row",
             flexWrap: "wrap"
         }}>
-            {photo.tags.map(tag => <TagComponent key={tag.title} tagTitle={tag.title}  navigation={props.navigation}/>)}
+            {photo.tags.map(tag => <TagComponent key={tag.title} tagTitle={tag.title} navigation={props.navigation}/>)}
 
         </View>
-
 
         {/*<View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
             <Text>{JSON.stringify(photo.tags)}</Text>
         </View>*/}
-
-
     </ScrollView>
 }
 

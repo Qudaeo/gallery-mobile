@@ -25,14 +25,21 @@ export type PhotoType = {
 
 export type DetailsType = {
     id: string
+    description: string
     width: number
     height: number
+    likes: number
     user: {
         id: string
+        name: string
+        location: string
         profile_image: {
             large: string
         }
     }
+    tags: {
+        title: string
+    }[]
 }
 
 export default class GalleryStore {
