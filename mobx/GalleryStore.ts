@@ -38,7 +38,7 @@ export type DetailsType = {
             large: string
         }
     }
-    urls:{
+    urls: {
         regular: string
     }
     tags: {
@@ -355,11 +355,10 @@ export default class GalleryStore {
         await this.saveStateToStorage()
     }
 
-// @ts-ignore
-    setViewableItems(viewableItems) {
+
+    setViewableItems(viewableItems: ViewToken[]) {
         runInAction(() =>
-// @ts-ignore
-                this.viewableItems = [...viewableItems]
+            this.viewableItems = [...viewableItems]
         )
     }
 
