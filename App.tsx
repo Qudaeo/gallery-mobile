@@ -8,17 +8,18 @@
 
 import React from 'react';
 import GalleryScreen from "./components/GalleryScreen/GalleryScreen";
-import {createStackNavigator} from "@react-navigation/stack";
+import {createStackNavigator, StackNavigationProp} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import DetailedImageScreen from "./components/DetailedImageScreen/DetailedImageScreen";
 import {store} from "./mobx/store";
 import {Provider} from "mobx-react";
 import LargeImageScreen from "./components/LargeImageScreen/LargeImageScreen";
 
-export type RootStackParamList = {
-    Main: undefined;
-    Auth: undefined;
-};
+type RootStackParamList = {
+    Gallery: undefined
+}
+
+export type GalleryNavigationProps = StackNavigationProp<RootStackParamList, 'Gallery'>
 
 const App = () => {
 

@@ -135,11 +135,12 @@ export default class GalleryStore {
                     }
                 }
 
+            } catch (e) {
+                alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
+            } finally {
                 runInAction(() => {
                     this.isFetchingInProgress = false
                 })
-            } catch (e) {
-                alert('Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' + e.message)
             }
         } else {
             runInAction(() => {
@@ -228,7 +229,7 @@ export default class GalleryStore {
         })
 
         try {
-            const storedGallery = await readFromStorage(STORAGE_GALLERY)
+            const storedGallery: PhotoType[] = await readFromStorage(STORAGE_GALLERY)
 
             //       alert('storedGallery.length=' + JSON.stringify(storedGallery.length))
 
@@ -238,21 +239,21 @@ export default class GalleryStore {
                     this.gallery.push(...storedGallery)
                 })
 
-                const imagesFromStorage = await readFromStorage(STORAGE_BASE64_IMAGE)
+                const imagesFromStorage: { [key: string]: string } = await readFromStorage(STORAGE_BASE64_IMAGE)
                 if (imagesFromStorage) {
                     runInAction(() => {
                         this.base64Images = imagesFromStorage
                     })
                 }
 
-                const detailsFromStorage = await readFromStorage(STORAGE_DETAILS)
+                const detailsFromStorage: { [key: string]: DetailsType } = await readFromStorage(STORAGE_DETAILS)
                 if (detailsFromStorage) {
                     runInAction(() => {
                         this.detailPhoto = detailsFromStorage
                     })
                 }
 
-                const base64UsersAvatarFromStorage = await readFromStorage(STORAGE_USERS_AVATAR)
+                const base64UsersAvatarFromStorage: { [key: string]: string } = await readFromStorage(STORAGE_USERS_AVATAR)
                 if (base64UsersAvatarFromStorage) {
                     runInAction(() => {
                         this.base64UsersAvatar = base64UsersAvatarFromStorage
