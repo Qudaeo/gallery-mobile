@@ -16,7 +16,6 @@ const GalleryScreen = () => {
 
     const imagesWidth = useWindowDimensions().width
 
-    // ((info: {viewableItems: ViewToken[], changed: ViewToken[]}) => void)
     const handleViewableItemsChanged = useCallback(async (info: {viewableItems: ViewToken[]}) => {
         await galleryStore.setViewableItems(info.viewableItems)
     }, [])

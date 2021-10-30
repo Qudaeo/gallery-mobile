@@ -4,11 +4,13 @@ export const STORAGE_GALLERY = 'STORAGE_ITEMS'
 export const STORAGE_BASE64_IMAGE = 'STORAGE_BASE64_IMAGE'
 export const STORAGE_DETAILS = 'STORAGE_DETAILS'
 export const STORAGE_USERS_AVATAR = 'STORAGE_USERS_AVATAR'
+export const STORAGE_SEARCH_TEXT = 'STORAGE_SEARCH_TEXT'
 
 type PrefixType = typeof STORAGE_GALLERY
     | typeof STORAGE_BASE64_IMAGE
     | typeof STORAGE_DETAILS
     | typeof STORAGE_USERS_AVATAR
+    | typeof STORAGE_SEARCH_TEXT
 
 export const writeToStorage = async (prefix: PrefixType, item: any) => {
     try {

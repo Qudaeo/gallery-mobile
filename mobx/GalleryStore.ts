@@ -4,7 +4,7 @@ import {apiPageSize} from "../common/const";
 import {
     readFromStorage, writeToStorage,
     STORAGE_BASE64_IMAGE, STORAGE_DETAILS,
-    STORAGE_GALLERY, STORAGE_USERS_AVATAR
+    STORAGE_GALLERY, STORAGE_USERS_AVATAR, STORAGE_SEARCH_TEXT
 } from "../storage/storageApi";
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
@@ -82,6 +82,7 @@ export default class GalleryStore {
                 if (this.isAppInternetReachable) {
                     this.currentPage = 1
                     this.gallery = []
+                    this.base64Images = {}
                     this.getCurrentPage()
                 }
             })
@@ -184,17 +185,17 @@ export default class GalleryStore {
                 const firstViewableIndex = this.gallery.findIndex(photo => photo.id === firstViewableId)
 
                 let minIndex
-                if (firstViewableIndex < 15) {
+                if (firstViewableIndex < 5) {
                     minIndex = 0
-                } else if (this.gallery.length - firstViewableIndex < 15)
-                    minIndex = Math.min(0, this.gallery.length - 30)
+                } else if (this.gallery.length - firstViewableIndex < 5)
+                    minIndex = Math.min(0, this.gallery.length - 10)
                 else {
-                    minIndex = firstViewableIndex - 15
+                    minIndex = firstViewableIndex - 5
                 }
 
                 //         alert(JSON.stringify(firstViewableIndex))
 
-                const gallerySave = this.gallery.slice(minIndex, Math.min(minIndex + 30, this.gallery.length))
+                const gallerySave = this.gallery.slice(minIndex, Math.min(minIndex + 10, this.gallery.length))
                 const base64ImagesSave: { [key: string]: string } = {}
                 const detailPhotoSave: { [key: string]: DetailsType } = {}
                 const base64UsersAvatarSave: { [key: string]: string } = {}
@@ -223,6 +224,7 @@ export default class GalleryStore {
                 await writeToStorage(STORAGE_BASE64_IMAGE, base64ImagesSave)
                 await writeToStorage(STORAGE_DETAILS, detailPhotoSave)
                 await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
+                await writeToStorage(STORAGE_SEARCH_TEXT, this.searchText)
 
                 //          alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
             }
@@ -270,6 +272,13 @@ export default class GalleryStore {
                 if (base64UsersAvatarFromStorage) {
                     runInAction(() => {
                         this.base64UsersAvatar = base64UsersAvatarFromStorage
+                    })
+                }
+
+                const searchTextStorage:  string  = await readFromStorage(STORAGE_SEARCH_TEXT)
+                if (searchTextStorage) {
+                    runInAction(() => {
+                        this.searchText = searchTextStorage
                     })
                 }
 
