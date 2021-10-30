@@ -76,11 +76,11 @@ export default class GalleryStore {
     }
 
     searchTextChange(text: string) {
-        if ((this.searchText !== text) && (this.isAppSync)){
+        if ((this.searchText !== text) && (this.isAppSync)) {
             runInAction(() => {
-                this.messageText = 'loading photos...'
                 this.searchText = text
                 if (this.isAppInternetReachable) {
+                    this.messageText = 'loading photos...'
                     this.currentPage = 1
                     this.gallery = []
                     this.base64Images = {}
@@ -196,7 +196,7 @@ export default class GalleryStore {
 
                 //         alert(JSON.stringify(firstViewableIndex))
 
-                const gallerySave = this.gallery.slice(minIndex, Math.min(minIndex + 10, this.gallery.length))
+                let gallerySave = this.gallery.slice(minIndex, Math.min(minIndex + 10, this.gallery.length))
                 const base64ImagesSave: { [key: string]: string } = {}
                 const detailPhotoSave: { [key: string]: DetailsType } = {}
                 const base64UsersAvatarSave: { [key: string]: string } = {}
@@ -218,7 +218,10 @@ export default class GalleryStore {
 
                             }
                         }
+                    } else {
+                        gallerySave = gallerySave.filter(el => (el.id !== photo.id))
                     }
+
                 }
 
                 await writeToStorage(STORAGE_GALLERY, gallerySave)
@@ -310,7 +313,7 @@ export default class GalleryStore {
 
 
     setIsAppInternetReachable(isReachable: boolean | null) {
-        if ((isReachable) && (this.isAppInternetReachable) && (this.isAppSync) &&(this.gallery.length === 0)) {
+        if ((isReachable) && (this.isAppInternetReachable) && (this.isAppSync) && (this.gallery.length === 0)) {
 
             runInAction(() =>
                 this.isAppInternetReachable = isReachable
