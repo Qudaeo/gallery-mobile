@@ -2,12 +2,19 @@ import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 type IProps = {
-    appColumnCount: 1 | 2,
-    toggleColumnCount: () => void,
+    appColumnCount: 1 | 2
+    toggleColumnCount: () => void
     isAppInternetReachable: boolean | null
+    isFetchingInProgress: boolean
 }
 
-const ToggleColumnCount: React.FC<IProps> = ({appColumnCount, toggleColumnCount, isAppInternetReachable}) => {
+const ToggleColumnCount: React.FC<IProps> = (
+    {
+        appColumnCount,
+        toggleColumnCount,
+        isAppInternetReachable,
+        isFetchingInProgress
+    }) => {
 
     const styles = StyleSheet.create({
         columnToggleButton: {
@@ -20,7 +27,7 @@ const ToggleColumnCount: React.FC<IProps> = ({appColumnCount, toggleColumnCount,
             borderColor: 'rgba(180, 180, 180,0.7)',
 
             backgroundColor: isAppInternetReachable
-                ? "rgba(153, 255, 153, 0.7)"
+                ?(isFetchingInProgress?"rgba(255, 255, 102, 0.7)":"rgba(153, 255, 153, 0.7)")
                 : "rgba(255, 26, 26, 0.7)",
             alignItems: 'center',
             justifyContent: 'center',

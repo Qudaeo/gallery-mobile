@@ -60,7 +60,9 @@ const GalleryScreen = () => {
             <ToggleColumnCount
                 appColumnCount={galleryStore.appColumnCount}
                 toggleColumnCount={galleryStore.toggleColumnCount}
-                isAppInternetReachable={galleryStore.isAppInternetReachable}/>
+                isAppInternetReachable={galleryStore.isAppInternetReachable}
+                isFetchingInProgress={galleryStore.isFetchingInProgress}
+            />
 
             {(galleryByColumn.length === 0)
                 ? <LoadingScreen messageText={galleryStore.messageText ? galleryStore.messageText : 'loading...'}/>
