@@ -1,7 +1,11 @@
 import {Text, View} from "react-native";
 import React from "react";
 
-const LoadingScreen = ({messageText}) => <View style={{
+type IProps = {
+    messageText: string
+}
+
+const LoadingScreen: React.FC<IProps> = ({messageText}) => <View style={{
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
