@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 
-import {FlatList, View, useWindowDimensions, Text, Button} from "react-native";
+import {FlatList, View, useWindowDimensions, Text} from "react-native";
 import {observer} from "mobx-react";
 import {useStore} from "../../mobx/store";
 import GalleryRow from "./GalleryRow";
@@ -10,10 +10,18 @@ import SearchPhotoBar from "./SearchPhotoBar";
 import ToggleColumnCount from "./ToggleColumnCount";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import GalleryScreenActivityIndicator from "../LoadingScreen/GalleryScreenActivityIndicator";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {RootStackParamList} from "../../App";
+import {useNavigation} from "@react-navigation/native";
 
-const GalleryScreen = (props) => {
+type authScreenProp = StackNavigationProp<RootStackParamList, 'Auth'>;
+
+const GalleryScreen = () => {
+    const navigation = useNavigation<authScreenProp>();
 
     const {galleryStore} = useStore()
+
+
     const imagesWidth = useWindowDimensions().width
 
     const handleViewableItemsChanged = useCallback(async ({viewableItems}) => {
@@ -26,7 +34,7 @@ const GalleryScreen = (props) => {
         galleryStore.initializeApp(imagesWidth)
     }, [])
 
-    const galleryByColumn = galleryStore.gallery.reduce((result, el, index) => {
+    const galleryByColumn = galleryStore.gallery.reduce((result: any, el, index) => {
         switch (index % galleryStore.appColumnCount) {
             case 0: {
                 return [...result, [el]]
@@ -48,10 +56,11 @@ const GalleryScreen = (props) => {
             {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}
             {<Text>{'base64 objects=' + Object.keys(galleryStore.base64Images).length}</Text>}
             {<Text>{'galleryStore.detailPhoto.length=' + Object.keys(galleryStore.detailPhoto).length}</Text>}
-            {<Text>{'galleryStore.base64UsersAvatar.length=' + Object.keys(galleryStore.base64UsersAvatar).length}</Text>}
+            {
+                <Text>{'galleryStore.base64UsersAvatar.length=' + Object.keys(galleryStore.base64UsersAvatar).length}</Text>}
             {<Text>{'galleryStore.currentPage=' + galleryStore.currentPage}</Text>}
-            {<Button title={'saveStateToStorage'} onPress={galleryStore.saveStateToStorage}/>}
-            {<Button title={'initializeApp()'} onPress={galleryStore.initializeApp}/>}
+            {/*<Button title={'saveStateToStorage'} onPress={() => galleryStore.saveStateToStorage()}/>*/}
+            {/*<Button title={'initializeApp()'} onPress={() =>galleryStore.initializeApp(imagesWidth)}/>*/}
             <SearchPhotoBar
                 searchText={galleryStore.searchText}
                 searchTextChange={galleryStore.searchTextChange}/>
@@ -68,7 +77,7 @@ const GalleryScreen = (props) => {
                     {galleryStore.isShowActivityIndicator && <GalleryScreenActivityIndicator/>}
                     <FlatList
                         data={galleryByColumn}
-                        renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={props.navigation}/>}
+                        renderItem={({item}) => <GalleryRow key={item.id} row={item} navigation={navigation}/>}
                         onEndReached={() => {
                             if (!galleryStore.isFetchingInProgress) {
                                 galleryStore.getNextPage()

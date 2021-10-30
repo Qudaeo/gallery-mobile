@@ -15,6 +15,11 @@ import {store} from "./mobx/store";
 import {Provider} from "mobx-react";
 import LargeImageScreen from "./components/LargeImageScreen/LargeImageScreen";
 
+export type RootStackParamList = {
+    Main: undefined;
+    Auth: undefined;
+};
+
 const App = () => {
 
     const Stack = createStackNavigator();

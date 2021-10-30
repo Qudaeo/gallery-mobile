@@ -46,7 +46,7 @@ export default class GalleryStore {
     appColumnCount: 1 | 2 = 1 // количество колонок по умолчанию
     appImagesWidth = 0 // ширина загрущаемых картинок
 
-    isAppInternetReachable = true // доступен ли интернет
+    isAppInternetReachable: boolean | null = true // доступен ли интернет
 
     viewableItems = [] // массив видимых элементов из FlatList основного скрина галерии
 
@@ -283,7 +283,7 @@ export default class GalleryStore {
     }
 
 
-    setIsAppInternetReachable(isReachable: boolean) {
+    setIsAppInternetReachable(isReachable: boolean | null) {
         if ((isReachable) && (!this.isAppInternetReachable) && (this.gallery.length === 0)) {
 
             runInAction(() =>
