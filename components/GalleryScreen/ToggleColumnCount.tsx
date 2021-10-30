@@ -4,7 +4,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 type IProps = {
     appColumnCount: 1 | 2,
     toggleColumnCount: () => void,
-    isAppInternetReachable: boolean
+    isAppInternetReachable: boolean | null
 }
 
 const ToggleColumnCount: React.FC<IProps> = ({appColumnCount, toggleColumnCount, isAppInternetReachable}) => {
