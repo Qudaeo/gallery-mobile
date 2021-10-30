@@ -33,7 +33,7 @@ export const galleryAPI = {
 
     async getImageByUrl(url: string, width?: number, height?: number): Promise<GetImageResponseType | undefined> {
         try {
-            return instance.get(`${url}?w=${width}&h=${height}`, {responseType: 'arraybuffer'})
+            return instance.get(`${url}${(width || height)?'?':''}${width?`w=${width}`:''}${height?`&h=${height}`:''}`, {responseType: 'arraybuffer'})
         } catch (e) {
             alert('Exception: galleryAPI: getImageByUrl(url, width, height): ' + e.message)
         }
