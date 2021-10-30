@@ -1,25 +1,31 @@
-import React, {useEffect, useRef, useState} from "react";
-import {StyleSheet, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
+import React, { useEffect, useRef, useState} from "react";
+import {StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View, ViewStyle} from "react-native";
 import {Searchbar} from 'react-native-paper';
 import magnifierPicture from '../../images/SearchPhotoBar/magnifier.png'
 import clearPicture from '../../images/SearchPhotoBar/cancel.png'
 
-const SearchPhotoBar = (props) => {
+type IProps = {
+    searchText: string,
+    searchTextChange: (text: string) => void
+}
+
+const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
 
     const [isFocused, setIsFocused] = useState(false)
-    const [searchTextTemp, setSearchTextTemp] = useState(props.searchText)
+    const [searchTextTemp, setSearchTextTemp] = useState(searchText)
 
     useEffect(
-        () => setSearchTextTemp(props.searchText),
-        [props.searchText]
+        () => setSearchTextTemp(searchText),
+        [searchText]
     )
 
     const currentWindowWidth = useWindowDimensions().width
 
-    const searchbarRef = useRef(null);
+    const searchbarRef = useRef<TextInput>(null);
+
     useEffect(() => {
         if (isFocused) {
-            searchbarRef.current.focus()
+            searchbarRef.current?.focus()
         }
     }, [isFocused])
 
@@ -37,40 +43,38 @@ const SearchPhotoBar = (props) => {
         }
     })
 
-    return <View style={{
+    return <View style ={[{
         position: 'absolute',
         zIndex: 100,
-        direction: "row"
-
-    }}>
+        direction: "row",
+    }] as ViewStyle}>
         <View>
             <Searchbar
                 ref={searchbarRef}
                 style={styles.searchButton}
                 placeholder="Search photos..."
                 onChangeText={text => {
-                    setSearchTextTemp(text)
+                    setSearchTextTemp(text);
                     if (text === '') {
-                        props.searchTextChange('')
+                        searchTextChange('');
                     }
                 }}
                 value={searchTextTemp}
                 onIconPress={() => {
-                    setIsFocused(!isFocused)
+                    setIsFocused(!isFocused);
                 }}
                 onBlur={() => {
-                    setIsFocused(false)
-                    props.searchTextChange(searchTextTemp)
+                    setIsFocused(false);
+                    searchTextChange(searchTextTemp);
                 }}
 
 
                 icon={magnifierPicture}
                 clearIcon={clearPicture}
-                iconColor={'rgb(51, 102, 255)'}
-
+                iconColor={'rgb(51, 102, 255)'} autoCompleteType={undefined}
             />
         </View>
-        {!!(props.searchText) &&
+        {!!(searchText) &&
         <TouchableOpacity onPress={() => setIsFocused(true)}>
             <View style={{
                 borderWidth: 1,
@@ -90,11 +94,10 @@ const SearchPhotoBar = (props) => {
                     marginHorizontal: 5,
                     marginVertical: 2,
                     color: 'rgb(46, 45, 41)',
-                }}>{props.searchText}</Text>
+                }}>{searchText}</Text>
             </View>
         </TouchableOpacity>}
     </View>
 }
-
 
 export default SearchPhotoBar
