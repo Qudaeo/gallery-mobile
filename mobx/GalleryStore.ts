@@ -40,7 +40,7 @@ export default class GalleryStore {
 
     isShowActivityIndicator = false // показывать индикатор загрузки?
 
-    appColumnCount = 1 // количество колонок по умолчанию
+    appColumnCount: 1 | 2 = 1 // количество колонок по умолчанию
     appImagesWidth = 0 // ширина загрущаемых картинок
 
     isAppInternetReachable = true // доступен ли интернет
@@ -342,7 +342,7 @@ export default class GalleryStore {
     setViewableItems(viewableItems) {
         runInAction(() =>
 // @ts-ignore
-            this.viewableItems = [...viewableItems]
+                this.viewableItems = [...viewableItems]
         )
     }
 
