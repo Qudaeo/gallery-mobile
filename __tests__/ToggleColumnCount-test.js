@@ -6,10 +6,10 @@ import 'react-native';
 import React from 'react';
 import renderer from 'react-test-renderer';
 import ToggleColumnCount from "../components/GalleryScreen/ToggleColumnCount";
-import GalleryStore from "../mobx/GalleryStore";
 import {fireEvent, render} from "@testing-library/react-native";
+import GalleryStore from "../mobx/GalleryStore";
 
-it('1. renders correctly', () => {
+it('1. render correctly', () => {
     const galleryStore = new GalleryStore
 
     renderer.create(<ToggleColumnCount
@@ -23,7 +23,7 @@ it('1. renders correctly', () => {
 for (let isAppInternetReachable of [true, false]) {
     for (let appColumnCount of [1, 2]) {
         for (let isFetchingInProgress of [true, false]) {
-            test('2. Match to Snapshots', () => {
+            test(`2. Match to Snapshots: isAppInternetReachable=${isAppInternetReachable}; appColumnCount=${appColumnCount}; isFetchingInProgress=${isFetchingInProgress}`, () => {
                 const tree = renderer.create(<ToggleColumnCount
                     toggleColumnCount={() => {
                     }}
@@ -37,7 +37,8 @@ for (let isAppInternetReachable of [true, false]) {
     }
 }
 
-it('3. calls the toggle method', async () => {
+
+it('3. press the toggle', () => {
 
     const mockStore = {
         appColumnCount: 1,
@@ -60,5 +61,6 @@ it('3. calls the toggle method', async () => {
     fireEvent.press(getByTestId("TouchableOpacityText"))
     rerender(<TestComponent/>)
 
-    expect(await getByTestId("TouchableOpacityText").props.children[0].props.children).toEqual(2)
+    expect(getByTestId("TouchableOpacityText").props.children[0].props.children).toEqual(2)
 })
+
