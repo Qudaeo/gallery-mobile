@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`2. toMatchSnapshot 1 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "rgba(153, 255, 153, 0.7)",
+      "borderColor": "rgba(180, 180, 180,0.7)",
+      "borderRadius": 50,
+      "borderWidth": 1,
+      "elevation": 10,
+      "height": 53,
+      "justifyContent": "center",
+      "position": "absolute",
+      "right": 15,
+      "top": 10,
+      "width": 53,
+      "zIndex": 100,
+    }
+  }
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    nativeID="animatedComponent"
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 25,
+          "paddingBottom": 1,
+        }
+      }
+    >
+      1
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`3. toMatchSnapshot 2 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "rgba(255, 26, 26, 0.7)",
+      "borderColor": "rgba(180, 180, 180,0.7)",
+      "borderRadius": 50,
+      "borderWidth": 1,
+      "elevation": 10,
+      "height": 53,
+      "justifyContent": "center",
+      "position": "absolute",
+      "right": 15,
+      "top": 10,
+      "width": 53,
+      "zIndex": 100,
+    }
+  }
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    nativeID="animatedComponent"
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 25,
+          "paddingBottom": 1,
+        }
+      }
+    >
+      2
+    </Text>
+  </View>
+</View>
+`;
