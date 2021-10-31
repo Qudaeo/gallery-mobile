@@ -61,6 +61,6 @@ it('3. press the toggle', () => {
     fireEvent.press(getByTestId("TouchableOpacityText"))
     rerender(<TestComponent/>)
 
-    expect(getByTestId("TouchableOpacityText").props.children[0].props.children).toEqual(2)
+    expect(getByTestId("TouchableOpacityText").props.children).toEqual(2)
 })
 

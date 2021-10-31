@@ -39,8 +39,8 @@ const ToggleColumnCount: React.FC<IProps> = (
     })
 
     return <View style={styles.columnToggleButton}>
-        <TouchableOpacity testID="TouchableOpacityText" onPress={() => toggleColumnCount()}>
-            <Text style={{
+        <TouchableOpacity onPress={() => toggleColumnCount()}>
+            <Text testID="TouchableOpacityText" style={{
                 fontSize: 25,
                 paddingBottom: 1
             }}
