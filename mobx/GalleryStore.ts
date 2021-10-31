@@ -4,7 +4,7 @@ import {apiPageSize} from "../common/const";
 import {
     readFromStorage, writeToStorage,
     STORAGE_BASE64_IMAGE, STORAGE_DETAILS,
-    STORAGE_GALLERY, STORAGE_USERS_AVATAR, STORAGE_SEARCH_TEXT
+    STORAGE_GALLERY, STORAGE_USERS_AVATAR
 } from "../storage/storageApi";
 import {calcImageDimensions} from "../common/funcions";
 import {encode} from "base64-arraybuffer";
@@ -228,7 +228,6 @@ export default class GalleryStore {
                 await writeToStorage(STORAGE_BASE64_IMAGE, base64ImagesSave)
                 await writeToStorage(STORAGE_DETAILS, detailPhotoSave)
                 await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave)
-                await writeToStorage(STORAGE_SEARCH_TEXT, this.searchText)
 
                 //alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
             }
@@ -277,13 +276,6 @@ export default class GalleryStore {
                     if (base64UsersAvatarFromStorage) {
                         runInAction(() => {
                             this.base64UsersAvatar = base64UsersAvatarFromStorage
-                        })
-                    }
-
-                    const searchTextStorage: string = await readFromStorage(STORAGE_SEARCH_TEXT)
-                    if (searchTextStorage) {
-                        runInAction(() => {
-                            this.searchText = searchTextStorage
                         })
                     }
 

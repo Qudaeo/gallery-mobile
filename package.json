@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.16.0",
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-community/netinfo": "^6.0.4",
     "@react-navigation/native": "^6.0.6",
@@ -21,6 +22,7 @@
     "moment": "^2.29.1",
     "prettier": "^2.4.1",
     "react": "17.0.2",
+    "react-dom": "^17.0.2",
     "react-native": "0.66.1",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-zoom-viewer": "^3.0.1",

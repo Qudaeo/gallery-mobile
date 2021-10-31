@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View, ViewStyle} from "react-native";
 import {Searchbar} from 'react-native-paper';
 import magnifierPicture from '../../images/SearchPhotoBar/magnifier.png'
@@ -13,6 +13,7 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
 
     const [isFocused, setIsFocused] = useState(false)
     const [searchTextTemp, setSearchTextTemp] = useState(searchText)
+//    const [select, setSelect] = useState({selection: {start: searchText.length, end: searchText.length}})
 
     useEffect(
         () => setSearchTextTemp(searchText),
@@ -21,7 +22,7 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
 
     const currentWindowWidth = useWindowDimensions().width
 
-    const searchbarRef = useRef<TextInput>(null);
+    const searchbarRef = useRef<TextInput>(null)
 
     useEffect(() => {
         if (isFocused) {
@@ -43,7 +44,7 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
         }
     })
 
-    return <View style ={[{
+    return <View style={[{
         position: 'absolute',
         zIndex: 100,
         direction: "row",
@@ -51,29 +52,36 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
         <View>
             <Searchbar
                 ref={searchbarRef}
+
                 style={styles.searchButton}
                 placeholder="Search photos..."
                 onChangeText={text => {
-                    setSearchTextTemp(text);
+                    setSearchTextTemp(text)
                     if (text === '') {
-                        searchTextChange('');
+                        searchTextChange('')
                     }
                 }}
                 value={searchTextTemp}
                 onIconPress={() => {
-                    setIsFocused(!isFocused);
+                    setIsFocused(!isFocused)
                 }}
                 onBlur={() => {
-                    setIsFocused(false);
-                    searchTextChange(searchTextTemp);
+                    setIsFocused(false)
+                    searchTextChange(searchTextTemp)
                 }}
 
 
                 icon={magnifierPicture}
                 clearIcon={clearPicture}
-                iconColor={'rgb(51, 102, 255)'} autoCompleteType={undefined}
+                iconColor={'rgb(51, 102, 255)'}
+                autoCompleteType={undefined}
             />
+
         </View>
+{/*   selection={select.selection}
+      onSelectionChange={({nativeEvent: {selection}}) => setSelect({selection})}
+*/}
+
         {!!(searchText) &&
         <TouchableOpacity onPress={() => setIsFocused(true)}>
             <View style={{
