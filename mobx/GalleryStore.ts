@@ -251,8 +251,14 @@ export default class GalleryStore {
                 const storedGallery: PhotoType[] = await readFromStorage(STORAGE_GALLERY)
 
                 //       alert('storedGallery.length=' + JSON.stringify(storedGallery.length))
+                if (this.isAppInternetReachable) {
+                    runInAction(() => {
+                        this.messageText = 'loading photos...'
+                    })
 
-                if (storedGallery && (storedGallery.length > 0)) {
+                    await this.getCurrentPage()
+
+                } else if (storedGallery && (storedGallery.length > 0)) {
                     runInAction(() => {
                         this.gallery = []
                         this.gallery.push(...storedGallery)
@@ -279,12 +285,6 @@ export default class GalleryStore {
                         })
                     }
 
-                } else if (this.isAppInternetReachable) {
-                    runInAction(() => {
-                        this.messageText = 'loading photos...'
-                    })
-
-                    await this.getCurrentPage()
                 } else {
                     runInAction(() => {
                         this.messageText = 'no internet connection'

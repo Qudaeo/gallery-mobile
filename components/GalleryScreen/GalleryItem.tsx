@@ -53,7 +53,7 @@ export const GalleryItem: React.FC<IProps> = ({photo, imageDimensions, navigatio
             textAlign: "left",
             top: Math.round(5 / galleryStore.appColumnCount),
             left: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`id=${photo.id}   ${width}:${height}${galleryStore.base64Images[photo.id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>*/}
+        }}>{`id=${photo.id}   ${imageDimensions.width}:${imageDimensions.height}${galleryStore.base64Images[photo.id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>*/}
 
     </TouchableOpacity>
 }
