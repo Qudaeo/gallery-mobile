@@ -7,7 +7,7 @@ const DebugView = () => {
     const {galleryStore} = useStore()
 
     return <>
-        {<Text>{'galleryStore.gallery.length=' + galleryStore.gallery.length}</Text>}
+        {/*<Text>{'galleryStore.gallery.length=' + galleryStore.gallery.length}</Text>*/}
         {/*<Text>{'galleryStore.setIsShowActivityIndicator=' + galleryStore.isShowActivityIndicator}</Text>*/}
         {/*<Text>{'galleryStore.isAppSync=' + galleryStore.isAppSync}</Text>*/}
         {/*<Text>{'appImagesWidth=' + JSON.stringify(galleryStore.appImagesWidth)}</Text>*/}

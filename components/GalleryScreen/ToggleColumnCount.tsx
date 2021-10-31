@@ -27,7 +27,7 @@ const ToggleColumnCount: React.FC<IProps> = (
             borderColor: 'rgba(180, 180, 180,0.7)',
 
             backgroundColor: isAppInternetReachable
-                ?(isFetchingInProgress?"rgba(255, 255, 102, 0.7)":"rgba(153, 255, 153, 0.7)")
+                ? (isFetchingInProgress ? "rgba(255, 255, 102, 0.7)" : "rgba(153, 255, 153, 0.7)")
                 : "rgba(255, 26, 26, 0.7)",
             alignItems: 'center',
             justifyContent: 'center',
@@ -39,11 +39,10 @@ const ToggleColumnCount: React.FC<IProps> = (
     })
 
     return <View style={styles.columnToggleButton}>
-        <TouchableOpacity onPress={() => toggleColumnCount()}>
+        <TouchableOpacity testID="TouchableOpacityText" onPress={() => toggleColumnCount()}>
             <Text style={{
                 fontSize: 25,
                 paddingBottom: 1
-
             }}
             >{appColumnCount}</Text>
         </TouchableOpacity>
