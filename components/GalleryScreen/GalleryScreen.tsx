@@ -63,7 +63,11 @@ const GalleryScreen = () => {
                         data={galleryByColumn}
                         renderItem={({item}) => <GalleryRow key={item.id} row={item}/>}
                         onEndReached={() => {
-                            if ((!galleryStore.isFetchingInProgress) && (galleryStore.isAppSync)) {
+                            if (
+                                !galleryStore.isFetchingInProgress
+                                && galleryStore.isAppSync
+                                && !galleryStore.isAllPhotoFetch
+                            ) {
                                 galleryStore.getNextPage()
                             }
                         }}

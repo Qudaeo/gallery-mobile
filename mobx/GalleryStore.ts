@@ -54,6 +54,7 @@ export default class GalleryStore {
 
     isAppSync = false
     isFetchingInProgress = true
+    isAllPhotoFetch = false
     messageText = '' // сообщение для окна LoadingScreen
 
     isShowActivityIndicator = false // показывать индикатор загрузки?
@@ -81,6 +82,7 @@ export default class GalleryStore {
                 this.searchText = text
                 if (this.isAppInternetReachable) {
                     this.messageText = 'loading photos...'
+                    this.isAllPhotoFetch = false
                     this.currentPage = 1
                     this.gallery = []
                     this.base64Images = {}
@@ -134,6 +136,10 @@ export default class GalleryStore {
                 })
 
                 const pageResponseData = await this.getResponseData()
+
+                if ((!pageResponseData) || (pageResponseData.length < apiPageSize)) {
+                    this.isAllPhotoFetch = true
+                }
 
                 if (pageResponseData) {
                     runInAction(() => {
