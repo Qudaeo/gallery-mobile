@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import {observer} from "mobx-react";
 import {actionsPictures, marginHorizontal, marginVertical} from "../../common/const"
@@ -20,10 +20,6 @@ type IProps = {
 const DetailedImageScreen: React.FC<IProps> = (props) => {
 
     const {galleryStore} = useStore()
-
-    useEffect(() => {
-        galleryStore.saveStateToStorage()
-    }, [])
 
     const photoGalleryInfo = galleryStore.gallery.find(el => (el.id === galleryStore.selectedDetailPhotoId))
 

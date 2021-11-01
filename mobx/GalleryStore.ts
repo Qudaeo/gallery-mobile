@@ -359,6 +359,8 @@ export default class GalleryStore {
                     })
                 }
             }
+
+            await this.saveStateToStorage()
         }
 
         runInAction(() => {
