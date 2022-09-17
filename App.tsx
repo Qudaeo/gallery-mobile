@@ -7,51 +7,50 @@
  */
 
 import React from 'react';
-import GalleryScreen from "./components/GalleryScreen/GalleryScreen";
-import {createStackNavigator, StackNavigationProp} from "@react-navigation/stack";
-import {NavigationContainer} from "@react-navigation/native";
-import DetailedImageScreen from "./components/DetailedImageScreen/DetailedImageScreen";
-import {store} from "./mobx/store";
-import {Provider} from "mobx-react";
-import LargeImageScreen from "./components/LargeImageScreen/LargeImageScreen";
+import GalleryScreen from './components/GalleryScreen/GalleryScreen';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import DetailedImageScreen from './components/DetailedImageScreen/DetailedImageScreen';
+import {store} from './mobx/store';
+import {Provider} from 'mobx-react';
+import LargeImageScreen from './components/LargeImageScreen/LargeImageScreen';
 
 type RootStackParamList = {
-    Gallery: undefined
-}
+  Gallery: undefined;
+};
 
 export type NavigationType = {
-    navigate: (screen: string) => void
-}
+  navigate: (screen: string) => void;
+};
 
-export type GalleryNavigationProps = StackNavigationProp<RootStackParamList, 'Gallery'>
+export type GalleryNavigationProps = StackNavigationProp<
+  RootStackParamList,
+  'Gallery'
+>;
 
 const App = () => {
+  const Stack = createStackNavigator();
 
-    const Stack = createStackNavigator();
-
-    return <Provider store={store}
-                     galleryStore={store.galleryStore}>
-
-        <NavigationContainer>
-            <Stack.Navigator screenOptions={{
-                headerShown: false
-            }}>
-                <Stack.Screen
-                    name="GalleryScreen"
-                    component={GalleryScreen}
-                />
-                <Stack.Screen
-                    name="DetailedImageScreen"
-                    component={DetailedImageScreen}
-                />
-                <Stack.Screen
-                    name="LargeImageScreen"
-                    component={LargeImageScreen}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
-
+  return (
+    <Provider store={store} galleryStore={store.galleryStore}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}>
+          <Stack.Screen name="GalleryScreen" component={GalleryScreen} />
+          <Stack.Screen
+            name="DetailedImageScreen"
+            component={DetailedImageScreen}
+          />
+          <Stack.Screen name="LargeImageScreen" component={LargeImageScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
-}
+  );
+};
 
-export default App
+export default App;

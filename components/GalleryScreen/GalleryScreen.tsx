@@ -1,83 +1,97 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback, useEffect} from 'react';
 
-import {FlatList, View, useWindowDimensions, ViewToken} from "react-native";
-import {observer} from "mobx-react";
-import {useStore} from "../../mobx/store";
-import GalleryRow from "./GalleryRow";
-import NetInfo from "@react-native-community/netinfo";
+import {FlatList, View, useWindowDimensions, ViewToken} from 'react-native';
+import {observer} from 'mobx-react';
+import {useStore} from '../../mobx/store';
+import GalleryRow from './GalleryRow';
+import NetInfo from '@react-native-community/netinfo';
 
-import SearchPhotoBar from "./SearchPhotoBar";
-import ToggleColumnCount from "./ToggleColumnCount";
-import LoadingScreen from "../LoadingScreen/LoadingScreen";
-import GalleryScreenActivityIndicator from "../LoadingScreen/GalleryScreenActivityIndicator";
-import DebugView from "./DebugView";
+import SearchPhotoBar from './SearchPhotoBar';
+import ToggleColumnCount from './ToggleColumnCount';
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
+import GalleryScreenActivityIndicator from '../LoadingScreen/GalleryScreenActivityIndicator';
 
 const GalleryScreen = () => {
-    const {galleryStore} = useStore()
+  const {galleryStore} = useStore();
 
-    const imagesWidth = useWindowDimensions().width
+  const imagesWidth = useWindowDimensions().width;
 
-    const handleViewableItemsChanged = useCallback(async (info: { viewableItems: ViewToken[] }) => {
-        await galleryStore.setViewableItems(info.viewableItems)
-    }, [])
+  const handleViewableItemsChanged = useCallback(
+    async (info: {viewableItems: ViewToken[]}) => {
+      await galleryStore.setViewableItems(info.viewableItems);
+    },
+    [galleryStore],
+  );
 
-    galleryStore.setIsAppInternetReachable(NetInfo.useNetInfo().isInternetReachable)
+  galleryStore.setIsAppInternetReachable(
+    NetInfo.useNetInfo().isInternetReachable,
+  );
 
-    useEffect(() => {
-        galleryStore.initializeApp(imagesWidth)
-    }, [])
+  useEffect(() => {
+    galleryStore.initializeApp(imagesWidth);
+  }, [galleryStore, imagesWidth]);
 
-    const galleryByColumn = galleryStore.gallery.reduce((result: any, el, index) => {
-        switch (index % galleryStore.appColumnCount) {
-            case 0: {
-                return [...result, [el]]
-            }
-            default: {
-                const lastRow = result.pop()
-                lastRow.push(el)
-                return [...result, lastRow]
-            }
+  const galleryByColumn = galleryStore.gallery.reduce(
+    (result: any, el, index) => {
+      switch (index % galleryStore.appColumnCount) {
+        case 0: {
+          return [...result, [el]];
         }
-    }, [])
+        default: {
+          const lastRow = result.pop();
+          lastRow.push(el);
+          return [...result, lastRow];
+        }
+      }
+    },
+    [],
+  );
 
-    return (
-        <View style={{flex: 1}}>
-            <DebugView/>
-            <SearchPhotoBar
-                searchText={galleryStore.searchText}
-                searchTextChange={galleryStore.searchTextChange}/>
+  return (
+    <View style={{flex: 1}}>
+      <SearchPhotoBar
+        searchText={galleryStore.searchText}
+        searchTextChange={galleryStore.searchTextChange}
+      />
 
-            <ToggleColumnCount
-                appColumnCount={galleryStore.appColumnCount}
-                toggleColumnCount={galleryStore.toggleColumnCount}
-                isAppInternetReachable={galleryStore.isAppInternetReachable}
-                isFetchingInProgress={galleryStore.isFetchingInProgress}
+      <ToggleColumnCount
+        appColumnCount={galleryStore.appColumnCount}
+        toggleColumnCount={galleryStore.toggleColumnCount}
+        isAppInternetReachable={galleryStore.isAppInternetReachable}
+        isFetchingInProgress={galleryStore.isFetchingInProgress}
+      />
+
+      {galleryByColumn.length === 0 ? (
+        <LoadingScreen
+          messageText={
+            galleryStore.messageText ? galleryStore.messageText : 'loading...'
+          }
+        />
+      ) : (
+        galleryByColumn && (
+          <>
+            {galleryStore.isShowActivityIndicator && (
+              <GalleryScreenActivityIndicator />
+            )}
+            <FlatList
+              data={galleryByColumn}
+              renderItem={({item}) => <GalleryRow key={item.id} row={item} />}
+              onEndReached={() => {
+                if (
+                  !galleryStore.isFetchingInProgress &&
+                  galleryStore.isAppSync &&
+                  !galleryStore.isAllPhotoFetch
+                ) {
+                  galleryStore.getNextPage();
+                }
+              }}
+              onEndReachedThreshold={0.5}
+              onViewableItemsChanged={handleViewableItemsChanged}
             />
-
-            {(galleryByColumn.length === 0)
-                ? <LoadingScreen messageText={galleryStore.messageText ? galleryStore.messageText : 'loading...'}/>
-                : (galleryByColumn) &&
-                <>
-                    {galleryStore.isShowActivityIndicator && <GalleryScreenActivityIndicator/>}
-                    <FlatList
-                        data={galleryByColumn}
-                        renderItem={({item}) => <GalleryRow key={item.id} row={item}/>}
-                        onEndReached={() => {
-                            if (
-                                !galleryStore.isFetchingInProgress
-                                && galleryStore.isAppSync
-                                && !galleryStore.isAllPhotoFetch
-                            ) {
-                                galleryStore.getNextPage()
-                            }
-                        }}
-                        onEndReachedThreshold={0.5}
-                        onViewableItemsChanged={handleViewableItemsChanged}
-                    />
-                </>}
-
-        </View>
-    )
-
-}
-export default observer(GalleryScreen)
+          </>
+        )
+      )}
+    </View>
+  );
+};
+export default observer(GalleryScreen);

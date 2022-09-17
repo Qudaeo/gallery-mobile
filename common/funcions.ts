@@ -1,11 +1,17 @@
-import {marginHorizontal} from "./const";
+import {marginHorizontal} from './const';
 
-export const calcImageDimensions = (oldWidth: number, oldHeight: number, columnCount = 1) => {
+export const calcImageDimensions = (
+  oldWidth: number,
+  oldHeight: number,
+  columnCount = 1,
+) => {
+  const newWidth = Math.round(
+    (oldWidth - 2 * marginHorizontal - (columnCount - 1) * marginHorizontal) /
+      columnCount,
+  );
 
-    const newWidth = Math.round((oldWidth - 2 * marginHorizontal - (columnCount - 1) * marginHorizontal) / columnCount)
-
-    return {
-        width: newWidth,
-        height: Math.round(newWidth * oldHeight / oldWidth)
-    }
-}
+  return {
+    width: newWidth,
+    height: Math.round((newWidth * oldHeight) / oldWidth),
+  };
+};
