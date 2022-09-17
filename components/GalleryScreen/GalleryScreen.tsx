@@ -1,6 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
 
-import {FlatList, View, ViewToken, StatusBar, Dimensions} from 'react-native';
+import {
+  FlatList,
+  View,
+  ViewToken,
+  StatusBar,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import {observer} from 'mobx-react';
 import {useStore} from '../../mobx/store';
 import GalleryRow from './GalleryRow';
@@ -12,9 +19,11 @@ import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import GalleryScreenActivityIndicator from '../LoadingScreen/GalleryScreenActivityIndicator';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {PhotoType} from '../../mobx/GalleryStore';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const GalleryScreen = () => {
   const {galleryStore} = useStore();
+  const insets = useSafeAreaInsets();
 
   const imagesWidth = Dimensions.get('window').width;
 
@@ -96,6 +105,9 @@ const GalleryScreen = () => {
             <FlatList
               showsVerticalScrollIndicator={false}
               bounces={false}
+              style={{
+                marginBottom: Platform.OS === 'ios' ? insets.bottom : 0,
+              }}
               data={galleryByColumn}
               renderItem={renderItem}
               onEndReached={() => {

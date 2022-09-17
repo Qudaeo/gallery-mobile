@@ -9,38 +9,28 @@
 import React from 'react';
 import GalleryScreen from './components/GalleryScreen/GalleryScreen';
 import {
-  createStackNavigator,
-  StackNavigationProp,
-} from '@react-navigation/stack';
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import DetailedImageScreen from './components/DetailedImageScreen/DetailedImageScreen';
 import {store} from './mobx/store';
 import {Provider} from 'mobx-react';
 import LargeImageScreen from './components/LargeImageScreen/LargeImageScreen';
 
-type RootStackParamList = {
-  Gallery: undefined;
-};
-
-export type NavigationType = {
-  navigate: (screen: string) => void;
-};
-
-export type GalleryNavigationProps = StackNavigationProp<
-  RootStackParamList,
-  'Gallery'
->;
+export type GalleryNavigationProps = NativeStackNavigationProp<any>;
 
 const App = () => {
-  const Stack = createStackNavigator();
+  const Stack = createNativeStackNavigator();
 
   return (
-    <Provider store={store} galleryStore={store.galleryStore}>
-      <NavigationContainer>
+    <NavigationContainer>
+      <Provider galleryStore={store.galleryStore}>
         <Stack.Navigator
           initialRouteName="GalleryScreen"
           screenOptions={{
             headerShown: false,
+            fullScreenGestureEnabled: true,
           }}>
           <Stack.Screen name="GalleryScreen" component={GalleryScreen} />
           <Stack.Screen
@@ -49,8 +39,8 @@ const App = () => {
           />
           <Stack.Screen name="LargeImageScreen" component={LargeImageScreen} />
         </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+      </Provider>
+    </NavigationContainer>
   );
 };
 

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   Image,
   ImageSourcePropType,
+  Platform,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -23,14 +24,13 @@ import statisticsPicture from '../../images/DetailedImage/statistics.png';
 
 import moment from 'moment';
 import TagComponent from './TagComponent';
-import {NavigationType} from '../../App';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 
-type IProps = {
-  navigation: NavigationType;
-};
-
-const DetailedImageScreen: React.FC<IProps> = props => {
+const DetailedImageScreen: React.FC = () => {
   const {galleryStore} = useStore();
+  const insets = useSafeAreaInsets();
+  const navigation = useNavigation<any>();
 
   const photoGalleryInfo = galleryStore.gallery.find(
     el => el.id === galleryStore.selectedDetailPhotoId,
@@ -55,19 +55,22 @@ const DetailedImageScreen: React.FC<IProps> = props => {
     1,
   );
 
-  const openLargeImage = () => {
+  const openLargeImage = useCallback(() => {
     if (galleryStore.isAppInternetReachable) {
-      props.navigation.navigate('LargeImageScreen');
+      navigation.navigate('LargeImageScreen');
     } else {
       alert('Check internet connection!');
     }
-  };
+  }, [galleryStore.isAppInternetReachable, navigation]);
 
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
+      bounces={false}
       style={{
         marginHorizontal: marginHorizontal,
-        marginVertical: marginVertical,
+        marginTop: marginVertical,
+        marginBottom: Platform.OS === 'ios' ? insets.bottom : 0,
       }}>
       <TouchableOpacity activeOpacity={0.5} onPress={() => openLargeImage()}>
         <Image
@@ -214,7 +217,7 @@ const DetailedImageScreen: React.FC<IProps> = props => {
           borderColor: 'rgb(22, 114, 190)',
           width: 300,
         }}>
-        <View style={{width: 3, backgroundColor: 'rgb(22, 114, 190)'}}></View>
+        <View style={{width: 3, backgroundColor: 'rgb(22, 114, 190)'}} />
         <View>
           <Image
             source={statisticsPicture as ImageSourcePropType}
@@ -246,7 +249,7 @@ const DetailedImageScreen: React.FC<IProps> = props => {
           <TagComponent
             key={tag.title}
             tagTitle={tag.title}
-            navigation={props.navigation}
+            navigation={navigation}
           />
         ))}
       </View>
