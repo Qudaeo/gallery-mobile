@@ -47,7 +47,7 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
     return <View style={[{
         position: 'absolute',
         zIndex: 100,
-        direction: "row",
+        flexDirection: "row",
     }] as ViewStyle}>
         <View>
             <Searchbar
