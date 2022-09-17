@@ -38,6 +38,7 @@ const App = () => {
     <Provider store={store} galleryStore={store.galleryStore}>
       <NavigationContainer>
         <Stack.Navigator
+          initialRouteName="GalleryScreen"
           screenOptions={{
             headerShown: false,
           }}>
