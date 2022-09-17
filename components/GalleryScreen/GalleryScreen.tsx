@@ -1,6 +1,12 @@
 import React, {useCallback, useEffect} from 'react';
 
-import {FlatList, View, useWindowDimensions, ViewToken} from 'react-native';
+import {
+  FlatList,
+  View,
+  useWindowDimensions,
+  ViewToken,
+  StatusBar,
+} from 'react-native';
 import {observer} from 'mobx-react';
 import {useStore} from '../../mobx/store';
 import GalleryRow from './GalleryRow';
@@ -10,6 +16,7 @@ import SearchPhotoBar from './SearchPhotoBar';
 import ToggleColumnCount from './ToggleColumnCount';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import GalleryScreenActivityIndicator from '../LoadingScreen/GalleryScreenActivityIndicator';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const GalleryScreen = () => {
   const {galleryStore} = useStore();
@@ -49,18 +56,31 @@ const GalleryScreen = () => {
 
   return (
     <View style={{flex: 1}}>
-      <SearchPhotoBar
-        searchText={galleryStore.searchText}
-        searchTextChange={galleryStore.searchTextChange}
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor={'transparent'}
       />
-
-      <ToggleColumnCount
-        appColumnCount={galleryStore.appColumnCount}
-        toggleColumnCount={galleryStore.toggleColumnCount}
-        isAppInternetReachable={galleryStore.isAppInternetReachable}
-        isFetchingInProgress={galleryStore.isFetchingInProgress}
-      />
-
+      <View
+        style={{
+          position: 'absolute',
+          top: getStatusBarHeight() + 10,
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-between',
+          zIndex: 100,
+        }}>
+        <SearchPhotoBar
+          searchText={galleryStore.searchText}
+          searchTextChange={galleryStore.searchTextChange}
+        />
+        <ToggleColumnCount
+          appColumnCount={galleryStore.appColumnCount}
+          toggleColumnCount={galleryStore.toggleColumnCount}
+          isAppInternetReachable={galleryStore.isAppInternetReachable}
+          isFetchingInProgress={galleryStore.isFetchingInProgress}
+        />
+      </View>
       {galleryByColumn.length === 0 ? (
         <LoadingScreen
           messageText={
