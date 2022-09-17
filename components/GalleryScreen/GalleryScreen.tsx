@@ -1,12 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 
-import {
-  FlatList,
-  View,
-  useWindowDimensions,
-  ViewToken,
-  StatusBar,
-} from 'react-native';
+import {FlatList, View, ViewToken, StatusBar, Dimensions} from 'react-native';
 import {observer} from 'mobx-react';
 import {useStore} from '../../mobx/store';
 import GalleryRow from './GalleryRow';
@@ -17,17 +11,23 @@ import ToggleColumnCount from './ToggleColumnCount';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import GalleryScreenActivityIndicator from '../LoadingScreen/GalleryScreenActivityIndicator';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import {PhotoType} from '../../mobx/GalleryStore';
 
 const GalleryScreen = () => {
   const {galleryStore} = useStore();
 
-  const imagesWidth = useWindowDimensions().width;
+  const imagesWidth = Dimensions.get('window').width;
 
   const handleViewableItemsChanged = useCallback(
     async (info: {viewableItems: ViewToken[]}) => {
       await galleryStore.setViewableItems(info.viewableItems);
     },
     [galleryStore],
+  );
+
+  const renderItem = useCallback(
+    ({item}: {item: PhotoType[]}) => <GalleryRow row={item} />,
+    [],
   );
 
   galleryStore.setIsAppInternetReachable(
@@ -94,8 +94,10 @@ const GalleryScreen = () => {
               <GalleryScreenActivityIndicator />
             )}
             <FlatList
+              showsVerticalScrollIndicator={false}
+              bounces={false}
               data={galleryByColumn}
-              renderItem={({item}) => <GalleryRow key={item.id} row={item} />}
+              renderItem={renderItem}
               onEndReached={() => {
                 if (
                   !galleryStore.isFetchingInProgress &&
