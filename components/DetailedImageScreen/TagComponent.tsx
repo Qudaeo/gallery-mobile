@@ -1,20 +1,19 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import {useStore} from '../../mobx/store';
-import {observer} from 'mobx-react';
-import {NavigationType} from '../../App';
+import {inject, observer} from 'mobx-react';
+import {useNavigation} from '@react-navigation/native';
+import GalleryStore from '../../mobx/GalleryStore';
 
 type IProps = {
+  galleryStore?: GalleryStore;
   tagTitle: string;
-  navigation: NavigationType;
 };
 
-const TagComponent: React.FC<IProps> = ({tagTitle, navigation}) => {
-  const {galleryStore} = useStore();
+const TagComponent: React.FC<IProps> = ({galleryStore, tagTitle}) => {
+  const navigation = useNavigation<any>();
 
   const openTagSearch = () => {
-    if (galleryStore.isAppInternetReachable) {
-      //           alert(tagTitle)
+    if (galleryStore?.isAppInternetReachable) {
       galleryStore.searchTextChange(tagTitle);
       navigation.navigate('GalleryScreen');
     } else {
@@ -40,4 +39,4 @@ const TagComponent: React.FC<IProps> = ({tagTitle, navigation}) => {
   );
 };
 
-export default observer(TagComponent);
+export default inject('galleryStore')(observer(TagComponent));

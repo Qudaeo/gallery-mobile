@@ -8,8 +8,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import {observer} from 'mobx-react';
-import {useStore} from '../../mobx/store';
+import {inject, observer} from 'mobx-react';
 import GalleryRow from './GalleryRow';
 import NetInfo from '@react-native-community/netinfo';
 
@@ -18,18 +17,19 @@ import ToggleColumnCount from './ToggleColumnCount';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import GalleryScreenActivityIndicator from '../LoadingScreen/GalleryScreenActivityIndicator';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
-import {PhotoType} from '../../mobx/GalleryStore';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import GalleryStore, {PhotoType} from '../../mobx/GalleryStore';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const GalleryScreen = () => {
-  const {galleryStore} = useStore();
-  const insets = useSafeAreaInsets();
+type IProps = {
+  galleryStore?: GalleryStore;
+};
 
+const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
   const imagesWidth = Dimensions.get('window').width;
 
   const handleViewableItemsChanged = useCallback(
     async (info: {viewableItems: ViewToken[]}) => {
-      await galleryStore.setViewableItems(info.viewableItems);
+      await galleryStore?.setViewableItems(info.viewableItems);
     },
     [galleryStore],
   );
@@ -39,15 +39,17 @@ const GalleryScreen = () => {
     [],
   );
 
-  galleryStore.setIsAppInternetReachable(
-    NetInfo.useNetInfo().isInternetReachable,
-  );
+  const isInternetReachable = NetInfo.useNetInfo().isInternetReachable;
 
   useEffect(() => {
-    galleryStore.initializeApp(imagesWidth);
+    galleryStore?.setIsAppInternetReachable(isInternetReachable);
+  }, [galleryStore, isInternetReachable]);
+
+  useEffect(() => {
+    galleryStore?.initializeApp(imagesWidth);
   }, [galleryStore, imagesWidth]);
 
-  const galleryByColumn = galleryStore.gallery.reduce(
+  const galleryByColumn = galleryStore?.gallery.reduce(
     (result: any, el, index) => {
       switch (index % galleryStore.appColumnCount) {
         case 0: {
@@ -64,59 +66,52 @@ const GalleryScreen = () => {
   );
 
   return (
-    <View style={{flex: 1}}>
-      <StatusBar
-        barStyle={'light-content'}
-        translucent
-        backgroundColor={'transparent'}
-      />
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar backgroundColor={'#ffffff'} barStyle={'dark-content'} />
       <View
         style={{
           position: 'absolute',
-          top: getStatusBarHeight() + 10,
+          top: (Platform.OS === 'ios' ? getStatusBarHeight() : 0) + 10,
           flexDirection: 'row',
           width: '100%',
           justifyContent: 'space-between',
           zIndex: 100,
         }}>
         <SearchPhotoBar
-          searchText={galleryStore.searchText}
-          searchTextChange={galleryStore.searchTextChange}
+          searchText={galleryStore?.searchText || ''}
+          searchTextChange={galleryStore?.searchTextChange}
         />
         <ToggleColumnCount
-          appColumnCount={galleryStore.appColumnCount}
-          toggleColumnCount={galleryStore.toggleColumnCount}
-          isAppInternetReachable={galleryStore.isAppInternetReachable}
-          isFetchingInProgress={galleryStore.isFetchingInProgress}
+          appColumnCount={galleryStore?.appColumnCount || 1}
+          toggleColumnCount={galleryStore?.toggleColumnCount}
+          isAppInternetReachable={galleryStore?.isAppInternetReachable || true}
+          isFetchingInProgress={galleryStore?.isFetchingInProgress || false}
         />
       </View>
       {galleryByColumn.length === 0 ? (
         <LoadingScreen
           messageText={
-            galleryStore.messageText ? galleryStore.messageText : 'loading...'
+            galleryStore?.messageText ? galleryStore.messageText : 'loading...'
           }
         />
       ) : (
         galleryByColumn && (
           <>
-            {galleryStore.isShowActivityIndicator && (
+            {galleryStore?.isShowActivityIndicator && (
               <GalleryScreenActivityIndicator />
             )}
             <FlatList
               showsVerticalScrollIndicator={false}
               bounces={false}
-              style={{
-                marginBottom: Platform.OS === 'ios' ? insets.bottom : 0,
-              }}
               data={galleryByColumn}
               renderItem={renderItem}
               onEndReached={() => {
                 if (
-                  !galleryStore.isFetchingInProgress &&
-                  galleryStore.isAppSync &&
-                  !galleryStore.isAllPhotoFetch
+                  !galleryStore?.isFetchingInProgress &&
+                  galleryStore?.isAppSync &&
+                  !galleryStore?.isAllPhotoFetch
                 ) {
-                  galleryStore.getNextPage();
+                  galleryStore?.getNextPage();
                 }
               }}
               onEndReachedThreshold={0.5}
@@ -125,7 +120,8 @@ const GalleryScreen = () => {
           </>
         )
       )}
-    </View>
+    </SafeAreaView>
   );
 };
-export default observer(GalleryScreen);
+
+export default inject('galleryStore')(observer(GalleryScreen));

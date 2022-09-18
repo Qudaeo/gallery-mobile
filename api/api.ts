@@ -21,7 +21,7 @@ export const galleryAPI = {
         `/photos?page=${currentPage}&per_page=${pageSize}`,
       );
     } catch (e) {
-      alert(
+      console.log(
         'Exception: galleryAPI: getGallery(currentPage, pageSize): ' +
           e.message,
       );
@@ -38,7 +38,7 @@ export const galleryAPI = {
         `/search/photos?query=${searchText}&page=${currentPage}&per_page=${pageSize}`,
       );
     } catch (e) {
-      alert(
+      console.log(
         'Exception: galleryAPI: getSearchedGallery(searchText, currentPage, pageSize): ' +
           e.message,
       );
@@ -58,9 +58,9 @@ export const galleryAPI = {
         {responseType: 'arraybuffer'},
       );
     } catch (e) {
-      alert(
-        'Exception: galleryAPI: getImageByUrl(url, width, height): ' +
-          e.message,
+      console.log(
+        'Exception: galleryAPI: getImageByUrl(url, width, height): ',
+        e,
       );
     }
   },
@@ -69,7 +69,7 @@ export const galleryAPI = {
     try {
       return instance.get<DetailsType>(`/photos/${id}`);
     } catch (e) {
-      alert('Exception: galleryAPI: getPhotoDetail(id): ' + e.message);
+      console.log('Exception: galleryAPI: getPhotoDetail(id): ', e.message);
     }
   },
 };

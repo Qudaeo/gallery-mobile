@@ -17,7 +17,7 @@ export const writeToStorage = async (prefix: PrefixType, item: any) => {
       await AsyncStorage.setItem(prefix, JSON.stringify(item));
     }
   } catch (e) {
-    alert('Exception: writeToStorage = async (prefix, item): ' + e.message);
+    console.log('Exception: writeToStorage = async (prefix, item):', e);
   }
 };
 
@@ -28,6 +28,6 @@ export const readFromStorage = async (prefix: PrefixType) => {
       return JSON.parse(storedValue);
     }
   } catch (e) {
-    alert('Exception: readFromStorage = async (prefix): ' + e.message);
+    console.log('Exception: readFromStorage = async (prefix):', e.message);
   }
 };

@@ -1,31 +1,29 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity} from 'react-native';
-import {observer} from 'mobx-react';
-import {useStore} from '../../mobx/store';
-import {PhotoType} from '../../mobx/GalleryStore';
-import {NavigationType} from '../../App';
+import {inject, observer} from 'mobx-react';
+import GalleryStore, {PhotoType} from '../../mobx/GalleryStore';
+import {useNavigation} from '@react-navigation/native';
 
 type IProps = {
+  galleryStore?: GalleryStore;
   photo: PhotoType;
   imageDimensions: {
     width: number;
     height: number;
   };
-  navigation: NavigationType;
 };
 
 export const GalleryItem: React.FC<IProps> = ({
+  galleryStore,
   photo,
   imageDimensions,
-  navigation,
 }) => {
-  const {galleryStore} = useStore();
-
+  const navigation = useNavigation<any>();
   const id = photo.id;
 
   const openDetailedImage = async () => {
-    await galleryStore.getDetailPhoto(id);
-    if (galleryStore.detailPhoto[id]) {
+    await galleryStore?.getDetailPhoto(id);
+    if (galleryStore?.detailPhoto[id]) {
       navigation.navigate('DetailedImageScreen');
     } else {
       alert('Check internet connection!');
@@ -40,28 +38,19 @@ export const GalleryItem: React.FC<IProps> = ({
           height: imageDimensions.height,
           position: 'relative',
         }}
-        source={{uri: galleryStore.base64Images[id]}}
+        source={{uri: galleryStore?.base64Images[id]}}
       />
-      {/*                : {uri: baseURL + `id/${id}/${width}/${height}.webp`}}*/}
       <Text
         style={{
           position: 'absolute',
-          fontSize: Math.round(12 / galleryStore.appColumnCount),
+          fontSize: Math.round(12 / (galleryStore?.appColumnCount || 1)),
           color: 'rgba(255,255,255,0.5)',
           textAlign: 'right',
-          bottom: Math.round(5 / galleryStore.appColumnCount),
-          right: Math.round(10 / galleryStore.appColumnCount),
+          bottom: Math.round(5 / (galleryStore?.appColumnCount || 1)),
+          right: Math.round(10 / (galleryStore?.appColumnCount || 1)),
         }}>{`Photo by ${photo.user.name}`}</Text>
-      {/*<Text style={{
-            position: 'absolute',
-            fontSize: Math.round(12 / galleryStore.appColumnCount),
-            color: 'rgba(255,255,255,1)',
-            textAlign: "left",
-            top: Math.round(5 / galleryStore.appColumnCount),
-            left: Math.round(10 / galleryStore.appColumnCount),
-        }}>{`id=${photo.id}   ${imageDimensions.width}:${imageDimensions.height}${galleryStore.base64Images[photo.id] ? `   ${Math.round(galleryStore.base64Images[id].length / 1024)}kb` : ''}`}</Text>*/}
     </TouchableOpacity>
   );
 };
 
-export default observer(GalleryItem);
+export default inject('galleryStore')(observer(GalleryItem));

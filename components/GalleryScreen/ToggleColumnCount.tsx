@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 type IProps = {
   appColumnCount: 1 | 2;
-  toggleColumnCount: () => void;
+  toggleColumnCount?: () => void;
   isAppInternetReachable: boolean | null;
   isFetchingInProgress: boolean;
 };
@@ -26,7 +26,9 @@ const ToggleColumnCount: React.FC<IProps> = ({
             : 'rgba(255, 26, 26, 0.7)',
         },
       ]}
-      onPress={() => toggleColumnCount()}>
+      onPress={() => {
+        toggleColumnCount && toggleColumnCount();
+      }}>
       <Text
         testID="TouchableOpacityText"
         style={{

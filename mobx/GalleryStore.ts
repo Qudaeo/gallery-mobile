@@ -102,8 +102,6 @@ export default class GalleryStore {
           (this.appImagesWidth * height) / width,
         );
 
-        //           await alert(url+ ' ' +imageDimensions.width+ ' ' +imageDimensions.height)
-
         const getImageResponse = await galleryAPI.getImageByUrl(
           url,
           imageDimensions.width,
@@ -120,7 +118,7 @@ export default class GalleryStore {
           });
         }
       } catch (e) {
-        alert(
+        console.log(
           'Exception: getBase64Image(url, id, width, height) : ' + e.message,
         );
       }
@@ -145,7 +143,7 @@ export default class GalleryStore {
         return response?.data;
       }
     } catch (e) {
-      alert('Exception: getResponseData(): ' + e.message);
+      console.log('Exception: getResponseData(): ' + e.message);
     }
   }
 
@@ -183,7 +181,7 @@ export default class GalleryStore {
           }
         }
       } catch (e) {
-        alert(
+        console.log(
           'Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' +
             e.message,
         );
@@ -230,8 +228,6 @@ export default class GalleryStore {
           minIndex = firstViewableIndex - 5;
         }
 
-        //         alert(JSON.stringify(firstViewableIndex))
-
         let gallerySave = this.gallery.slice(
           minIndex,
           Math.min(minIndex + 10, this.gallery.length),
@@ -239,8 +235,6 @@ export default class GalleryStore {
         const base64ImagesSave: {[key: string]: string} = {};
         const detailPhotoSave: {[key: string]: DetailsType} = {};
         const base64UsersAvatarSave: {[key: string]: string} = {};
-
-        //gallery.length
 
         for (let photo of gallerySave) {
           if (photo.id && this.base64Images[photo.id]) {
@@ -264,11 +258,9 @@ export default class GalleryStore {
         await writeToStorage(STORAGE_BASE64_IMAGE, base64ImagesSave);
         await writeToStorage(STORAGE_DETAILS, detailPhotoSave);
         await writeToStorage(STORAGE_USERS_AVATAR, base64UsersAvatarSave);
-
-        //alert(JSON.stringify(Object.keys(base64ImagesSave).length) + ' saved')
       }
     } catch (e) {
-      alert('Exception: saveStateToStorage(): ' + e.message);
+      console.log('Exception: saveStateToStorage(): ' + e.message);
     }
   }
 
@@ -285,7 +277,6 @@ export default class GalleryStore {
           STORAGE_GALLERY,
         );
 
-        //       alert('storedGallery.length=' + JSON.stringify(storedGallery.length))
         if (this.isAppInternetReachable) {
           runInAction(() => {
             this.messageText = 'loading photos...';
@@ -327,7 +318,7 @@ export default class GalleryStore {
           });
         }
       } catch (e) {
-        alert('Exception: readFromStorage: ' + e.message);
+        console.log('Exception: readFromStorage: ' + e.message);
       }
 
       runInAction(() => {
@@ -384,7 +375,7 @@ export default class GalleryStore {
             }
           }
         } catch (e) {
-          alert(
+          console.log(
             'Exception: getCurrentPage: galleryAPI.getGallery(this.currentPage, apiPageSize): ' +
               e.message,
           );
@@ -401,8 +392,6 @@ export default class GalleryStore {
     runInAction(() => {
       this.selectedDetailPhotoId = id;
     });
-
-    //        await this.saveStateToStorage()
   }
 
   setViewableItems(viewableItems: ViewToken[]) {

@@ -13,7 +13,7 @@ import clearPicture from '../../images/SearchPhotoBar/cancel.png';
 
 type IProps = {
   searchText: string;
-  searchTextChange: (text: string) => void;
+  searchTextChange?: (text: string) => void;
 };
 
 const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
@@ -58,7 +58,7 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
         onChangeText={text => {
           setSearchTextTemp(text);
           if (text === '') {
-            searchTextChange('');
+            searchTextChange && searchTextChange('');
           }
         }}
         value={searchTextTemp}
@@ -67,7 +67,7 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
         }}
         onBlur={() => {
           setIsFocused(false);
-          searchTextChange(searchTextTemp);
+          searchTextChange && searchTextChange(searchTextTemp);
         }}
         icon={magnifierPicture}
         clearIcon={clearPicture}

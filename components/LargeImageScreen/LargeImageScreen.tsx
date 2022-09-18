@@ -1,22 +1,30 @@
 import React from 'react';
 
-import {observer} from 'mobx-react';
-import {useStore} from '../../mobx/store';
+import {inject, observer} from 'mobx-react';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import {StatusBar} from 'react-native';
+import GalleryStore from '../../mobx/GalleryStore';
 
-const LargeImageScreen: React.FC = () => {
-  const {galleryStore} = useStore();
+type IProps = {
+  galleryStore?: GalleryStore;
+};
+
+const LargeImageScreen: React.FC<IProps> = ({galleryStore}) => {
   return (
-    <ImageViewer
-      imageUrls={[
-        {
-          url: galleryStore.detailPhoto[galleryStore.selectedDetailPhotoId].urls
-            .regular,
-        },
-      ]}
-      renderIndicator={() => <></>}
-    />
+    <>
+      <StatusBar backgroundColor={'#000000'} barStyle={'light-content'} />
+      <ImageViewer
+        imageUrls={[
+          {
+            url:
+              galleryStore?.detailPhoto[galleryStore.selectedDetailPhotoId].urls
+                .regular || '',
+          },
+        ]}
+        renderIndicator={() => <></>}
+      />
+    </>
   );
 };
 
-export default observer(LargeImageScreen);
+export default inject('galleryStore')(observer(LargeImageScreen));
