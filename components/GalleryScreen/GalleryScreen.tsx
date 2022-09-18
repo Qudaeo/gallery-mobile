@@ -15,7 +15,7 @@ import NetInfo from '@react-native-community/netinfo';
 import SearchPhotoBar from './SearchPhotoBar';
 import ToggleColumnCount from './ToggleColumnCount';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
-import GalleryScreenActivityIndicator from '../LoadingScreen/GalleryScreenActivityIndicator';
+import GalleryActivityIndicator from '../LoadingScreen/GalleryActivityIndicator';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import GalleryStore, {PhotoType} from '../../mobx/GalleryStore';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -96,30 +96,26 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
         />
       ) : (
         galleryByColumn && (
-          <>
-            {galleryStore?.isShowActivityIndicator && (
-              <GalleryScreenActivityIndicator />
-            )}
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              bounces={false}
-              data={galleryByColumn}
-              renderItem={renderItem}
-              onEndReached={() => {
-                if (
-                  !galleryStore?.isFetchingInProgress &&
-                  galleryStore?.isAppSync &&
-                  !galleryStore?.isAllPhotoFetch
-                ) {
-                  galleryStore?.getNextPage();
-                }
-              }}
-              onEndReachedThreshold={0.5}
-              onViewableItemsChanged={handleViewableItemsChanged}
-            />
-          </>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+            data={galleryByColumn}
+            renderItem={renderItem}
+            onEndReached={() => {
+              if (
+                !galleryStore?.isFetchingInProgress &&
+                galleryStore?.isAppSync &&
+                !galleryStore?.isAllPhotoFetch
+              ) {
+                galleryStore?.getNextPage();
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            onViewableItemsChanged={handleViewableItemsChanged}
+          />
         )
       )}
+      {galleryStore?.isShowActivityIndicator && <GalleryActivityIndicator />}
     </SafeAreaView>
   );
 };
