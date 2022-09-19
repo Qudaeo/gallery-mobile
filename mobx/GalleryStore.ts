@@ -9,7 +9,7 @@ import {
   STORAGE_GALLERY,
   STORAGE_USERS_AVATAR,
 } from '../storage/storageApi';
-import {calcImageDimensions} from '../common/funcions';
+import {calcImageDimensions} from '../common/helper';
 import {encode} from 'base64-arraybuffer';
 import {ViewToken} from 'react-native';
 

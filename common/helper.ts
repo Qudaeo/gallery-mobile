@@ -5,10 +5,9 @@ export const calcImageDimensions = (
   oldHeight: number,
   columnCount = 1,
 ) => {
-  const newWidth = Math.round(
+  const newWidth =
     (oldWidth - 2 * marginHorizontal - (columnCount - 1) * marginHorizontal) /
-      columnCount,
-  );
+    columnCount;
 
   return {
     width: newWidth,

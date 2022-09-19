@@ -2,8 +2,9 @@ import React, {useEffect} from 'react';
 import {inject, observer} from 'mobx-react';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {Platform, StatusBar} from 'react-native';
-import GalleryStore from '../../mobx/GalleryStore';
+import GalleryStore from '../mobx/GalleryStore';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
+import {colors} from '../common/colors';
 
 type IProps = {
   galleryStore?: GalleryStore;
@@ -12,17 +13,20 @@ type IProps = {
 const LargeImageScreen: React.FC<IProps> = ({galleryStore}) => {
   useEffect(() => {
     if (Platform.OS === 'android') {
-      SystemNavigationBar.setNavigationColor('#000000');
+      SystemNavigationBar.setNavigationColor(colors.black_000000);
 
       return () => {
-        SystemNavigationBar.setNavigationColor('#FFFFFF');
+        SystemNavigationBar.setNavigationColor(colors.white_FFFFFF);
       };
     }
   }, []);
 
   return (
     <>
-      <StatusBar backgroundColor={'#000000'} barStyle={'light-content'} />
+      <StatusBar
+        backgroundColor={colors.black_000000}
+        barStyle={'light-content'}
+      />
       <ImageViewer
         imageUrls={[
           {

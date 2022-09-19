@@ -1,16 +1,20 @@
-import {ActivityIndicator, View} from 'react-native';
 import React from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {colors} from '../../common/colors';
 
-const GalleryActivityIndicator: React.FC = () => (
-  <View
-    style={{
-      position: 'absolute',
-      justifyContent: 'center',
-      width: '100%',
-      height: '100%',
-    }}>
-    <ActivityIndicator size="large" color="#00ff00" />
+const GalleryActivityIndicator = () => (
+  <View style={styles.container}>
+    <ActivityIndicator size={'large'} color={colors.red_e4914e} />
   </View>
 );
 
 export default GalleryActivityIndicator;
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+});

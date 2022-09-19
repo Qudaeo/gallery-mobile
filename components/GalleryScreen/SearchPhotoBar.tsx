@@ -10,10 +10,12 @@ import {
 import {Searchbar} from 'react-native-paper';
 import magnifierPicture from '../../images/SearchPhotoBar/magnifier.png';
 import clearPicture from '../../images/SearchPhotoBar/cancel.png';
+import {colors} from '../../common/colors';
+import {commonStyles} from '../../common/styles';
 
 type IProps = {
   searchText: string;
-  searchTextChange?: (text: string) => void;
+  searchTextChange: (text: string) => void;
 };
 
 const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
@@ -22,7 +24,7 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
 
   useEffect(() => setSearchTextTemp(searchText), [searchText]);
 
-  const currentWindowWidth = useWindowDimensions().width;
+  const windowWidth = useWindowDimensions().width;
 
   const searchbarRef = useRef<TextInput>(null);
 
@@ -33,32 +35,21 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
   }, [isFocused]);
 
   return (
-    <View
-      style={[
-        {
-          position: 'absolute',
-          zIndex: 100,
-          flexDirection: 'row',
-        },
-      ]}>
+    <View style={commonStyles.row}>
       <Searchbar
         ref={searchbarRef}
         style={[
           styles.searchButton,
           {
-            width: isFocused ? currentWindowWidth - 100 : 50,
-            borderRadius: 25,
-            height: 50,
-            backgroundColor: isFocused
-              ? 'rgba(230, 249, 255, 0.92)'
-              : 'rgba(230, 249, 255, 0.7)',
+            width: isFocused ? windowWidth - 100 : 50,
+            opacity: isFocused ? 0.95 : 0.85,
           },
         ]}
         placeholder="Search photos..."
         onChangeText={text => {
           setSearchTextTemp(text);
           if (text === '') {
-            searchTextChange && searchTextChange('');
+            searchTextChange('');
           }
         }}
         value={searchTextTemp}
@@ -67,24 +58,25 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
         }}
         onBlur={() => {
           setIsFocused(false);
-          searchTextChange && searchTextChange(searchTextTemp);
+          searchTextChange(searchTextTemp);
         }}
         icon={magnifierPicture}
         clearIcon={clearPicture}
         iconColor={'rgb(51, 102, 255)'}
       />
       {!!searchText && (
-        <TouchableOpacity onPress={() => setIsFocused(true)}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => setIsFocused(true)}>
           <View
             style={{
               borderWidth: 1,
-              marginLeft: isFocused ? currentWindowWidth : 115,
+              marginLeft: isFocused ? windowWidth : 50,
               marginTop: 10,
               borderRadius: 8,
               backgroundColor: 'rgba(230, 249, 255, 0.7)',
               borderColor: 'rgba(191, 191, 191,0.7)',
-              opacity: 10,
-              maxWidth: currentWindowWidth - 180,
+              maxWidth: windowWidth - 180,
             }}>
             <Text
               style={{
@@ -106,10 +98,9 @@ export default SearchPhotoBar;
 
 const styles = StyleSheet.create({
   searchButton: {
-    position: 'absolute',
-    left: 15,
-    zIndex: 100,
-    borderRadius: 50,
+    backgroundColor: colors.blue_e6fff9,
+    zIndex: 10,
+    borderRadius: 25,
     height: 50,
   },
 });
