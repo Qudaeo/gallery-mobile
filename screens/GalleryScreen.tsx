@@ -1,13 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 
-import {
-  FlatList,
-  View,
-  StatusBar,
-  Dimensions,
-  Platform,
-  StyleSheet,
-} from 'react-native';
+import {FlatList, View, StatusBar, Platform, StyleSheet} from 'react-native';
 import {inject, observer} from 'mobx-react';
 import GalleryRow from '../components/GalleryScreen/GalleryRow';
 import NetInfo from '@react-native-community/netinfo';
@@ -21,14 +14,13 @@ import GalleryStore from '../mobx/GalleryStore';
 import {PhotoType} from '../types/photo';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {commonStyles} from '../common/styles';
+import {colors} from '../common/colors';
 
 type IProps = {
   galleryStore?: GalleryStore;
 };
 
 const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
-  const imagesWidth = Dimensions.get('window').width;
-
   const renderItem = useCallback(
     ({item}: {item: PhotoType[]}) => <GalleryRow images={item} />,
     [],
@@ -41,8 +33,8 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
   }, [galleryStore, isInternetReachable]);
 
   useEffect(() => {
-    galleryStore?.initializeApp(imagesWidth);
-  }, [galleryStore, imagesWidth]);
+    galleryStore?.getCurrentPage();
+  }, [galleryStore]);
 
   const galleryByColumn = galleryStore?.gallery.reduce(
     (result: any, el, index) => {
@@ -62,7 +54,10 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
 
   return (
     <SafeAreaView style={commonStyles.flex1}>
-      <StatusBar backgroundColor={'#ffffff'} barStyle={'dark-content'} />
+      <StatusBar
+        backgroundColor={colors.grey_f3f2f2}
+        barStyle={'dark-content'}
+      />
       {galleryByColumn.length === 0 ? (
         <TextMessage messageText={galleryStore?.messageText || 'loading...'} />
       ) : (
@@ -75,13 +70,22 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
             onEndReached={() => {
               if (
                 !galleryStore?.isFetchingInProgress &&
-                galleryStore?.isAppSync &&
                 !galleryStore?.isAllPhotoFetch
               ) {
-                galleryStore.getNextPage();
+                galleryStore?.getNextPage();
               }
             }}
             onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              <>
+                {galleryStore?.isFetchingInProgress &&
+                  galleryStore?.gallery.length > 0 && (
+                    <View style={{height: 100}}>
+                      <GalleryActivityIndicator />
+                    </View>
+                  )}
+              </>
+            }
           />
         )
       )}

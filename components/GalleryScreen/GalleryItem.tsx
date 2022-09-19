@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {inject, observer} from 'mobx-react';
 import GalleryStore from '../../mobx/GalleryStore';
@@ -23,12 +23,12 @@ export const GalleryItem: React.FC<IProps> = ({
   const navigation = useNavigation<any>();
   const id = photo.id;
 
-  const openDetailedImage = async () => {
+  const openDetailedImage = useCallback(async () => {
     await galleryStore?.getDetailPhoto(id);
     if (galleryStore?.detailPhoto[id]) {
       navigation.navigate('DetailedImageScreen');
     }
-  };
+  }, [galleryStore, id, navigation]);
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={openDetailedImage}>

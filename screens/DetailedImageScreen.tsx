@@ -20,6 +20,7 @@ import TagComponent from '../components/DetailedImageScreen/TagComponent';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import GalleryStore from '../mobx/GalleryStore';
+import {colors} from '../common/colors';
 
 type IProps = {
   galleryStore?: GalleryStore;
@@ -59,7 +60,10 @@ const DetailedImageScreen: React.FC<IProps> = ({galleryStore}) => {
 
   return (
     <SafeAreaView>
-      <StatusBar backgroundColor={'#ffffff'} barStyle={'dark-content'} />
+      <StatusBar
+        backgroundColor={colors.grey_f3f2f2}
+        barStyle={'dark-content'}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         bounces={false}

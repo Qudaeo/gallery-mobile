@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, useWindowDimensions, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import GalleryItem from './GalleryItem';
 import {marginHorizontal, marginBottom} from '../../common/const';
 import {calcImageDimensions} from '../../common/helper';
@@ -10,7 +10,7 @@ type IProps = {
 };
 
 export const GalleryRow: React.FC<IProps> = ({images}) => {
-  const windowWidth = useWindowDimensions().width;
+  const windowWidth = Dimensions.get('window').width;
 
   const imageDimensions = images.map(image =>
     calcImageDimensions(

@@ -1,13 +1,16 @@
+type PhotoUrlsType = {
+  regular: string;
+  large: string;
+  raw: string;
+};
+
 export type PhotoType = {
   id: string;
   created_at: string;
   updated_at: string;
   width: number;
   height: number;
-  urls: {
-    regular: string;
-    raw: string;
-  };
+  urls: PhotoUrlsType;
   user: {
     name: string;
   };
@@ -23,13 +26,9 @@ export type DetailsType = {
     id: string;
     name: string;
     location: string;
-    profile_image: {
-      large: string;
-    };
+    profile_image: PhotoUrlsType;
   };
-  urls: {
-    regular: string;
-  };
+  urls: PhotoUrlsType;
   tags: {
     title: string;
   }[];

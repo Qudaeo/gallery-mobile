@@ -16,7 +16,7 @@ const LargeImageScreen: React.FC<IProps> = ({galleryStore}) => {
       SystemNavigationBar.setNavigationColor(colors.black_000000);
 
       return () => {
-        SystemNavigationBar.setNavigationColor(colors.white_FFFFFF);
+        SystemNavigationBar.setNavigationColor(colors.grey_f3f2f2);
       };
     }
   }, []);
@@ -32,7 +32,7 @@ const LargeImageScreen: React.FC<IProps> = ({galleryStore}) => {
           {
             url:
               galleryStore?.detailPhoto[galleryStore.selectedDetailPhotoId].urls
-                .regular || '',
+                .raw || '',
           },
         ]}
         renderIndicator={() => <></>}
