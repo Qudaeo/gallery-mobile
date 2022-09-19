@@ -3,7 +3,7 @@ import {StyleSheet, useWindowDimensions, View} from 'react-native';
 import GalleryItem from './GalleryItem';
 import {marginHorizontal, marginBottom} from '../../common/const';
 import {calcImageDimensions} from '../../common/helper';
-import {PhotoType} from '../../mobx/GalleryStore';
+import {PhotoType} from '../../types/photo';
 
 type IProps = {
   images: PhotoType[];

@@ -67,14 +67,16 @@ const DetailedImageScreen: React.FC<IProps> = ({galleryStore}) => {
         <TouchableOpacity activeOpacity={0.9} onPress={openLargeImage}>
           <Image
             style={photoDimensions}
-            source={{uri: photo ? galleryStore?.base64Images[photo.id] : ''}}
+            source={{uri: photo?.urls.regular || ''}}
           />
         </TouchableOpacity>
         <View style={styles.avatarContainer}>
           <Image
             style={styles.avatarImage}
             source={{
-              uri: photo ? galleryStore?.base64UsersAvatar[photo.user.id] : '',
+              uri: photo
+                ? galleryStore?.detailPhoto[photo?.id].urls.regular
+                : '',
             }}
           />
           <View style={styles.photoDescriptionContainer}>

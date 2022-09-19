@@ -1,18 +1,11 @@
 import axios from 'axios';
 import {API_KEY, baseURL} from '../common/const';
-import {DetailsType, PhotoType} from '../mobx/GalleryStore';
+import {DetailsType, PhotoType} from '../types/photo';
 
 const instance = axios.create({
   baseURL,
   headers: {Authorization: `Client-ID ${API_KEY}`},
 });
-
-type GetImageResponseType = {
-  headers: {
-    'content-type': string;
-  };
-  data: ArrayBuffer;
-};
 
 export const galleryAPI = {
   async getGallery(currentPage: number, pageSize: number) {
@@ -45,31 +38,11 @@ export const galleryAPI = {
     }
   },
 
-  async getImageByUrl(
-    url: string,
-    width?: number,
-    height?: number,
-  ): Promise<GetImageResponseType | undefined> {
-    try {
-      return instance.get(
-        `${url}${width || height ? '?' : ''}${width ? `w=${width}` : ''}${
-          height ? `&h=${height}` : ''
-        }`,
-        {responseType: 'arraybuffer'},
-      );
-    } catch (e) {
-      console.log(
-        'Exception: galleryAPI: getImageByUrl(url, width, height): ',
-        e,
-      );
-    }
-  },
-
   async getPhotoDetail(id: string) {
     try {
       return instance.get<DetailsType>(`/photos/${id}`);
     } catch (e) {
-      console.log('Exception: galleryAPI: getPhotoDetail(id): ', e.message);
+      console.log('getPhotoDetail', e);
     }
   },
 };

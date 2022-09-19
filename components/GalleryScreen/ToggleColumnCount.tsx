@@ -5,7 +5,7 @@ import {colors} from '../../common/colors';
 
 type IProps = {
   appColumnCount: 1 | 2;
-  toggleColumnCount: () => void;
+  toggleColumnCount?: () => void;
   isAppInternetReachable: boolean | null;
   isFetchingInProgress: boolean;
 };

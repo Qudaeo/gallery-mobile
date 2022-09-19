@@ -3,7 +3,6 @@ import React, {useCallback, useEffect} from 'react';
 import {
   FlatList,
   View,
-  ViewToken,
   StatusBar,
   Dimensions,
   Platform,
@@ -18,23 +17,17 @@ import ToggleColumnCount from '../components/GalleryScreen/ToggleColumnCount';
 import TextMessage from '../components/LoadingScreen/TextMessage';
 import GalleryActivityIndicator from '../components/LoadingScreen/GalleryActivityIndicator';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
-import GalleryStore, {PhotoType} from '../mobx/GalleryStore';
+import GalleryStore from '../mobx/GalleryStore';
+import {PhotoType} from '../types/photo';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {commonStyles} from '../common/styles';
 
 type IProps = {
-  galleryStore: GalleryStore;
+  galleryStore?: GalleryStore;
 };
 
 const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
   const imagesWidth = Dimensions.get('window').width;
-
-  const handleViewableItemsChanged = useCallback(
-    async (info: {viewableItems: ViewToken[]}) => {
-      await galleryStore.setViewableItems(info.viewableItems);
-    },
-    [galleryStore],
-  );
 
   const renderItem = useCallback(
     ({item}: {item: PhotoType[]}) => <GalleryRow images={item} />,
@@ -44,14 +37,14 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
   const isInternetReachable = NetInfo.useNetInfo().isInternetReachable;
 
   useEffect(() => {
-    galleryStore.setIsAppInternetReachable(isInternetReachable);
+    galleryStore?.setIsAppInternetReachable(isInternetReachable);
   }, [galleryStore, isInternetReachable]);
 
   useEffect(() => {
-    galleryStore.initializeApp(imagesWidth);
+    galleryStore?.initializeApp(imagesWidth);
   }, [galleryStore, imagesWidth]);
 
-  const galleryByColumn = galleryStore.gallery.reduce(
+  const galleryByColumn = galleryStore?.gallery.reduce(
     (result: any, el, index) => {
       switch (index % galleryStore.appColumnCount) {
         case 0: {
@@ -71,11 +64,7 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
     <SafeAreaView style={commonStyles.flex1}>
       <StatusBar backgroundColor={'#ffffff'} barStyle={'dark-content'} />
       {galleryByColumn.length === 0 ? (
-        <TextMessage
-          messageText={
-            galleryStore.messageText ? galleryStore.messageText : 'loading...'
-          }
-        />
+        <TextMessage messageText={galleryStore?.messageText || 'loading...'} />
       ) : (
         galleryByColumn && (
           <FlatList
@@ -85,15 +74,14 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
             renderItem={renderItem}
             onEndReached={() => {
               if (
-                !galleryStore.isFetchingInProgress &&
-                galleryStore.isAppSync &&
-                !galleryStore.isAllPhotoFetch
+                !galleryStore?.isFetchingInProgress &&
+                galleryStore?.isAppSync &&
+                !galleryStore?.isAllPhotoFetch
               ) {
                 galleryStore.getNextPage();
               }
             }}
             onEndReachedThreshold={0.5}
-            onViewableItemsChanged={handleViewableItemsChanged}
           />
         )
       )}
@@ -103,17 +91,17 @@ const GalleryScreen: React.FC<IProps> = ({galleryStore}) => {
           {top: (Platform.OS === 'ios' ? getStatusBarHeight() : 0) + 15},
         ]}>
         <SearchPhotoBar
-          searchText={galleryStore.searchText}
-          searchTextChange={galleryStore.searchTextChange}
+          searchText={galleryStore?.searchText || ''}
+          searchTextChange={galleryStore?.searchTextChange}
         />
         <ToggleColumnCount
-          appColumnCount={galleryStore.appColumnCount}
-          toggleColumnCount={galleryStore.toggleColumnCount}
-          isAppInternetReachable={galleryStore.isAppInternetReachable}
-          isFetchingInProgress={galleryStore.isFetchingInProgress}
+          appColumnCount={galleryStore?.appColumnCount || 1}
+          toggleColumnCount={galleryStore?.toggleColumnCount}
+          isAppInternetReachable={galleryStore?.isAppInternetReachable || true}
+          isFetchingInProgress={galleryStore?.isFetchingInProgress || false}
         />
       </View>
-      {galleryStore.isShowActivityIndicator && <GalleryActivityIndicator />}
+      {galleryStore?.isShowActivityIndicator && <GalleryActivityIndicator />}
     </SafeAreaView>
   );
 };

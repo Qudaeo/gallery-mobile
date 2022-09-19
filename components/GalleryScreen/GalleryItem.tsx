@@ -1,7 +1,8 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {inject, observer} from 'mobx-react';
-import GalleryStore, {PhotoType} from '../../mobx/GalleryStore';
+import GalleryStore from '../../mobx/GalleryStore';
+import {PhotoType} from '../../types/photo';
 import {useNavigation} from '@react-navigation/native';
 import {colors} from '../../common/colors';
 
@@ -31,10 +32,7 @@ export const GalleryItem: React.FC<IProps> = ({
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={openDetailedImage}>
-      <Image
-        style={imageDimensions}
-        source={{uri: galleryStore?.base64Images[id]}}
-      />
+      <Image style={imageDimensions} source={{uri: photo.urls.regular}} />
       <Text
         style={[
           styles.copyrightText,
