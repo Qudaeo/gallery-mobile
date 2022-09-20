@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
 import {
   Image,
-  ImageSourcePropType,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -13,7 +12,7 @@ import {
 import {inject, observer} from 'mobx-react';
 import {marginHorizontal} from '../common/const';
 import {calcImageDimensions} from '../common/helper';
-import locationPicture from '../images/DetailedImage/location.png';
+import LocationIcon from '../assets/svg/location.svg';
 
 import moment from 'moment';
 import Tag from '../components/DetailedImageScreen/Tag';
@@ -94,10 +93,7 @@ const DetailedImageScreen: React.FC<IProps> = ({galleryStore}) => {
         </View>
         {photo?.user.location && (
           <View style={styles.block}>
-            <Image
-              source={locationPicture as ImageSourcePropType}
-              style={{width: 20, height: 20}}
-            />
+            <LocationIcon width={14} height={14} fill={colors.blue_000099} />
             <Text style={styles.locationText}>{photo.user.location}</Text>
           </View>
         )}
@@ -153,6 +149,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 20,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   boldText: {
     fontWeight: '700',
@@ -161,7 +158,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     textDecorationStyle: 'dashed',
     textDecorationLine: 'underline',
-    color: 'rgb(0, 0, 153)',
+    color: colors.blue_000099,
   },
   tagsContainer: {
     marginVertical: 10,

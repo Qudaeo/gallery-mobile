@@ -7,13 +7,13 @@
  */
 
 import React from 'react';
-import GalleryScreen from './screens/GalleryScreen';
+import GalleryScreen from './src/screens/GalleryScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import DetailedImageScreen from './screens/DetailedImageScreen';
-import {store} from './mobx/store';
+import DetailedImageScreen from './src/screens/DetailedImageScreen';
+import {store} from './src/mobx/store';
 import {Provider} from 'mobx-react';
-import LargeImageScreen from './screens/LargeImageScreen';
+import LargeImageScreen from './src/screens/LargeImageScreen';
 
 const App = () => {
   const Stack = createNativeStackNavigator();

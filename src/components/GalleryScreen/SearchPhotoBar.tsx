@@ -8,8 +8,8 @@ import {
   View,
 } from 'react-native';
 import {Searchbar} from 'react-native-paper';
-import magnifierPicture from '../../images/SearchPhotoBar/magnifier.png';
-import clearPicture from '../../images/SearchPhotoBar/cancel.png';
+import MagnifierIcon from '../../assets/svg/magnifier.svg';
+import CancelIcon from '../../assets/svg/cancel.svg';
 import {colors} from '../../common/colors';
 import {commonStyles} from '../../common/styles';
 
@@ -60,8 +60,8 @@ const SearchPhotoBar: React.FC<IProps> = ({searchText, searchTextChange}) => {
           setIsFocused(false);
           searchTextChange?.(searchTextTemp);
         }}
-        icon={magnifierPicture}
-        clearIcon={clearPicture}
+        icon={MagnifierIcon}
+        clearIcon={CancelIcon}
         iconColor={'rgb(51, 102, 255)'}
       />
       {!!searchText && (
