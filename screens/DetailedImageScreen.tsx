@@ -16,7 +16,7 @@ import {calcImageDimensions} from '../common/helper';
 import locationPicture from '../images/DetailedImage/location.png';
 
 import moment from 'moment';
-import TagComponent from '../components/DetailedImageScreen/TagComponent';
+import Tag from '../components/DetailedImageScreen/Tag';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import GalleryStore from '../mobx/GalleryStore';
@@ -113,7 +113,7 @@ const DetailedImageScreen: React.FC<IProps> = ({galleryStore}) => {
         </View>
         <View style={styles.tagsContainer}>
           {photo?.tags.map(tag => (
-            <TagComponent key={tag.title} tagTitle={tag.title} />
+            <Tag key={tag.title} tagTitle={tag.title} />
           ))}
         </View>
       </ScrollView>

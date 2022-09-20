@@ -8,17 +8,12 @@
 
 import React from 'react';
 import GalleryScreen from './screens/GalleryScreen';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-} from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import DetailedImageScreen from './screens/DetailedImageScreen';
 import {store} from './mobx/store';
 import {Provider} from 'mobx-react';
 import LargeImageScreen from './screens/LargeImageScreen';
-
-export type GalleryNavigationProps = NativeStackNavigationProp<any>;
 
 const App = () => {
   const Stack = createNativeStackNavigator();
